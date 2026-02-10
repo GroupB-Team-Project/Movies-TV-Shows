@@ -1,3 +1,10 @@
+* {
+  box-sizing: border-box;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -5,43 +12,250 @@ body {
   color: var(--text);
 }
 
-header {
+/* NAVBAR */
+.navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background: var(--card);
+  background: #0b0b0e;
 }
 
-main {
-  padding: 2rem;
+.nav-logo {
+  height: 34px;
 }
 
-#movies {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 1.5rem;
+.nav-links a {
+  color: #cfcfcf;
+  margin-left: 1.5rem;
+  text-decoration: none;
+  font-size: 0.9rem;
 }
 
-.movie-card {
-  background: var(--card);
-  border-radius: 10px;
-  overflow: hidden;
+.nav-links a:hover {
+  color: var(--accent);
+}
+
+/* HERO */
+.hero-ui {
+  height: 70vh;
+  background: radial-gradient(circle at top, #1a1a22, #0b0b0e);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
 }
 
-.movie-card img {
+.hero-content {
+  max-width: 700px;
   width: 100%;
 }
 
+.hero-logo-img {
+  width: 220px;
+  max-width: 80%;
+  margin-bottom: 2rem;
+}
+
+/* SEARCH */
+.search-box {
+  display: flex;
+  background: #14141a;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #222;
+}
+
+.search-box input {
+  flex: 1;
+  padding: 0.9rem;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+}
+
+.search-box input::placeholder {
+  color: #888;
+}
+
+.search-box button {
+  background: var(--accent);
+  border: none;
+  padding: 0 1.4rem;
+  cursor: pointer;
+  color: white;
+  font-size: 1rem;
+}
+
+/* SECTION */
+.section {
+  padding: 2rem;
+}
+
+/* TABS */
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.tabs button {
+  padding: 0.3rem 0.9rem;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  background: var(--card);
+  color: var(--text);
+  font-weight: 600;
+}
+
+.tabs button.active {
+  background: var(--accent);
+  color: white;
+}
+
+/* GRID */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+}
+
+/* CARDS */
+/* MOVIE / TV CARD */
+.movie-card {
+  background: var(--card);
+  border-radius: 12px;
+  overflow: hidden;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.movie-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* POSTER IMAGE */
+.movie-card img {
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.movie-card:hover img {
+  transform: scale(1.08);
+}
+
 .movie-card h3 {
-  padding: 0.5rem;
+  font-size: 0.85rem;
+  padding: 0.6rem;
+}
+
+.movie-card:hover {
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(99, 102, 241, 0.15);
 }
 
 /* FOOTER */
 footer {
   text-align: center;
-  font-size: 0.8rem;
-  opacity: 0.7;
   padding: 1rem;
+  font-size: 0.8rem;
+  opacity: 0.6;
+}
+/* BRAND (ICON + TEXT) */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.brand-icon {
+  font-size: 1.4rem;
+  color: var(--accent);
+}
+
+.brand-text {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: white;
+}
+
+.brand:hover .brand-text,
+.brand:hover .brand-icon {
+  color: var(--accent);
+}
+/* MODAL */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: var(--card);
+  padding: 1.5rem;
+  border-radius: 12px;
+  max-width: 700px;
+  width: 90%;
+  color: var(--text);
+}
+
+.close-btn {
+  font-size: 1.8rem;
+  cursor: pointer;
+  float: right;
+}
+
+.modal-body {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.modal-body img {
+  width: 200px;
+  border-radius: 10px;
+}
+
+.modal-info h2 {
+  margin-top: 0;
+}
+.modal-info p {
+  line-height: 1.5;
+}
+
+.modal-content {
+  animation: modalFade 0.3s ease;
+}
+
+@keyframes modalFade {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
