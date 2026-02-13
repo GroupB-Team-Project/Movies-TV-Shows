@@ -12,6 +12,12 @@ body {
   color: var(--text);
 }
 
+/* Light Mode */
+body.light-mode {
+  background-color: #ffffff;
+  color: #111111;
+}
+
 /* NAVBAR */
 .navbar {
   display: flex;
@@ -20,6 +26,8 @@ body {
   padding: 1rem 2rem;
   background: #0b0b0e;
 }
+
+
 
 .nav-logo {
   height: 34px;
@@ -35,6 +43,24 @@ body {
 .nav-links a:hover {
   color: var(--accent);
 }
+
+/* Light mode variant */
+body.light-mode .navbar {
+  background: #ffffff; 
+}
+
+body.light-mode .nav-links a {
+  color: #111111; 
+}
+
+body.light-mode .nav-links a:hover {
+  color: var(--accent);
+}
+
+body.light-mode .nav-logo {
+  filter: invert(1); 
+}
+
 
 /* HERO */
 .hero-ui {
@@ -87,6 +113,45 @@ body {
   color: white;
   font-size: 1rem;
 }
+
+/* Light mode hero */
+body.light-mode .hero-ui {
+  background: radial-gradient(circle at top, #f0f0f0, #ffffff);
+}
+
+body.light-mode .hero-content {
+  color: #111111; 
+}
+
+body.light-mode .hero-logo-img {
+  filter: invert(0); 
+}
+
+body.light-mode .search-box {
+  background: #ffffff; 
+  border: 1px solid #ccc;
+}
+
+body.light-mode .search-box input {
+  background: transparent;
+  color: #111111; 
+}
+
+body.light-mode .search-box input::placeholder {
+  color: #888;
+}
+
+body.light-mode .search-box button {
+  background: var(--accent); 
+  color: white;
+}
+
+body, .hero-ui, .search-box {
+  transition: background 0.3s, color 0.3s, border 0.3s;
+}
+
+
+
 
 /* SECTION */
 .section {
@@ -164,6 +229,26 @@ body {
     0 0 0 1px rgba(99, 102, 241, 0.15);
 }
 
+/* Light mode for movie cards */
+body.light-mode .movie-card {
+  background: #ffffff; 
+  box-shadow: 
+    0 5px 15px rgba(0, 0, 0, 0.1); 
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+body.light-mode .movie-card h3 {
+  color: #111111; 
+}
+
+/* Hover effect in light mode */
+body.light-mode .movie-card:hover {
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(99, 102, 241, 0.15); 
+}
+
+
 /* FOOTER */
 footer {
   text-align: center;
@@ -194,6 +279,21 @@ footer {
 .brand:hover .brand-icon {
   color: var(--accent);
 }
+
+/* Light mode brand */
+body.light-mode .brand-text {
+  color: #111111; 
+}
+
+body.light-mode .brand-icon {
+  color: var(--accent); 
+}
+
+body.light-mode .brand:hover .brand-text,
+body.light-mode .brand:hover .brand-icon {
+  color: var(--accent); 
+}
+
 /* MODAL */
 .modal {
   position: fixed;
@@ -248,6 +348,34 @@ footer {
 .modal-content {
   animation: modalFade 0.3s ease;
 }
+
+/* Light mode modal overlay */
+body.light-mode .modal {
+  background: rgba(255, 255, 255, 0.75); 
+}
+
+body.light-mode .modal-content {
+  background: #ffffff; 
+  color: #111111; 
+  border: 1px solid #ddd; 
+}
+
+
+body.light-mode .close-btn {
+  color: #111111;
+}
+
+
+#theme-toggle {
+  margin-top: 10px;
+  padding: 8px 14px;
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+}
+
+
+
 
 @keyframes modalFade {
   from {
