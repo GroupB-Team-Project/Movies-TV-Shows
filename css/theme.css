@@ -5,15 +5,9 @@
   --accent: #6366f1;
 }
 
-body.dark {
-  --bg: #0e0e11;
-  --text: #e5e5e5;
-  --card: #18181d;
-  --accent: #6366f1;
-}
-body.light {
-  --bg: #f0f0f0;
-  --text: #333333;
+body.light-mode {
+  --bg: #ffffff;
+  --text: #111111;
   --card: #ffffff;
   --accent: #6366f1;
 }
