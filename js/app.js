@@ -1,5 +1,6 @@
 // =======================
 // TMDB CONFIG
+// Message From Aaron: Becareful changing the code in here
 // =======================
 const TMDB_API_KEY = "a3585bbddb78faddcc9969920abce760";
 const BASE_URL = "https://api.themoviedb.org/3";
@@ -13,6 +14,7 @@ const moviesTab = document.getElementById("moviesTab");
 const tvTab = document.getElementById("tvTab");
 const showMoreBtn = document.getElementById("showMoreBtn");
 
+// MODAL
 const modal = document.getElementById("detailsModal");
 const closeModalBtn = document.getElementById("closeModal");
 const modalPoster = document.getElementById("modalPoster");
@@ -24,7 +26,7 @@ const modalDate = document.getElementById("modalDate");
 let currentType = "movie"; // track current tab
 
 // =======================
-// FETCH MOVIES
+// FETCH FUNCTIONS
 // =======================
 async function fetchMovies() {
   const res = await fetch(`${BASE_URL}/movie/now_playing?api_key=${TMDB_API_KEY}`);
@@ -32,19 +34,26 @@ async function fetchMovies() {
   displayItems(data.results, "movie");
 }
 
-// =======================
-// FETCH TV SHOWS
-// =======================
 async function fetchTVShows() {
   const res = await fetch(`${BASE_URL}/tv/on_the_air?api_key=${TMDB_API_KEY}`);
   const data = await res.json();
   displayItems(data.results, "tv");
 }
 
+async function fetchTopRated() {
+  const res = await fetch(
+    `${BASE_URL}/movie/top_rated?api_key=${TMDB_API_KEY}`,
+  );
+  const data = await res.json();
+  displayItems(data.results, "movie");
+}
+
 // =======================
 // DISPLAY CARDS (LIMIT TO 8)
 // =======================
 function displayItems(items, type) {
+  if (!content) return;
+
   content.innerHTML = "";
 
   // Only show first 8 items
@@ -71,6 +80,8 @@ function displayItems(items, type) {
 // Cards
 // =======================
 function openModal(item, type) {
+  if (!modal) return;
+
   modalPoster.src = IMAGE_URL + item.poster_path;
   modalTitle.textContent = type === "movie" ? item.title : item.name;
   modalOverview.textContent = item.overview || "No description available.";
@@ -98,7 +109,7 @@ modal.onclick = (e) => {
 };
 
 // =======================
-// TABS
+// HOME PAGE TABS
 // =======================
 if (moviesTab && tvTab) {
   moviesTab.onclick = () => {

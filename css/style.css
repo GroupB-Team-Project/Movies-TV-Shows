@@ -27,8 +27,6 @@ body.light-mode {
   background: #0b0b0e;
 }
 
-
-
 .nav-logo {
   height: 34px;
 }
@@ -46,11 +44,11 @@ body.light-mode {
 
 /* Light mode variant */
 body.light-mode .navbar {
-  background: #ffffff; 
+  background: #ffffff;
 }
 
 body.light-mode .nav-links a {
-  color: #111111; 
+  color: #111111;
 }
 
 body.light-mode .nav-links a:hover {
@@ -58,9 +56,8 @@ body.light-mode .nav-links a:hover {
 }
 
 body.light-mode .nav-logo {
-  filter: invert(1); 
+  filter: invert(1);
 }
-
 
 /* HERO */
 .hero-ui {
@@ -120,21 +117,21 @@ body.light-mode .hero-ui {
 }
 
 body.light-mode .hero-content {
-  color: #111111; 
+  color: #111111;
 }
 
 body.light-mode .hero-logo-img {
-  filter: invert(0); 
+  filter: invert(0);
 }
 
 body.light-mode .search-box {
-  background: #ffffff; 
+  background: #ffffff;
   border: 1px solid #ccc;
 }
 
 body.light-mode .search-box input {
   background: transparent;
-  color: #111111; 
+  color: #111111;
 }
 
 body.light-mode .search-box input::placeholder {
@@ -142,16 +139,18 @@ body.light-mode .search-box input::placeholder {
 }
 
 body.light-mode .search-box button {
-  background: var(--accent); 
+  background: var(--accent);
   color: white;
 }
 
-body, .hero-ui, .search-box {
-  transition: background 0.3s, color 0.3s, border 0.3s;
+body,
+.hero-ui,
+.search-box {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
 }
-
-
-
 
 /* SECTION */
 .section {
@@ -231,23 +230,23 @@ body, .hero-ui, .search-box {
 
 /* Light mode for movie cards */
 body.light-mode .movie-card {
-  background: #ffffff; 
-  box-shadow: 
-    0 5px 15px rgba(0, 0, 0, 0.1); 
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  background: #ffffff;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
 }
 
 body.light-mode .movie-card h3 {
-  color: #111111; 
+  color: #111111;
 }
 
 /* Hover effect in light mode */
 body.light-mode .movie-card:hover {
   box-shadow:
     0 10px 30px rgba(0, 0, 0, 0.2),
-    0 0 0 1px rgba(99, 102, 241, 0.15); 
+    0 0 0 1px rgba(99, 102, 241, 0.15);
 }
-
 
 /* FOOTER */
 footer {
@@ -282,16 +281,16 @@ footer {
 
 /* Light mode brand */
 body.light-mode .brand-text {
-  color: #111111; 
+  color: #111111;
 }
 
 body.light-mode .brand-icon {
-  color: var(--accent); 
+  color: var(--accent);
 }
 
 body.light-mode .brand:hover .brand-text,
 body.light-mode .brand:hover .brand-icon {
-  color: var(--accent); 
+  color: var(--accent);
 }
 
 /* MODAL */
@@ -351,20 +350,18 @@ body.light-mode .brand:hover .brand-icon {
 
 /* Light mode modal overlay */
 body.light-mode .modal {
-  background: rgba(255, 255, 255, 0.75); 
+  background: rgba(255, 255, 255, 0.75);
 }
 
 body.light-mode .modal-content {
-  background: #ffffff; 
-  color: #111111; 
-  border: 1px solid #ddd; 
+  background: #ffffff;
+  color: #111111;
+  border: 1px solid #ddd;
 }
-
 
 body.light-mode .close-btn {
   color: #111111;
 }
-
 
 #theme-toggle {
   margin-top: 10px;
@@ -374,8 +371,107 @@ body.light-mode .close-btn {
   border-radius: 6px;
 }
 
+.theme-toggle {
+  margin-left: 1rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: 20px;
+  border: 1px solid #333;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 0.8rem;
+}
 
+.theme-toggle:hover {
+  background: var(--card);
+}
+/* FEEDBACK PAGE */
+.feedback-section {
+  display: flex;
+  justify-content: center;
+}
 
+.feedback-form {
+  width: 100%;
+  max-width: 500px;
+  background: var(--card);
+  padding: 2rem;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.feedback-form label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+.feedback-form input,
+.feedback-form textarea {
+  margin-top: 0.4rem;
+  padding: 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #333;
+  background: transparent;
+  color: var(--text);
+}
+
+.feedback-form input::placeholder,
+.feedback-form textarea::placeholder {
+  color: #888;
+}
+
+.feedback-form button {
+  margin-top: 1rem;
+  padding: 0.6rem;
+  border-radius: 20px;
+  border: none;
+  background: var(--accent);
+  color: white;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.feedback-form button:hover {
+  opacity: 0.9;
+}
+
+/* ABOUT PAGE */
+.about-section {
+  display: grid;
+  gap: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.about-card {
+  background: var(--card);
+  padding: 1.5rem;
+  border-radius: 12px;
+}
+
+.about-card h2 {
+  margin-top: 0;
+  margin-bottom: 0.6rem;
+}
+
+.about-card p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.about-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.about-card li {
+  padding: 0.3rem 0;
+}
 
 @keyframes modalFade {
   from {
