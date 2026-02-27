@@ -1,35 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>ViewIT</title>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/theme.css" />
-  </head>
-  <body class="dark">
-    <!-- NAVBAR -->
-    <header class="navbar">
-      <a href="index.html" class="brand">
-        <span class="brand-icon">▶</span>
-        <span class="brand-text">ViewIT</span>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <title>ViewIT</title>
+</head>
+
+<body class="font-[Ubuntu] bg-gradient-to-t from-neutral-600 to-zinc-900 min-h-screen text-white">
+
+<!-- ================= HEADER ================= -->
+<header class="bg-gray-900 shadow-lg sticky top-0 z-40">
+  <nav class="max-w-7xl mx-auto px-6">
+    <div class="flex items-center justify-between h-16">
+
+      <!-- Logo -->
+      <a href="index.html">
+        <img class="w-28 h-auto" src="assets/images/viewit-logo.png" alt="ViewIT logo">
       </a>
 
-      <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="film.html">Movies</a>
-        <a href="tv.html">TV Shows</a>
-        <a href="reviews.html">Top TMDB</a>
-        <a href="feedback.html">Feedback</a>
-        <a href="about.html">About</a>
-        <button id="theme-toggle" class="theme-toggle">☀️ Light Mode</button>
-      </nav>
-    </header>
+      <!-- Navigation -->
+      <ul class="hidden md:flex items-center gap-8 text-gray-300 font-medium">
 
-    <!-- HERO -->
-    <section class="hero-ui">
-      <div class="hero-content">
-        <h1>Discover Movies & TV Shows</h1>
+        <li>
+          <a href="film.html" class="hover:text-white transition">
+            Films
+          </a>
+        </li>
+
+        <li>
+          <a href="tv.html" class="hover:text-white transition">
+            TV
+          </a>
+        </li>
+
+        <li>
+          <a href="review.html" class="hover:text-white transition">
+            Reviews
+          </a>
+        </li>
+
+        <!-- Dropdown -->
+        <li class="relative group">
+          <button class="hover:text-white transition flex items-center gap-1">
+            More
+            <span class="text-xs">▼</span>
+          </button>
+
+          <div class="absolute left-0 mt-3 w-48 bg-black/60 backdrop-blur-md border border-white/10 rounded-xl shadow-xl 
+                      opacity-0 invisible translate-y-2
+                      group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 
+                      transition-all duration-200">
+
+            <a href="feedback.html" class="block px-4 py-2 hover:bg-gray-700 rounded-t-xl">
+              Feedback
+            </a>
+            <a href="policy.html" class="block px-4 py-2 hover:bg-gray-700">
+              Policy
+            </a>
+            <a href="about.html" class="block px-4 py-2 hover:bg-gray-700 rounded-b-xl">
+              About
+            </a>
+
+          </div>
+        </li>
+      </ul>
+
+      <!-- Account Button -->
+      <button onclick="openAccountModal()" 
+              class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg transition">
+        Account
+      </button>
+
+    </div>
+  </nav>
+</header>
+<!-- ================= END HEADER ================= -->
+
+
+<!-- ================= HERO ================= -->
+<section class="flex items-center justify-center text-center py-24 px-6">
+  <div class="max-w-2xl">
+
+    <h1 class="text-4xl md:text-5xl font-bold mb-8">
+      Discover Movies & TV Shows
+    </h1>
 
     <div class="flex items-center bg-gray-800/70 backdrop-blur-md rounded-xl overflow-hidden shadow-lg">
       <input 
@@ -166,9 +227,11 @@
     </div>
 
 
-      <button id="theme-toggle">☀️ Light Mode</button>
-    </footer>
-
+<script>
+  if (!localStorage.getItem("loggedIn")) {
+    window.location.href = "login.html";
+  }
+</script>
 <script src="js/app.js"></script>
 </body>
 </html>
