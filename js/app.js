@@ -8,6 +8,7 @@ const IMAGE_URL = "https://image.tmdb.org/t/p/w500";
 const content = document.getElementById("content");
 const moviesTab = document.getElementById("moviesTab");
 const tvTab = document.getElementById("tvTab");
+const showMoreBtn = document.getElementById("showMoreBtn");
 
 // MODAL
 const modal = document.getElementById("detailsModal");
@@ -18,30 +19,7 @@ const modalOverview = document.getElementById("modalOverview");
 const modalRating = document.getElementById("modalRating");
 const modalDate = document.getElementById("modalDate");
 
-// THEME TOGGLE
-const toggleBtn = document.getElementById("theme-toggle");
-
-// =======================
-// THEME LOGIC
-// =======================
-if (toggleBtn) {
-  toggleBtn.onclick = () => {
-    document.body.classList.toggle("light-mode");
-
-    if (document.body.classList.contains("light-mode")) {
-      toggleBtn.textContent = "🌙 Dark Mode";
-      localStorage.setItem("theme", "light");
-    } else {
-      toggleBtn.textContent = "☀️ Light Mode";
-      localStorage.setItem("theme", "dark");
-    }
-  };
-
-  if (localStorage.getItem("theme") === "light") {
-    document.body.classList.add("light-mode");
-    toggleBtn.textContent = "🌙 Dark Mode";
-  }
-}
+let currentType = "movie"; // track current tab
 
 // =======================
 // FETCH FUNCTIONS
@@ -69,24 +47,27 @@ async function fetchTopRated() {
 }
 
 // =======================
-// DISPLAY
+// DISPLAY CARDS (LIMIT TO 8)
 // =======================
 function displayItems(items, type) {
   if (!content) return;
 
   content.innerHTML = "";
 
-  items.forEach((item) => {
-    if (!item.poster_path) return;
+  // Only show first 8 items
+  const limitedItems = items.slice(0, 8);
 
+  limitedItems.forEach((item) => {
     const card = document.createElement("div");
-    card.className = "movie-card";
+    card.className =
+      "movie-card cursor-pointer bg-gray-800 rounded-lg shadow-lg overflow-hidden transition-transform hover:scale-105";
 
     const title = type === "movie" ? item.title : item.name;
 
     card.innerHTML = `
-      <img src="${IMAGE_URL + item.poster_path}" alt="${title}">
-      <h3>${title}</h3>
+      <img src="${IMAGE_URL + item.poster_path}" 
+           class="w-full object-contain">
+      <h3 class="text-white font-semibold text-lg mt-2 text-center px-2">${title}</h3>
     `;
 
     card.onclick = () => openModal(item, type);
@@ -95,7 +76,7 @@ function displayItems(items, type) {
 }
 
 // =======================
-// MODAL
+// Cards
 // =======================
 function openModal(item, type) {
   if (!modal) return;
@@ -109,11 +90,13 @@ function openModal(item, type) {
       ? item.release_date || "Unknown"
       : item.first_air_date || "Unknown";
 
+  // Shows the card centered
   modal.classList.remove("hidden");
 }
 
 if (modal && closeModalBtn) {
   closeModalBtn.onclick = () => modal.classList.add("hidden");
+
   modal.onclick = (e) => {
     if (e.target === modal) modal.classList.add("hidden");
   };
@@ -122,22 +105,55 @@ if (modal && closeModalBtn) {
 // =======================
 // AUTO PAGE LOADING
 // =======================
-if (content) {
-  if (moviesTab && tvTab) {
+if (content && moviesTab && tvTab) {
+  fetchMovies();
+
+  moviesTab.onclick = () => {
+    moviesTab.classList.add("active");
+    tvTab.classList.remove("active");
     fetchMovies();
+  };
 
-    moviesTab.onclick = () => {
-      moviesTab.classList.add("active");
-      tvTab.classList.remove("active");
-      fetchMovies();
-    };
+  tvTab.onclick = () => {
+    tvTab.classList.add("active");
+    moviesTab.classList.remove("active");
+    fetchTVShows();
+  };
+}
 
-    tvTab.onclick = () => {
-      tvTab.classList.add("active");
-      moviesTab.classList.remove("active");
-      fetchTVShows();
-    };
-  } else {
-    fetchTopRated();
+// =======================
+// START APP
+// =======================
+fetchMovies(); // load 8 movies by default
+
+// =======================
+// SHOW MORE BUTTON
+// =======================
+if (showMoreBtn) {
+  showMoreBtn.addEventListener("click", () => {
+    if (currentType === "movie") {
+      window.location.href = "film.html";
+    } else {
+      window.location.href = "tv.html";
+    }
+  });
+}
+
+// =======================
+// LOGIN & REGISTER MODAL
+// =======================
+function openAccountModal() {
+  const modal = document.getElementById("accountModal");
+  if (modal) {
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+  }
+}
+
+function closeAccountModal() {
+  const modal = document.getElementById("accountModal");
+  if (modal) {
+    modal.classList.remove("flex");
+    modal.classList.add("hidden");
   }
 }

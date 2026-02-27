@@ -1,10 +1,8 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <title>ViewIT</title>
-
-    <script src="https://cdn.tailwindcss.com"></script>
 
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/theme.css" />
@@ -18,7 +16,6 @@
       </a>
 
       <nav class="nav-links">
-        <a href="login.html">Login</a>
         <a href="index.html">Home</a>
         <a href="film.html">Movies</a>
         <a href="tv.html">TV Shows</a>
@@ -34,54 +31,144 @@
       <div class="hero-content">
         <h1>Discover Movies & TV Shows</h1>
 
-        <div class="search-box">
-          <input type="text" placeholder="Enter keywords..." />
-          <button>🔍</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTENT -->
-    <section class="section">
-      <div class="tabs">
-        <button id="moviesTab" class="active">🎬 Movies</button>
-        <button id="tvTab">📺 TV Shows</button>
-      </div>
-
-      <div id="content" class="cards-grid"></div>
-    </section>
-
-    <!-- MODAL -->
-    <div id="detailsModal" class="modal hidden">
-      <div class="modal-content">
-        <span id="closeModal" class="close-btn">&times;</span>
-
-        <div class="modal-body">
-          <img id="modalPoster" />
-          <div class="modal-info">
-            <h2 id="modalTitle"></h2>
-            <p id="modalOverview"></p>
-            <p><strong>Rating:</strong> <span id="modalRating"></span></p>
-            <p><strong>Release:</strong> <span id="modalDate"></span></p>
-          </div>
-        </div>
-      </div>
+    <div class="flex items-center bg-gray-800/70 backdrop-blur-md rounded-xl overflow-hidden shadow-lg">
+      <input 
+        type="text" 
+        placeholder="Enter keywords..." 
+        class="flex-1 px-4 py-3 bg-transparent focus:outline-none text-white placeholder-gray-400"
+      />
+      <button class="bg-indigo-600 hover:bg-indigo-500 px-5 py-3 transition">
+        🔍
+      </button>
     </div>
 
-    <footer>
-      <p>
-        This product uses the TMDB API but is not endorsed or certified by TMDB.
-      </p>
+  </div>
+</section>
+
+
+<!-- ================= CONTENT ================= -->
+<section class="max-w-7xl mx-auto px-6 py-12">
+
+  <!-- Tabs -->
+  <div class="flex gap-4 mb-8">
+    <button id="moviesTab"
+            class="px-6 py-2 bg-indigo-600 rounded-lg font-medium hover:bg-indigo-500 transition">
+      🎬 Movies
+    </button>
+
+    <button id="tvTab"
+            class="px-6 py-2 bg-gray-800 rounded-lg font-medium hover:bg-gray-700 transition">
+      📺 TV Shows
+    </button>
+  </div>
+
+  <!-- Cards -->
+  <div id="content"
+       class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-10">
+  </div>
+
+  <!-- Show More Button -->
+  <div class="text-center">
+    <button id="showMoreBtn"
+            class="bg-indigo-600 hover:bg-indigo-500 px-6 py-3 rounded-lg font-medium transition">
+      Show More
+    </button>
+  </div>
+
+</section>
+
+
+<!-- ================= MODAL ================= -->
+<div id="detailsModal"
+     class="fixed inset-0 bg-black/70 backdrop-blur-xl hidden items-center justify-center z-50">
+  <div class="bg-gray-900 rounded-2xl max-w-3xl w-full p-8 relative shadow-2xl flex flex-col md:flex-row gap-8">
+    
+    <!-- Close Button -->
+    <span id="closeModal"
+          class="absolute top-4 right-4 text-gray-400 hover:text-white cursor-pointer text-2xl">
+      &times;
+    </span>
+
+    <!-- Poster -->
+    <img id="modalPoster" class="w-full md:w-64 rounded-xl shadow-lg object-contain">
+
+    <!-- Info -->
+    <div class="flex-1">
+      <h2 id="modalTitle" class="text-2xl font-bold mb-4"></h2>
+      <p id="modalOverview" class="text-gray-300 mb-4"></p>
+      <p class="mb-2"><strong>Rating:</strong> <span id="modalRating"></span></p>
+      <p><strong>Release:</strong> <span id="modalDate"></span></p>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ================= FOOTER ================= -->
+    <!-- Footer -->
+<footer class="bg-gray-900 border-t border-white/10 mt-16 relative overflow-hidden">
+  <!-- Cinematic overlay -->
+  <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/60 pointer-events-none"></div>
+
+  <div class="relative max-w-7xl mx-auto px-6 py-12">
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-10 text-gray-300">
+
+      <!-- Brand -->
+      <div>
+        <h3 class="text-white text-2xl font-bold mb-4 tracking-wide">ViewIT</h3>
+        <p class="text-sm leading-relaxed">
+          Created by Aaron Bridger, Sarah Pettigrew, Finn Boyd and Paul Moriarty in Team Project (Group B).
+        </p>
+      </div>
+
+      <!-- Explore -->
+      <div>
+        <h4 class="text-white font-semibold mb-4 tracking-wide">Explore</h4>
+        <ul class="space-y-2 text-sm">
+          <li>
+            <a href="film.html" class="hover:text-indigo-600 transition duration-300 transform hover:translate-x-1 hover:scale-105">Films</a>
+          </li>
+          <li>
+            <a href="tv.html" class="hover:text-indigo-600 transition duration-300 transform hover:translate-x-1 hover:scale-105">TV Shows</a>
+          </li>
+          <li>
+            <a href="review.html" class="hover:text-indigo-600 transition duration-300 transform hover:translate-x-1 hover:scale-105">Reviews</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Company -->
+      <div>
+        <h4 class="text-white font-semibold mb-4 tracking-wide">Company</h4>
+        <ul class="space-y-2 text-sm">
+          <li>
+            <a href="about.html" class="hover:text-indigo-600 transition duration-300 transform hover:translate-x-1 hover:scale-105">About</a>
+          </li>
+          <li>
+            <a href="feedback.html" class="hover:text-indigo-600 transition duration-300 transform hover:translate-x-1 hover:scale-105">Feedback</a>
+          </li>
+          <li>
+            <a href="policy.html" class="hover:text-indigo-600 transition duration-300 transform hover:translate-x-1 hover:scale-105">Privacy Policy</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Connect / Social -->
+      <div>
+  <h4 class="text-white font-semibold mb-4 tracking-wide">Location</h4>
+  <div class="w-full h-40 md:h-48 rounded-xl overflow-hidden shadow-lg">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2381.6800873821235!2d-6.245371273753099!3d53.34898267452688!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48670e8cd86e97e7%3A0x6d51b774ee7fa935!2sNational%20College%20of%20Ireland!5e0!3m2!1sen!2sie!4v1772142802467!5m2!1sen!2sie" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </iframe>
+  </div>
+</div>
+
+    </div>
+
 
       <button id="theme-toggle">☀️ Light Mode</button>
     </footer>
 
-    <script>
-      if (!localStorage.getItem("loggedIn")) {
-        window.location.href = "login.html";
-      }
-    </script>
-
-    <script src="js/app.js"></script>
-  </body>
+<script src="js/app.js"></script>
+</body>
 </html>
