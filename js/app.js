@@ -1,7 +1,3 @@
-// =======================
-// TMDB CONFIG
-// Message From Aaron: Becareful changing the code in here
-// =======================
 const TMDB_API_KEY = "a3585bbddb78faddcc9969920abce760";
 const BASE_URL = "https://api.themoviedb.org/3";
 const IMAGE_URL = "https://image.tmdb.org/t/p/w500";
@@ -118,27 +114,30 @@ function openModal(item, type) {
 
 if (modal && closeModalBtn) {
   closeModalBtn.onclick = () => modal.classList.add("hidden");
-
   modal.onclick = (e) => {
     if (e.target === modal) modal.classList.add("hidden");
   };
 }
 
 // =======================
-// HOME PAGE TABS
+// AUTO PAGE LOADING
 // =======================
-if (content && moviesTab && tvTab) {
-  fetchMovies();
-
-  moviesTab.onclick = () => {
-    moviesTab.classList.add("active");
-    tvTab.classList.remove("active");
+if (content) {
+  if (moviesTab && tvTab) {
     fetchMovies();
-  };
 
-  tvTab.onclick = () => {
-    tvTab.classList.add("active");
-    moviesTab.classList.remove("active");
-    fetchTVShows();
-  };
+    moviesTab.onclick = () => {
+      moviesTab.classList.add("active");
+      tvTab.classList.remove("active");
+      fetchMovies();
+    };
+
+    tvTab.onclick = () => {
+      tvTab.classList.add("active");
+      moviesTab.classList.remove("active");
+      fetchTVShows();
+    };
+  } else {
+    fetchTopRated();
+  }
 }
