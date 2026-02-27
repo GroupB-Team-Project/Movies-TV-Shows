@@ -483,3 +483,82 @@ body.light-mode .close-btn {
     transform: scale(1);
   }
 }
+
+.form-container,
+.login-box,
+.register-box {
+  background: var(--card, #1e1e1e);
+  max-width: 400px;
+  margin: 60px auto;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.login-box h1,
+.register-box h1 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.login-box p,
+.register-box p {
+  text-align: center;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0 16px 0;
+  border: 1px solid #333;
+  background: transparent;
+  color: var(--text, #fff);
+}
+
+input::placeholder {
+  color: #888;
+}
+
+button,
+.btn-login {
+  width: 100%;
+  padding: 10px;
+  background: var(--accent, #0078ff);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+button:hover,
+.btm-login:hover {
+  opacity: 0.9;
+}
+
+.signin-link,
+.login-links {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.signin-link a,
+.login-links a {
+  color: var(--accent, #0078ff);
+  text-decoration: none;
+}
+
+.link-accent {
+  color: var(--accent, #0078ff);
+  text-decoration: none;
+}
+
+.link-accent:hover {
+  text-decoration: underline;
+}
