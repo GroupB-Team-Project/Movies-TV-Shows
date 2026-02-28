@@ -1,237 +1,254 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
 
-  <title>ViewIT</title>
-</head>
+    <title>ViewIT</title>
+  </head>
 
-<body class="font-[Ubuntu] bg-gradient-to-t from-neutral-600 to-zinc-900 min-h-screen text-white">
-
-<!-- ================= HEADER ================= -->
-<header class="bg-gray-900 shadow-lg sticky top-0 z-40">
-  <nav class="max-w-7xl mx-auto px-6">
-    <div class="flex items-center justify-between h-16">
-
-      <!-- Logo -->
-      <a href="index.html">
-        <img class="w-28 h-auto" src="assets/images/viewit-logo.png" alt="ViewIT logo">
-      </a>
-
-      <!-- Navigation -->
-      <ul class="hidden md:flex items-center gap-8 text-gray-300 font-medium">
-
-        <li>
-          <a href="film.html" class="hover:text-white transition">
-            Films
+  <body
+    class="font-[Ubuntu] bg-gradient-to-t from-neutral-600 to-zinc-900 min-h-screen text-white"
+  >
+    <!-- ================= HEADER ================= -->
+    <header class="bg-gray-900 shadow-lg sticky top-0 z-40">
+      <nav class="max-w-7xl mx-auto px-6">
+        <div class="flex items-center justify-between h-16">
+          <!-- Logo -->
+          <a href="index.html">
+            <img
+              class="w-28 h-auto"
+              src="assets/images/icons/viewit-logo.png"
+              alt="ViewIT logo"
+            />
           </a>
-        </li>
 
-        <li>
-          <a href="tv.html" class="hover:text-white transition">
-            TV
+          <!-- Navigation -->
+          <ul
+            class="hidden md:flex items-center gap-8 text-gray-300 font-medium"
+          >
+            <li>
+              <a href="pages/film.html" class="hover:text-white transition"
+                >Films</a
+              >
+            </li>
+
+            <li>
+              <a href="pages/tv.html" class="hover:text-white transition">TV</a>
+            </li>
+
+            <li>
+              <a href="pages/reviews.html" class="hover:text-white transition"
+                >Reviews</a
+              >
+            </li>
+
+            <!-- Dropdown -->
+            <li class="relative group">
+              <button
+                class="hover:text-white transition flex items-center gap-1"
+              >
+                More <span class="text-xs">▼</span>
+              </button>
+
+              <div
+                class="absolute left-0 mt-3 w-48 bg-black/60 backdrop-blur-md border border-white/10 rounded-xl shadow-xl opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-200"
+              >
+                <a
+                  href="pages/feedback.html"
+                  class="block px-4 py-2 hover:bg-gray-700 rounded-t-xl"
+                  >Feedback</a
+                >
+                <a
+                  href="pages/TermsandPrivacy.html"
+                  class="block px-4 py-2 hover:bg-gray-700"
+                  >Policy</a
+                >
+                <a
+                  href="pages/about.html"
+                  class="block px-4 py-2 hover:bg-gray-700 rounded-b-xl"
+                  >About</a
+                >
+              </div>
+            </li>
+          </ul>
+
+          <!-- Account Button -->
+          <a
+            href="pages/login.html"
+            class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg transition"
+          >
+            Account
           </a>
-        </li>
+        </div>
+      </nav>
+    </header>
+    <!-- ================= END HEADER ================= -->
 
-        <li>
-          <a href="review.html" class="hover:text-white transition">
-            Reviews
-          </a>
-        </li>
+    <!-- ================= HERO ================= -->
+    <section class="flex items-center justify-center text-center py-24 px-6">
+      <div class="max-w-2xl">
+        <h1 class="text-4xl md:text-5xl font-bold mb-8">
+          Discover Movies & TV Shows
+        </h1>
 
-        <!-- Dropdown -->
-        <li class="relative group">
-          <button class="hover:text-white transition flex items-center gap-1">
-            More
-            <span class="text-xs">▼</span>
+        <div
+          class="flex items-center bg-gray-800/70 backdrop-blur-md rounded-xl overflow-hidden shadow-lg"
+        >
+          <input
+            type="text"
+            placeholder="Enter keywords..."
+            class="flex-1 px-4 py-3 bg-transparent focus:outline-none text-white placeholder-gray-400"
+          />
+          <button
+            aria-label="Search"
+            class="bg-indigo-600 hover:bg-indigo-500 px-5 py-3 transition"
+          >
+            🔍
           </button>
+        </div>
+      </div>
+    </section>
 
-          <div class="absolute left-0 mt-3 w-48 bg-black/60 backdrop-blur-md border border-white/10 rounded-xl shadow-xl 
-                      opacity-0 invisible translate-y-2
-                      group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 
-                      transition-all duration-200">
+    <!-- ================= CONTENT ================= -->
+    <section class="max-w-7xl mx-auto px-6 py-12">
+      <div class="flex gap-4 mb-8">
+        <button
+          id="moviesTab"
+          class="px-6 py-2 bg-indigo-600 rounded-lg font-medium hover:bg-indigo-500 transition"
+        >
+          🎬 Movies
+        </button>
 
-            <a href="feedback.html" class="block px-4 py-2 hover:bg-gray-700 rounded-t-xl">
-              Feedback
-            </a>
-            <a href="policy.html" class="block px-4 py-2 hover:bg-gray-700">
-              Policy
-            </a>
-            <a href="about.html" class="block px-4 py-2 hover:bg-gray-700 rounded-b-xl">
-              About
-            </a>
-
-          </div>
-        </li>
-      </ul>
-
-      <!-- Account Button -->
-      <button onclick="openAccountModal()" 
-              class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg transition">
-        Account
-      </button>
-
-    </div>
-  </nav>
-</header>
-<!-- ================= END HEADER ================= -->
-
-
-<!-- ================= HERO ================= -->
-<section class="flex items-center justify-center text-center py-24 px-6">
-  <div class="max-w-2xl">
-
-    <h1 class="text-4xl md:text-5xl font-bold mb-8">
-      Discover Movies & TV Shows
-    </h1>
-
-    <div class="flex items-center bg-gray-800/70 backdrop-blur-md rounded-xl overflow-hidden shadow-lg">
-      <input 
-        type="text" 
-        placeholder="Enter keywords..." 
-        class="flex-1 px-4 py-3 bg-transparent focus:outline-none text-white placeholder-gray-400"
-      />
-      <button class="bg-indigo-600 hover:bg-indigo-500 px-5 py-3 transition">
-        🔍
-      </button>
-    </div>
-
-  </div>
-</section>
-
-
-<!-- ================= CONTENT ================= -->
-<section class="max-w-7xl mx-auto px-6 py-12">
-
-  <!-- Tabs -->
-  <div class="flex gap-4 mb-8">
-    <button id="moviesTab"
-            class="px-6 py-2 bg-indigo-600 rounded-lg font-medium hover:bg-indigo-500 transition">
-      🎬 Movies
-    </button>
-
-    <button id="tvTab"
-            class="px-6 py-2 bg-gray-800 rounded-lg font-medium hover:bg-gray-700 transition">
-      📺 TV Shows
-    </button>
-  </div>
-
-  <!-- Cards -->
-  <div id="content"
-       class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-10">
-  </div>
-
-  <!-- Show More Button -->
-  <div class="text-center">
-    <button id="showMoreBtn"
-            class="bg-indigo-600 hover:bg-indigo-500 px-6 py-3 rounded-lg font-medium transition">
-      Show More
-    </button>
-  </div>
-
-</section>
-
-
-<!-- ================= MODAL ================= -->
-<div id="detailsModal"
-     class="fixed inset-0 bg-black/70 backdrop-blur-xl hidden items-center justify-center z-50">
-  <div class="bg-gray-900 rounded-2xl max-w-3xl w-full p-8 relative shadow-2xl flex flex-col md:flex-row gap-8">
-    
-    <!-- Close Button -->
-    <span id="closeModal"
-          class="absolute top-4 right-4 text-gray-400 hover:text-white cursor-pointer text-2xl">
-      &times;
-    </span>
-
-    <!-- Poster -->
-    <img id="modalPoster" class="w-full md:w-64 rounded-xl shadow-lg object-contain">
-
-    <!-- Info -->
-    <div class="flex-1">
-      <h2 id="modalTitle" class="text-2xl font-bold mb-4"></h2>
-      <p id="modalOverview" class="text-gray-300 mb-4"></p>
-      <p class="mb-2"><strong>Rating:</strong> <span id="modalRating"></span></p>
-      <p><strong>Release:</strong> <span id="modalDate"></span></p>
-    </div>
-
-  </div>
-</div>
-
-
-<!-- ================= FOOTER ================= -->
-    <!-- Footer -->
-<footer class="bg-gray-900 border-t border-white/10 mt-16 relative overflow-hidden">
-  <!-- Cinematic overlay -->
-  <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/60 pointer-events-none"></div>
-
-  <div class="relative max-w-7xl mx-auto px-6 py-12">
-
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-10 text-gray-300">
-
-      <!-- Brand -->
-      <div>
-        <h3 class="text-white text-2xl font-bold mb-4 tracking-wide">ViewIT</h3>
-        <p class="text-sm leading-relaxed">
-          Created by Aaron Bridger, Sarah Pettigrew, Finn Boyd and Paul Moriarty in Team Project (Group B).
-        </p>
+        <button
+          id="tvTab"
+          class="px-6 py-2 bg-gray-800 rounded-lg font-medium hover:bg-gray-700 transition"
+        >
+          📺 TV Shows
+        </button>
       </div>
 
-      <!-- Explore -->
-      <div>
-        <h4 class="text-white font-semibold mb-4 tracking-wide">Explore</h4>
-        <ul class="space-y-2 text-sm">
-          <li>
-            <a href="film.html" class="hover:text-indigo-600 transition duration-300 transform hover:translate-x-1 hover:scale-105">Films</a>
-          </li>
-          <li>
-            <a href="tv.html" class="hover:text-indigo-600 transition duration-300 transform hover:translate-x-1 hover:scale-105">TV Shows</a>
-          </li>
-          <li>
-            <a href="review.html" class="hover:text-indigo-600 transition duration-300 transform hover:translate-x-1 hover:scale-105">Reviews</a>
-          </li>
-        </ul>
+      <div
+        id="content"
+        class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-10"
+      ></div>
+
+      <div class="text-center">
+        <button
+          id="showMoreBtn"
+          class="bg-indigo-600 hover:bg-indigo-500 px-6 py-3 rounded-lg font-medium transition"
+        >
+          Show More
+        </button>
       </div>
+    </section>
 
-      <!-- Company -->
-      <div>
-        <h4 class="text-white font-semibold mb-4 tracking-wide">Company</h4>
-        <ul class="space-y-2 text-sm">
-          <li>
-            <a href="about.html" class="hover:text-indigo-600 transition duration-300 transform hover:translate-x-1 hover:scale-105">About</a>
-          </li>
-          <li>
-            <a href="feedback.html" class="hover:text-indigo-600 transition duration-300 transform hover:translate-x-1 hover:scale-105">Feedback</a>
-          </li>
-          <li>
-            <a href="policy.html" class="hover:text-indigo-600 transition duration-300 transform hover:translate-x-1 hover:scale-105">Privacy Policy</a>
-          </li>
-        </ul>
+    <!-- ================= MODAL ================= -->
+    <div
+      id="detailsModal"
+      class="fixed inset-0 bg-black/70 backdrop-blur-xl hidden items-center justify-center z-50"
+    >
+      <div
+        class="bg-gray-900 rounded-2xl max-w-3xl w-full p-8 relative shadow-2xl flex flex-col md:flex-row gap-8"
+      >
+        <button
+          id="closeModal"
+          aria-label="Close modal"
+          class="absolute top-4 right-4 text-gray-400 hover:text-white cursor-pointer text-2xl"
+        >
+          &times;
+        </button>
+
+        <img
+          id="modalPoster"
+          class="w-full md:w-64 rounded-xl shadow-lg object-contain"
+          alt="Poster"
+        />
+
+        <div class="flex-1">
+          <h2 id="modalTitle" class="text-2xl font-bold mb-4"></h2>
+          <p id="modalOverview" class="text-gray-300 mb-4"></p>
+          <p class="mb-2">
+            <strong>Rating:</strong> <span id="modalRating"></span>
+          </p>
+          <p><strong>Release:</strong> <span id="modalDate"></span></p>
+        </div>
       </div>
-
-      <!-- Connect / Social -->
-      <div>
-  <h4 class="text-white font-semibold mb-4 tracking-wide">Location</h4>
-  <div class="w-full h-40 md:h-48 rounded-xl overflow-hidden shadow-lg">
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2381.6800873821235!2d-6.245371273753099!3d53.34898267452688!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48670e8cd86e97e7%3A0x6d51b774ee7fa935!2sNational%20College%20of%20Ireland!5e0!3m2!1sen!2sie!4v1772142802467!5m2!1sen!2sie" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-    </iframe>
-  </div>
-</div>
-
     </div>
 
+    <!-- ================= FOOTER ================= -->
+    <footer class="bg-gray-900 border-t border-white/10 mt-16">
+      <div
+        class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-10 text-gray-300"
+      >
+        <div>
+          <h3 class="text-white text-2xl font-bold mb-4">ViewIT</h3>
+          <p class="text-sm">
+            Created by Aaron Bridger, Sarah Pettigrew, Finn Boyd and Paul
+            Moriarty (Group B).
+          </p>
+        </div>
 
-<script>
-  if (!localStorage.getItem("loggedIn")) {
-    window.location.href = "login.html";
-  }
-</script>
-<script src="js/app.js"></script>
-</body>
+        <div>
+          <h4 class="text-white font-semibold mb-4">Explore</h4>
+          <ul class="space-y-2 text-sm">
+            <li>
+              <a href="pages/film.html" class="hover:text-indigo-600 transition"
+                >Films</a
+              >
+            </li>
+            <li>
+              <a href="pages/tv.html" class="hover:text-indigo-600 transition"
+                >TV Shows</a
+              >
+            </li>
+            <li>
+              <a
+                href="pages/reviews.html"
+                class="hover:text-indigo-600 transition"
+                >Reviews</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-white font-semibold mb-4">Company</h4>
+          <ul class="space-y-2 text-sm">
+            <li>
+              <a
+                href="pages/about.html"
+                class="hover:text-indigo-600 transition"
+                >About</a
+              >
+            </li>
+            <li>
+              <a
+                href="pages/feedback.html"
+                class="hover:text-indigo-600 transition"
+                >Feedback</a
+              >
+            </li>
+            <li>
+              <a
+                href="pages/TermsandPrivacy.html"
+                class="hover:text-indigo-600 transition"
+                >Privacy Policy</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+    <script src="js/app.js"></script>
+  </body>
 </html>
