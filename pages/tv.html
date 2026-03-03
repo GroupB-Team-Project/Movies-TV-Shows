@@ -2,49 +2,43 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>ViewIT</title>
-
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/theme.css" />
+    <title>TV Shows | ViewIT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   </head>
-  <body class="dark">
-    <!-- NAVBAR -->
-    <header class="navbar">
-      <a href="index.html" class="brand">
-        <span class="brand-icon">▶</span>
-        <span class="brand-text">ViewIT</span>
-      </a>
 
-      <nav class="nav-links">
-        <a href="login.html">Login</a>
-        <a href="index.html">Home</a>
-        <a href="film.html">Movies</a>
-        <a href="tv.html">TV Shows</a>
-        <a href="reviews.html">Top TMDB</a>
-        <a href="feedback.html">Feedback</a>
-        <a href="about.html">About</a>
-        <button id="theme-toggle" class="theme-toggle">☀️ Light Mode</button>
-      </nav>
-    </header>
+  <body
+    data-page="tv"
+    class="bg-gradient-to-br from-black via-zinc-900 to-black text-white min-h-screen"
+  >
+    <div id="navbar"></div>
 
-    <!-- HERO -->
-    <section class="hero-ui">
-      <div class="hero-content">
-        <h1>Discover Movies & TV Shows</h1>
-
-        <div class="search-box">
-          <input type="text" placeholder="Enter keywords..." />
-          <button>🔍</button>
-        </div>
-      </div>
+    <section class="py-28 text-center">
+      <h1 class="text-5xl font-bold mb-4">On Air TV Shows</h1>
+      <p class="text-slate-400">Currently airing series</p>
     </section>
 
-    <footer>
-      <p>
-        This product uses the TMDB API but is not endorsed or certified by TMDB.
-      </p>
+    <section class="max-w-7xl mx-auto px-6 pb-24">
+      <div
+        id="content"
+        class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10"
+      ></div>
+    </section>
+
+    <footer
+      class="border-t border-white/10 text-center text-slate-500 text-sm py-8"
+    >
+      This product uses the TMDB API but is not endorsed or certified by TMDB.
     </footer>
 
-    <script src="js/app.js"></script>
+    <script>
+      fetch("../components/navbar.html")
+        .then((res) => res.text())
+        .then((html) => {
+          document.getElementById("navbar").innerHTML = html;
+        });
+    </script>
+
+    <script type="module" src="../js/main.js"></script>
   </body>
 </html>

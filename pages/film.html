@@ -2,49 +2,52 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>ViewIT</title>
-
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/theme.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Films | ViewIT</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   </head>
-  <body class="dark">
-    <!-- NAVBAR -->
-    <header class="navbar">
-      <a href="index.html" class="brand">
-        <span class="brand-icon">▶</span>
-        <span class="brand-text">ViewIT</span>
-      </a>
 
-      <nav class="nav-links">
-        <a href="login.html">Login</a>
-        <a href="index.html">Home</a>
-        <a href="film.html">Movies</a>
-        <a href="tv.html">TV Shows</a>
-        <a href="reviews.html">Top TMDB</a>
-        <a href="feedback.html">Feedback</a>
-        <a href="about.html">About</a>
-        <button id="theme-toggle" class="theme-toggle">☀️ Light Mode</button>
-      </nav>
-    </header>
+  <body
+    data-page="film"
+    class="relative min-h-screen text-white overflow-x-hidden bg-black"
+  >
+    <!-- SAME PREMIUM BACKGROUND -->
+    <div class="fixed inset-0 -z-10 overflow-hidden">
+      <div
+        class="absolute inset-0 bg-gradient-to-br from-black via-zinc-900 to-black"
+      ></div>
+      <div
+        class="absolute -top-64 -left-64 w-[900px] h-[900px] bg-[radial-gradient(circle,rgba(255,255,255,0.08),transparent_70%)] blur-3xl"
+      ></div>
+      <div
+        class="absolute -bottom-64 -right-64 w-[900px] h-[900px] bg-[radial-gradient(circle,rgba(255,255,255,0.06),transparent_70%)] blur-3xl"
+      ></div>
+      <div
+        class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.04),transparent_70%)]"
+      ></div>
+    </div>
 
-    <!-- HERO -->
-    <section class="hero-ui">
-      <div class="hero-content">
-        <h1>Discover Movies & TV Shows</h1>
+    <div id="navbar"></div>
 
-        <div class="search-box">
-          <input type="text" placeholder="Enter keywords..." />
-          <button>🔍</button>
-        </div>
-      </div>
+    <section class="py-28 text-center">
+      <h1 class="text-5xl font-bold mb-4">Now Playing Movies</h1>
     </section>
 
-    <footer>
-      <p>
-        This product uses the TMDB API but is not endorsed or certified by TMDB.
-      </p>
-    </footer>
+    <section class="max-w-7xl mx-auto px-6 pb-24">
+      <div
+        id="content"
+        class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10"
+      ></div>
+    </section>
 
-    <script src="js/app.js"></script>
+    <script>
+      fetch("../components/navbar.html")
+        .then((res) => res.text())
+        .then((html) => {
+          document.getElementById("navbar").innerHTML = html;
+        });
+    </script>
+
+    <script type="module" src="../js/main.js"></script>
   </body>
 </html>

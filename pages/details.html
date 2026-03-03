@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ViewIT – Details</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+
+  <body class="bg-black text-white min-h-screen overflow-x-hidden">
+    <div id="navbar"></div>
+
+    <!-- HERO SECTION -->
+    <section
+      id="heroSection"
+      class="relative h-[85vh] flex items-end px-16 pb-20"
+    >
+      <!-- Background -->
+      <div
+        id="backdrop"
+        class="absolute inset-0 bg-cover bg-center opacity-30"
+      ></div>
+
+      <!-- Gradient Overlay -->
+      <div
+        class="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-black/40"
+      ></div>
+
+      <!-- Content -->
+      <div class="relative z-10 max-w-4xl">
+        <h1 id="title" class="text-6xl font-extrabold mb-6"></h1>
+        <p
+          id="overview"
+          class="text-slate-300 text-lg leading-relaxed mb-6"
+        ></p>
+
+        <div class="flex gap-6 text-slate-300 text-lg mb-6">
+          <span>⭐ <span id="rating"></span></span>
+          <span>📅 <span id="date"></span></span>
+        </div>
+
+        <!-- ✅ NEW: Streaming Providers -->
+        <div>
+          <h3 class="text-xl font-semibold mb-3">Available On</h3>
+          <div id="providers" class="flex flex-wrap items-center gap-4"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STORY SECTION -->
+    <section class="px-16 py-20 max-w-5xl">
+      <h2 class="text-4xl font-bold mb-6">Story</h2>
+      <p id="storyText" class="text-slate-300 leading-relaxed text-lg"></p>
+    </section>
+
+    <!-- CAST SECTION -->
+    <section class="px-16 pb-24 max-w-6xl">
+      <h2 class="text-4xl font-bold mb-10">Top Cast</h2>
+      <div id="castGrid" class="grid grid-cols-2 md:grid-cols-4 gap-10"></div>
+    </section>
+
+    <!-- NAVBAR LOAD -->
+    <script>
+      fetch("../components/navbar.html")
+        .then((res) => res.text())
+        .then((html) => {
+          document.getElementById("navbar").innerHTML = html;
+        });
+    </script>
+
+    <script type="module">
+      import { TMDB_API_KEY } from "../js/config.js";
+
+      const BASE_URL = "https://api.themoviedb.org/3";
+      const IMAGE_URL = "https://image.tmdb.org/t/p/original";
+      const LOGO_URL = "https://image.tmdb.org/t/p/w200";
+
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get("id");
+      const type = params.get("type");
+
+      async function loadDetails() {
+        // ====================
+        // MAIN DETAILS
+        // ====================
+        const res = await fetch(
+          `${BASE_URL}/${type}/${id}?api_key=${TMDB_API_KEY}&append_to_response=credits`,
+        );
+
+        const data = await res.json();
+
+        document.getElementById("title").textContent =
+          type === "movie" ? data.title : data.name;
+
+        document.getElementById("overview").textContent = data.overview;
+        document.getElementById("storyText").textContent = data.overview;
+
+        document.getElementById("rating").textContent =
+          data.vote_average?.toFixed(1) || "N/A";
+
+        document.getElementById("date").textContent =
+          type === "movie"
+            ? data.release_date || "Unknown"
+            : data.first_air_date || "Unknown";
+
+        document.getElementById("backdrop").style.backgroundImage =
+          `url(${IMAGE_URL + data.backdrop_path})`;
+
+        // ====================
+        // CAST
+        // ====================
+        const castGrid = document.getElementById("castGrid");
+        castGrid.innerHTML = "";
+
+        data.credits.cast.slice(0, 8).forEach((actor) => {
+          if (!actor.profile_path) return;
+
+          const div = document.createElement("div");
+          div.innerHTML = `
+        <img src="${IMAGE_URL + actor.profile_path}"
+             class="rounded-lg mb-2 w-full h-[260px] object-cover" />
+        <p class="text-white font-semibold text-sm">${actor.name}</p>
+        <p class="text-slate-400 text-xs">${actor.character}</p>
+      `;
+          castGrid.appendChild(div);
+        });
+
+        // ====================
+        // STREAMING PROVIDERS (IE REGION)
+        // ====================
+        const providerRes = await fetch(
+          `${BASE_URL}/${type}/${id}/watch/providers?api_key=${TMDB_API_KEY}`,
+        );
+
+        const providerData = await providerRes.json();
+
+        const providersContainer = document.getElementById("providers");
+        providersContainer.innerHTML = "";
+
+        const irelandProviders = providerData.results?.IE;
+
+        if (!irelandProviders || !irelandProviders.flatrate) {
+          providersContainer.innerHTML = `<p class="text-slate-400 text-sm">Not currently available for streaming in Ireland.</p>`;
+          return;
+        }
+
+        irelandProviders.flatrate.forEach((provider) => {
+          const img = document.createElement("img");
+          img.src = LOGO_URL + provider.logo_path;
+          img.alt = provider.provider_name;
+          img.className = "h-12 rounded-lg shadow-md bg-white p-1";
+
+          providersContainer.appendChild(img);
+        });
+      }
+
+      loadDetails();
+    </script>
+  </body>
+</html>
