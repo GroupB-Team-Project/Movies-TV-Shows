@@ -11,7 +11,7 @@
     data-page="reviews"
     class="relative min-h-screen text-white overflow-x-hidden bg-black"
   >
-    <!-- SAME PREMIUM BACKGROUND -->
+    <!-- BACKGROUND -->
     <div class="fixed inset-0 -z-10 overflow-hidden">
       <div
         class="absolute inset-0 bg-gradient-to-br from-black via-zinc-900 to-black"
@@ -30,7 +30,8 @@
     <div id="navbar"></div>
 
     <section class="py-28 text-center">
-      <h1 class="text-5xl font-bold mb-4">Now Playing Movies</h1>
+      <h1 class="text-5xl font-bold mb-4">Top Rated Movies</h1>
+      <p class="text-slate-400">Browse the highest rated films</p>
     </section>
 
     <section class="max-w-7xl mx-auto px-6 pb-24">
@@ -38,14 +39,32 @@
         id="content"
         class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10"
       ></div>
+
+      <!-- Load More Button -->
+      <div class="text-center mt-12">
+        <button
+          id="showMoreBtn"
+          class="px-8 py-3 bg-white text-black rounded-xl font-semibold hover:scale-105 transition"
+        >
+          Load More
+        </button>
+      </div>
     </section>
 
+    <!-- NAVBAR LOAD -->
     <script>
       fetch("../components/navbar.html")
         .then((res) => res.text())
         .then((html) => {
           document.getElementById("navbar").innerHTML = html;
         });
+    </script>
+
+    <!-- FORCE CORRECT CATEGORY -->
+    <script type="module">
+      import { fetchTopRated } from "../js/api.js";
+
+      fetchTopRated();
     </script>
 
     <script type="module" src="../js/main.js"></script>

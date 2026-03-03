@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login | ViewIT</title>
 
-    <!-- Tailwind -->
+    <link rel="stylesheet" href="/css/global.css" />
+
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
-    <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -22,22 +22,18 @@
   >
     <!-- PREMIUM BACKGROUND -->
     <div class="fixed inset-0 -z-10 overflow-hidden">
-      <!-- Base -->
       <div
         class="absolute inset-0 bg-gradient-to-br from-black via-zinc-900 to-black"
       ></div>
 
-      <!-- Top silver glow -->
       <div
         class="absolute -top-64 -left-64 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(255,255,255,0.08),transparent_70%)] blur-3xl"
       ></div>
 
-      <!-- Bottom silver glow -->
       <div
         class="absolute -bottom-64 -right-64 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(255,255,255,0.06),transparent_70%)] blur-3xl"
       ></div>
 
-      <!-- Center spotlight -->
       <div
         class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05),transparent_70%)]"
       ></div>
@@ -53,8 +49,8 @@
       <form
         id="loginForm"
         class="relative w-full max-w-md p-10 rounded-3xl bg-white/5 backdrop-blur-2xl border border-white/10 shadow-[0_0_60px_rgba(255,255,255,0.05)]"
+        novalidate
       >
-        <!-- Silver glow border -->
         <div
           class="absolute inset-0 rounded-3xl border border-white/5 pointer-events-none"
         ></div>
@@ -137,18 +133,28 @@
     <script type="module">
       import { loginUser, isLoggedIn } from "../js/auth.js";
 
+      // If already logged in → redirect
       if (isLoggedIn()) {
         window.location.href = "account.html";
       }
 
       const loginForm = document.getElementById("loginForm");
+      const emailInput = document.getElementById("email");
+      const passwordInput = document.getElementById("password");
 
       loginForm.addEventListener("submit", function (e) {
         e.preventDefault();
 
-        const email = document.getElementById("email").value;
+        const email = emailInput.value.trim();
+        const password = passwordInput.value.trim();
+
+        if (!email || !password) {
+          alert("Please enter both email and password.");
+          return;
+        }
 
         loginUser(email);
+
         window.location.href = "../index.html";
       });
     </script>

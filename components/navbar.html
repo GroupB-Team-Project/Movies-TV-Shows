@@ -47,13 +47,28 @@
         </li>
       </ul>
 
-      <!-- Account Button -->
+      <!-- Dynamic Account Button -->
       <a
-        href="/pages/account.html"
+        id="accountLink"
+        href="/pages/login.html"
         class="px-4 py-2 rounded-lg bg-gradient-to-r from-white via-slate-200 to-white text-black font-semibold hover:scale-[1.05] transition-all duration-300"
       >
-        Account
+        Login
       </a>
     </div>
   </nav>
 </header>
+
+<script type="module">
+  import { isLoggedIn } from "/js/auth.js";
+
+  const accountLink = document.getElementById("accountLink");
+
+  if (isLoggedIn()) {
+    accountLink.textContent = "Account";
+    accountLink.href = "/pages/account.html";
+  } else {
+    accountLink.textContent = "Login";
+    accountLink.href = "/pages/login.html";
+  }
+</script>

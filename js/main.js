@@ -1,4 +1,5 @@
-import { TMDB_API_KEY, BASE_URL, IMAGE_URL } from "./config.js";
+import { TMDB_API_KEY, BASE_URL } from "./config.js";
+import { displayItems } from "./ui.js";
 
 // =======================
 // GLOBAL STATE
@@ -6,6 +7,7 @@ import { TMDB_API_KEY, BASE_URL, IMAGE_URL } from "./config.js";
 let currentPage = 1;
 let currentType = "movie";
 let currentCategory = "now_playing";
+let isLoading = false;
 
 const content = document.getElementById("content");
 const showMoreBtn = document.getElementById("showMoreBtn");
@@ -16,46 +18,48 @@ const tvTab = document.getElementById("tvTab");
 // FETCH CONTENT
 // =======================
 async function fetchContent(type, category, page = 1) {
-  const res = await fetch(
-    `${BASE_URL}/${type}/${category}?api_key=${TMDB_API_KEY}&page=${page}`,
-  );
+  if (!content || isLoading) return;
 
-  const data = await res.json();
-  displayItems(data.results, type);
-}
+  try {
+    isLoading = true;
 
-// =======================
-// DISPLAY ITEMS
-// =======================
-function displayItems(items, type) {
-  if (!content) return;
+    // Loading state (only when first page)
+    if (page === 1) {
+      content.innerHTML =
+        "<p class='text-center col-span-full text-slate-400'>Loading...</p>";
+    }
 
-  items.forEach((item) => {
-    if (!item.poster_path) return;
+    const res = await fetch(
+      `${BASE_URL}/${type}/${category}?api_key=${TMDB_API_KEY}&page=${page}`,
+    );
 
-    const card = document.createElement("div");
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
 
-    card.className = `
-      bg-black/60 backdrop-blur-xl rounded-xl overflow-hidden
-      shadow-lg hover:scale-105 transition cursor-pointer
-    `;
+    const data = await res.json();
 
-    const title = type === "movie" ? item.title : item.name;
+    if (!data.results || data.results.length === 0) {
+      if (page === 1) {
+        content.innerHTML =
+          "<p class='text-center col-span-full text-slate-400'>No results found.</p>";
+      }
+      return;
+    }
 
-    card.innerHTML = `
-      <img src="${IMAGE_URL + item.poster_path}"
-           class="w-full h-[380px] object-cover">
-      <div class="p-4">
-        <h3 class="text-white font-semibold text-sm">${title}</h3>
-      </div>
-    `;
+    // Clear only on first page
+    if (page === 1) {
+      content.innerHTML = "";
+    }
 
-    card.onclick = () => {
-      window.location.href = `/pages/details.html?id=${item.id}&type=${type}`;
-    };
-
-    content.appendChild(card);
-  });
+    displayItems(data.results, type);
+  } catch (error) {
+    console.error(error);
+    content.innerHTML =
+      "<p class='text-center col-span-full text-red-400'>Something went wrong. Please try again.</p>";
+  } finally {
+    isLoading = false;
+  }
 }
 
 // =======================

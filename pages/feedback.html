@@ -2,14 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Feedback | ViewIT</title>
 
-    <!-- Tailwind -->
+    <link rel="stylesheet" href="/css/global.css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
-    <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -18,91 +18,123 @@
     />
   </head>
 
-  <body
-    class="font-[Ubuntu] bg-gradient-to-t from-neutral-600 to-zinc-900 min-h-screen text-white"
-  >
-    <!-- NAVBAR -->
+  <body class="relative min-h-screen text-white bg-black overflow-x-hidden">
+    <body class="font-[Ubuntu] bg-black text-white min-h-screen"></body>
+
+    <!-- PREMIUM BACKGROUND -->
+    <div class="fixed inset-0 -z-10 overflow-hidden">
+      <div
+        class="absolute inset-0 bg-gradient-to-br from-black via-zinc-900 to-black"
+      ></div>
+
+      <div
+        class="absolute -top-64 -left-64 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(255,255,255,0.06),transparent_70%)] blur-3xl"
+      ></div>
+
+      <div
+        class="absolute -bottom-64 -right-64 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(255,255,255,0.05),transparent_70%)] blur-3xl"
+      ></div>
+    </div>
+
     <div id="navbar"></div>
 
-    <!-- HERO -->
-    <section class="flex items-center justify-center text-center py-24 px-6">
-      <div class="max-w-2xl">
-        <h1 class="text-4xl md:text-5xl font-bold mb-4">Feedback</h1>
-        <p class="text-gray-300 text-lg">
-          Tell us what you think about ViewIT.
-        </p>
-      </div>
+    <!-- HEADER -->
+    <section class="py-24 text-center">
+      <h1 class="text-5xl font-bold mb-4">We Value Your Feedback</h1>
+      <p class="text-slate-400 max-w-xl mx-auto">
+        Help us improve ViewIT by sharing your thoughts, suggestions, or
+        reporting any issues.
+      </p>
     </section>
 
-    <!-- FEEDBACK FORM -->
+    <!-- FORM SECTION -->
     <section class="max-w-3xl mx-auto px-6 pb-24">
       <form
         id="feedbackForm"
-        class="bg-gray-900/80 backdrop-blur-xl rounded-2xl shadow-2xl p-8 space-y-6"
+        class="p-10 rounded-3xl bg-white/5 backdrop-blur-2xl border border-white/10 shadow-[0_0_60px_rgba(255,255,255,0.05)]"
       >
-        <div>
-          <label class="block text-sm mb-1">Your Name</label>
+        <!-- Name -->
+        <div class="mb-6">
+          <label class="block text-sm mb-2 text-slate-300">Your Name</label>
           <input
             type="text"
-            placeholder="Enter your name"
+            id="name"
             required
-            class="w-full px-4 py-3 rounded-lg bg-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            class="w-full px-4 py-3 rounded-xl bg-black/60 border border-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 transition"
           />
         </div>
 
-        <div>
-          <label class="block text-sm mb-1">Email Address</label>
+        <!-- Email -->
+        <div class="mb-6">
+          <label class="block text-sm mb-2 text-slate-300">Email Address</label>
           <input
             type="email"
-            placeholder="Enter your email"
+            id="email"
             required
-            class="w-full px-4 py-3 rounded-lg bg-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            class="w-full px-4 py-3 rounded-xl bg-black/60 border border-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 transition"
           />
         </div>
 
-        <div>
-          <label class="block text-sm mb-1">Your Feedback</label>
+        <!-- Feedback Type -->
+        <div class="mb-6">
+          <label class="block text-sm mb-2 text-slate-300">Category</label>
+          <select
+            id="category"
+            class="w-full px-4 py-3 rounded-xl bg-black/60 border border-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 transition"
+          >
+            <option>General Feedback</option>
+            <option>Bug Report</option>
+            <option>Feature Request</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <!-- Message -->
+        <div class="mb-8">
+          <label class="block text-sm mb-2 text-slate-300">Your Message</label>
           <textarea
+            id="message"
             rows="5"
-            placeholder="Write your feedback here..."
             required
-            class="w-full px-4 py-3 rounded-lg bg-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
+            class="w-full px-4 py-3 rounded-xl bg-black/60 border border-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 transition resize-none"
           ></textarea>
         </div>
 
+        <!-- Submit Button -->
         <button
           type="submit"
-          class="w-full bg-indigo-600 hover:bg-indigo-500 py-3 rounded-lg font-medium transition"
+          class="w-full py-3 rounded-xl font-semibold bg-gradient-to-r from-white via-slate-200 to-white text-black hover:scale-[1.02] transition-all duration-300 shadow-[0_10px_30px_rgba(255,255,255,0.15)]"
         >
           Submit Feedback
         </button>
       </form>
     </section>
 
-    <!-- FOOTER NOTE -->
-    <footer class="text-center text-gray-400 text-sm py-6">
+    <!-- FOOTER -->
+    <footer
+      class="text-center text-slate-500 text-sm py-6 border-t border-white/5"
+    >
       This product uses the TMDB API but is not endorsed or certified by TMDB.
     </footer>
 
-    <!-- NAVBAR LOADER -->
+    <!-- NAVBAR LOAD -->
     <script>
       fetch("../components/navbar.html")
         .then((res) => res.text())
-        .then((data) => {
-          document.getElementById("navbar").innerHTML = data;
+        .then((html) => {
+          document.getElementById("navbar").innerHTML = html;
         });
     </script>
 
-    <!-- FEEDBACK LOGIC -->
+    <!-- BASIC SUBMIT HANDLER -->
     <script>
-      const feedbackForm = document.getElementById("feedbackForm");
-
-      feedbackForm.addEventListener("submit", function (e) {
-        e.preventDefault();
-        alert("Thank you for your feedback! We appreciate it.");
-        feedbackForm.reset();
-        window.location.href = "../index.html";
-      });
+      document
+        .getElementById("feedbackForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          alert("Thank you for your feedback!");
+          this.reset();
+        });
     </script>
   </body>
 </html>

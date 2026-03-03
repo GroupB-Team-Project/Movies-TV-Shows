@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Register | ViewIT</title>
 
+    <link rel="stylesheet" href="/css/global.css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -35,6 +36,7 @@
       <form
         id="registerForm"
         class="relative w-full max-w-md p-10 rounded-3xl bg-white/5 backdrop-blur-2xl border border-white/10 shadow-[0_0_60px_rgba(255,255,255,0.05)]"
+        novalidate
       >
         <h1 class="text-4xl font-bold text-center mb-2">Create Account</h1>
         <p class="text-slate-400 text-center mb-8">Join ViewIT</p>
@@ -83,9 +85,9 @@
 
         <!-- Confirm Password -->
         <div class="mb-4 relative">
-          <label class="block text-sm mb-2 text-slate-300"
-            >Confirm Password</label
-          >
+          <label class="block text-sm mb-2 text-slate-300">
+            Confirm Password
+          </label>
 
           <input
             type="password"
@@ -103,7 +105,6 @@
           </button>
         </div>
 
-        <!-- Match Indicator -->
         <p id="matchText" class="text-xs mb-6"></p>
 
         <!-- Submit -->
@@ -144,13 +145,14 @@
       const strengthText = document.getElementById("strengthText");
       const matchText = document.getElementById("matchText");
       const submitBtn = document.getElementById("submitBtn");
+      const emailInput = document.getElementById("email");
 
       let passwordStrong = false;
       let passwordsMatch = false;
 
       // Password Strength
       passwordInput.addEventListener("input", () => {
-        const value = passwordInput.value;
+        const value = passwordInput.value.trim();
         let strength = 0;
 
         if (value.length >= 8) strength++;
@@ -170,22 +172,25 @@
           strengthText.textContent = "";
           passwordStrong = false;
         } else {
-          const level = levels[strength - 1] || levels[0];
+          const level = levels[Math.max(strength - 1, 0)];
           strengthBar.className = `h-full transition-all duration-300 ${level.color}`;
           strengthBar.style.width = level.width;
           strengthText.textContent = level.text;
           passwordStrong = strength >= 3;
         }
 
+        checkMatch();
         checkForm();
       });
 
-      // Match Indicator
       function checkMatch() {
-        if (confirmInput.value.length === 0) {
+        const password = passwordInput.value.trim();
+        const confirm = confirmInput.value.trim();
+
+        if (!confirm) {
           matchText.textContent = "";
           passwordsMatch = false;
-        } else if (confirmInput.value === passwordInput.value) {
+        } else if (password === confirm) {
           matchText.textContent = "✔ Passwords match";
           matchText.className = "text-xs text-green-400 mb-6";
           passwordsMatch = true;
@@ -194,15 +199,15 @@
           matchText.className = "text-xs text-red-400 mb-6";
           passwordsMatch = false;
         }
-        checkForm();
       }
 
-      passwordInput.addEventListener("input", checkMatch);
-      confirmInput.addEventListener("input", checkMatch);
+      confirmInput.addEventListener("input", () => {
+        checkMatch();
+        checkForm();
+      });
 
-      // Enable / Disable Submit
       function checkForm() {
-        if (passwordStrong && passwordsMatch) {
+        if (passwordStrong && passwordsMatch && emailInput.value.trim()) {
           submitBtn.disabled = false;
           submitBtn.classList.remove("opacity-40", "cursor-not-allowed");
         } else {
@@ -211,7 +216,6 @@
         }
       }
 
-      // Toggle visibility
       function setupToggle(btnId, inputId) {
         const btn = document.getElementById(btnId);
         const input = document.getElementById(inputId);
@@ -230,11 +234,13 @@
       setupToggle("togglePassword", "password");
       setupToggle("toggleConfirm", "confirm_password");
 
-      // Submit demo
       document
         .getElementById("registerForm")
         .addEventListener("submit", function (e) {
           e.preventDefault();
+
+          if (!passwordStrong || !passwordsMatch) return;
+
           alert("Account created successfully (demo)");
           window.location.href = "login.html";
         });

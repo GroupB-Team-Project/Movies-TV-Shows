@@ -7,93 +7,219 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   </head>
 
-  <body
-    data-page="index"
-    class="relative min-h-screen text-white overflow-x-hidden bg-black"
-  >
-    <!-- PREMIUM BACKGROUND -->
-    <div class="fixed inset-0 -z-10 overflow-hidden">
-      <!-- Base gradient -->
-      <div
-        class="absolute inset-0 bg-gradient-to-br from-black via-zinc-900 to-black"
-      ></div>
-
-      <!-- Large silver glow -->
-      <div
-        class="absolute -top-64 -left-64 w-[900px] h-[900px] bg-[radial-gradient(circle,rgba(255,255,255,0.08),transparent_70%)] blur-3xl"
-      ></div>
-
-      <div
-        class="absolute -bottom-64 -right-64 w-[900px] h-[900px] bg-[radial-gradient(circle,rgba(255,255,255,0.06),transparent_70%)] blur-3xl"
-      ></div>
-
-      <!-- Center cinematic light -->
-      <div
-        class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.04),transparent_70%)]"
-      ></div>
-
-      <!-- Subtle grain -->
-      <div
-        class="absolute inset-0 opacity-[0.03] bg-[url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%222%22/%3E%3C/filter%3E%3Crect width=%2260%22 height=%2260%22 filter=%22url(%23n)%22/%3E%3C/svg%3E')]"
-      ></div>
-    </div>
-
+  <body class="relative min-h-screen text-white bg-black overflow-x-hidden">
     <div id="navbar"></div>
 
-    <section class="py-28 text-center">
-      <h1 class="text-5xl font-bold mb-6 tracking-wide">
-        Discover Movies & TV Shows
-      </h1>
+    <!-- HERO -->
+    <section class="relative h-[65vh] overflow-hidden">
+      <div
+        id="carouselTrack"
+        class="flex h-full transition-transform duration-1000 ease-in-out"
+      ></div>
 
-      <div class="flex justify-center gap-4">
+      <!-- Fade -->
+      <div
+        class="absolute inset-0 pointer-events-none z-10 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.85)_0%,rgba(0,0,0,0.5)_45%,rgba(0,0,0,0.95)_90%,#000_100%)]"
+      ></div>
+
+      <div class="absolute bottom-20 left-16 z-20 max-w-xl pointer-events-none">
+        <h2
+          id="slideTitle"
+          class="text-5xl font-bold mb-4 opacity-0 transition-all duration-700 translate-y-6 text-white drop-shadow-[0_4px_20px_rgba(0,0,0,0.8)]"
+        ></h2>
+
+        <p
+          id="slideOverview"
+          class="text-lg opacity-0 transition-all duration-700 translate-y-6 text-white/90 drop-shadow-[0_2px_15px_rgba(0,0,0,0.8)]"
+        ></p>
+      </div>
+
+      <button
+        id="prevBtn"
+        class="absolute left-6 top-1/2 -translate-y-1/2 z-30 bg-black/40 backdrop-blur-md p-3 rounded-full hover:bg-black/70 transition"
+      >
+        ‹
+      </button>
+
+      <button
+        id="nextBtn"
+        class="absolute right-6 top-1/2 -translate-y-1/2 z-30 bg-black/40 backdrop-blur-md p-3 rounded-full hover:bg-black/70 transition"
+      >
+        ›
+      </button>
+
+      <div
+        id="carouselDots"
+        class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-30"
+      ></div>
+    </section>
+
+    <!-- TOGGLE -->
+    <section class="py-14 text-center relative z-40">
+      <div
+        class="inline-flex p-1 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.6)]"
+      >
         <button
           id="moviesTab"
-          class="px-6 py-2 rounded-lg bg-slate-200 text-black font-semibold"
+          class="px-8 py-3 rounded-xl font-medium transition-all duration-300 ease-in-out hover:bg-white/10 hover:scale-105"
         >
-          🎬 Movies
+          Movies
         </button>
 
-        <button id="tvTab" class="px-6 py-2 rounded-lg bg-zinc-800 text-white">
-          📺 TV Shows
+        <button
+          id="tvTab"
+          class="px-8 py-3 rounded-xl font-medium transition-all duration-300 ease-in-out hover:bg-white/10 hover:scale-105"
+        >
+          TV Shows
         </button>
       </div>
     </section>
 
-    <section class="max-w-7xl mx-auto px-6 pb-24">
+    <!-- GRID -->
+    <section class="max-w-7xl mx-auto px-6 pb-24 relative z-40">
       <div
         id="content"
         class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10"
       ></div>
+
+      <div class="text-center mt-12">
+        <button
+          id="showMoreBtn"
+          class="px-8 py-3 bg-white text-black rounded-xl font-semibold hover:scale-105 transition"
+        >
+          Load More
+        </button>
+      </div>
     </section>
 
-    <footer
-      class="border-t border-white/10 text-center text-slate-500 text-sm py-8"
-    >
-      This product uses the TMDB API but is not endorsed or certified by TMDB.
-    </footer>
-
     <script>
-      fetch("components/navbar.html")
+      fetch("./components/navbar.html")
         .then((res) => res.text())
         .then((html) => {
           document.getElementById("navbar").innerHTML = html;
         });
     </script>
 
-    <div
-      id="content"
-      class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-10"
-    ></div>
+    <!-- HERO SCRIPT -->
+    <script type="module">
+      import { TMDB_API_KEY, BASE_URL } from "./js/config.js";
 
-    <div class="text-center mb-20">
-      <button
-        id="showMoreBtn"
-        class="px-6 py-3 rounded-lg bg-gradient-to-r from-white via-slate-200 to-white text-black font-semibold hover:scale-105 transition"
-      >
-        Load More
-      </button>
-    </div>
+      const IMAGE_URL = "https://image.tmdb.org/t/p/original";
+      const carouselTrack = document.getElementById("carouselTrack");
+      const dotsContainer = document.getElementById("carouselDots");
+      const slideTitle = document.getElementById("slideTitle");
+      const slideOverview = document.getElementById("slideOverview");
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
 
-    <script type="module" src="/js/main.js"></script>
+      let currentSlide = 0;
+      let slides = [];
+      let interval;
+
+      async function loadLatestMovies() {
+        const res = await fetch(
+          `${BASE_URL}/movie/now_playing?api_key=${TMDB_API_KEY}`,
+        );
+
+        const data = await res.json();
+        slides = data.results.slice(0, 6);
+
+        if (!slides.length) return;
+
+        carouselTrack.innerHTML = "";
+        dotsContainer.innerHTML = "";
+
+        slides.forEach((movie, index) => {
+          if (!movie.backdrop_path) return;
+
+          const slide = document.createElement("div");
+          slide.className = "min-w-full h-full relative";
+
+          slide.innerHTML = `
+            <div class="absolute inset-0 bg-cover bg-center"
+              style="background-image: url(${IMAGE_URL + movie.backdrop_path})">
+            </div>
+          `;
+
+          carouselTrack.appendChild(slide);
+
+          const dot = document.createElement("button");
+          dot.className =
+            "w-2 h-2 rounded-full bg-white/30 transition-all duration-300";
+
+          dot.addEventListener("click", () => goToSlide(index));
+          dotsContainer.appendChild(dot);
+        });
+
+        updateSlideContent();
+        updateDots();
+        startCarousel();
+      }
+
+      function updateSlideContent() {
+        if (!slides.length) return;
+
+        const movie = slides[currentSlide];
+        if (!movie) return;
+
+        slideTitle.textContent = movie.title || "";
+        slideOverview.textContent = movie.overview
+          ? movie.overview.slice(0, 120) + "..."
+          : "";
+
+        // 🔥 FIX: Make text visible again
+        slideTitle.classList.remove("opacity-0", "translate-y-6");
+        slideOverview.classList.remove("opacity-0", "translate-y-6");
+
+        slideTitle.classList.add("opacity-100", "translate-y-0");
+        slideOverview.classList.add("opacity-100", "translate-y-0");
+      }
+
+      function goToSlide(index) {
+        currentSlide = index;
+        carouselTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+        updateDots();
+        updateSlideContent();
+        resetInterval();
+      }
+
+      function updateDots() {
+        [...dotsContainer.children].forEach((dot, index) => {
+          dot.classList.remove("bg-white");
+          dot.classList.add("bg-white/30");
+
+          if (index === currentSlide) {
+            dot.classList.remove("bg-white/30");
+            dot.classList.add("bg-white");
+          }
+        });
+      }
+
+      function startCarousel() {
+        interval = setInterval(() => {
+          currentSlide = (currentSlide + 1) % slides.length;
+          goToSlide(currentSlide);
+        }, 5000);
+      }
+
+      function resetInterval() {
+        clearInterval(interval);
+        startCarousel();
+      }
+
+      prevBtn.addEventListener("click", () => {
+        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+        goToSlide(currentSlide);
+      });
+
+      nextBtn.addEventListener("click", () => {
+        currentSlide = (currentSlide + 1) % slides.length;
+        goToSlide(currentSlide);
+      });
+
+      loadLatestMovies();
+    </script>
+
+    <script type="module" src="./js/main.js"></script>
   </body>
 </html>

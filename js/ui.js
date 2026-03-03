@@ -11,15 +11,17 @@ const content = document.getElementById("content");
 export function displayItems(items, type) {
   if (!content || !items) return;
 
-  content.innerHTML = "";
-
-  items.slice(0, 12).forEach((item) => {
+  items.forEach((item) => {
     if (!item.poster_path) return;
 
     const title = type === "movie" ? item.title : item.name;
-    const rating = item.vote_average ? item.vote_average.toFixed(1) : "N/A";
+    const rating =
+      item.vote_average && !isNaN(item.vote_average)
+        ? item.vote_average.toFixed(1)
+        : "N/A";
 
     const card = document.createElement("div");
+
     card.className = `
       group cursor-pointer relative
       bg-gradient-to-br from-zinc-950 via-black to-zinc-900
