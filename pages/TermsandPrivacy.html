@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Terms & Privacy | ViewIT</title>
+    <link rel="stylesheet" href="/css/global.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="relative min-h-screen text-white bg-black overflow-x-hidden">
+    <body class="font-[Ubuntu] bg-black text-white min-h-screen"></body>
+
+    <!-- PREMIUM BACKGROUND -->
+    <div class="fixed inset-0 -z-10 overflow-hidden">
+      <div
+        class="absolute inset-0 bg-gradient-to-br from-black via-zinc-900 to-black"
+      ></div>
+
+      <div
+        class="absolute -top-64 -left-64 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(255,255,255,0.05),transparent_70%)] blur-3xl"
+      ></div>
+
+      <div
+        class="absolute -bottom-64 -right-64 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(255,255,255,0.04),transparent_70%)] blur-3xl"
+      ></div>
+    </div>
+
+    <div id="navbar"></div>
+
+    <!-- HEADER -->
+    <section class="py-24 text-center">
+      <h1 class="text-5xl font-bold mb-4">Terms & Privacy Policy</h1>
+      <p class="text-slate-400 max-w-2xl mx-auto">
+        Please read our terms and privacy policy carefully before using ViewIT.
+        By accessing this website, you agree to comply with these terms.
+      </p>
+    </section>
+
+    <!-- CONTENT -->
+    <section class="max-w-4xl mx-auto px-6 pb-24">
+      <div
+        class="p-10 rounded-3xl bg-white/5 backdrop-blur-2xl border border-white/10 shadow-[0_0_60px_rgba(255,255,255,0.05)] space-y-12"
+      >
+        <!-- TERMS SECTION -->
+        <div>
+          <h2 class="text-2xl font-semibold mb-4">1. Use of the Website</h2>
+          <p class="text-slate-300 leading-relaxed">
+            ViewIT provides access to movie and TV information powered by the
+            TMDB API. Users agree to use this website responsibly and not engage
+            in any activity that could harm the platform or other users.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-semibold mb-4">2. Intellectual Property</h2>
+          <p class="text-slate-300 leading-relaxed">
+            All content displayed on ViewIT, including logos and design
+            elements, belongs to their respective owners. Movie and TV data is
+            provided by TMDB and is not owned by ViewIT.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-semibold mb-4">3. Privacy Policy</h2>
+          <p class="text-slate-300 leading-relaxed">
+            ViewIT does not collect or store sensitive personal data. Login
+            functionality is for demonstration purposes only and uses local
+            storage within your browser.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-semibold mb-4">4. Third-Party Services</h2>
+          <p class="text-slate-300 leading-relaxed">
+            This website uses the TMDB API to retrieve movie and TV data. ViewIT
+            is not endorsed or certified by TMDB.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-semibold mb-4">5. Changes to These Terms</h2>
+          <p class="text-slate-300 leading-relaxed">
+            We reserve the right to modify these terms at any time. Continued
+            use of the platform after changes indicates acceptance of the
+            updated terms.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer
+      class="text-center text-slate-500 text-sm py-6 border-t border-white/5"
+    >
+      This product uses the TMDB API but is not endorsed or certified by TMDB.
+    </footer>
+
+    <!-- NAVBAR LOAD -->
+    <script>
+      fetch("../components/navbar.html")
+        .then((res) => res.text())
+        .then((html) => {
+          document.getElementById("navbar").innerHTML = html;
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Feedback | ViewIT</title>
+
+    <link rel="stylesheet" href="/css/global.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="relative min-h-screen text-white bg-black overflow-x-hidden">
+    <body class="font-[Ubuntu] bg-black text-white min-h-screen"></body>
+
+    <!-- PREMIUM BACKGROUND -->
+    <div class="fixed inset-0 -z-10 overflow-hidden">
+      <div
+        class="absolute inset-0 bg-gradient-to-br from-black via-zinc-900 to-black"
+      ></div>
+
+      <div
+        class="absolute -top-64 -left-64 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(255,255,255,0.06),transparent_70%)] blur-3xl"
+      ></div>
+
+      <div
+        class="absolute -bottom-64 -right-64 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(255,255,255,0.05),transparent_70%)] blur-3xl"
+      ></div>
+    </div>
+
+    <div id="navbar"></div>
+
+    <!-- HEADER -->
+    <section class="py-24 text-center">
+      <h1 class="text-5xl font-bold mb-4">We Value Your Feedback</h1>
+      <p class="text-slate-400 max-w-xl mx-auto">
+        Help us improve ViewIT by sharing your thoughts, suggestions, or
+        reporting any issues.
+      </p>
+    </section>
+
+    <!-- FORM SECTION -->
+    <section class="max-w-3xl mx-auto px-6 pb-24">
+      <form
+        id="feedbackForm"
+        class="p-10 rounded-3xl bg-white/5 backdrop-blur-2xl border border-white/10 shadow-[0_0_60px_rgba(255,255,255,0.05)]"
+      >
+        <!-- Name -->
+        <div class="mb-6">
+          <label class="block text-sm mb-2 text-slate-300">Your Name</label>
+          <input
+            type="text"
+            id="name"
+            required
+            class="w-full px-4 py-3 rounded-xl bg-black/60 border border-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 transition"
+          />
+        </div>
+
+        <!-- Email -->
+        <div class="mb-6">
+          <label class="block text-sm mb-2 text-slate-300">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            required
+            class="w-full px-4 py-3 rounded-xl bg-black/60 border border-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 transition"
+          />
+        </div>
+
+        <!-- Feedback Type -->
+        <div class="mb-6">
+          <label class="block text-sm mb-2 text-slate-300">Category</label>
+          <select
+            id="category"
+            class="w-full px-4 py-3 rounded-xl bg-black/60 border border-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 transition"
+          >
+            <option>General Feedback</option>
+            <option>Bug Report</option>
+            <option>Feature Request</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <!-- Message -->
+        <div class="mb-8">
+          <label class="block text-sm mb-2 text-slate-300">Your Message</label>
+          <textarea
+            id="message"
+            rows="5"
+            required
+            class="w-full px-4 py-3 rounded-xl bg-black/60 border border-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 transition resize-none"
+          ></textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          class="w-full py-3 rounded-xl font-semibold bg-gradient-to-r from-white via-slate-200 to-white text-black hover:scale-[1.02] transition-all duration-300 shadow-[0_10px_30px_rgba(255,255,255,0.15)]"
+        >
+          Submit Feedback
+        </button>
+      </form>
+    </section>
+
+    <!-- FOOTER -->
+    <footer
+      class="text-center text-slate-500 text-sm py-6 border-t border-white/5"
+    >
+      This product uses the TMDB API but is not endorsed or certified by TMDB.
+    </footer>
+
+    <!-- NAVBAR LOAD -->
+    <script>
+      fetch("../components/navbar.html")
+        .then((res) => res.text())
+        .then((html) => {
+          document.getElementById("navbar").innerHTML = html;
+        });
+    </script>
+
+    <!-- BASIC SUBMIT HANDLER -->
+    <script>
+      document
+        .getElementById("feedbackForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          alert("Thank you for your feedback!");
+          this.reset();
+        });
+    </script>
+  </body>
+</html>
