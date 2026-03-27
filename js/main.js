@@ -25,8 +25,18 @@ async function fetchContent(type, category, page = 1) {
 
     // Loading state (only when first page)
     if (page === 1) {
-      content.innerHTML =
-        "<p class='text-center col-span-full text-slate-400'>Loading...</p>";
+      content.innerHTML = `
+  ${Array(8)
+    .fill()
+    .map(
+      () => `
+  <div class="animate-pulse">
+    <div class="bg-zinc-800 h-[420px] rounded-xl"></div>
+  </div>
+  `,
+    )
+    .join("")}
+`;
     }
 
     const res = await fetch(
