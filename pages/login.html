@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | ViewIT</title>
+
+    <link rel="stylesheet" href="/css/global.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body
+    class="relative font-[Ubuntu] min-h-screen text-white overflow-hidden bg-black"
+  >
+    <!-- PREMIUM BACKGROUND -->
+    <div class="fixed inset-0 -z-10 overflow-hidden">
+      <div
+        class="absolute inset-0 bg-gradient-to-br from-black via-zinc-900 to-black"
+      ></div>
+
+      <div
+        class="absolute -top-64 -left-64 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(255,255,255,0.08),transparent_70%)] blur-3xl"
+      ></div>
+
+      <div
+        class="absolute -bottom-64 -right-64 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(255,255,255,0.06),transparent_70%)] blur-3xl"
+      ></div>
+
+      <div
+        class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05),transparent_70%)]"
+      ></div>
+    </div>
+
+    <!-- NAVBAR -->
+    <div id="navbar"></div>
+
+    <!-- LOGIN SECTION -->
+    <section
+      class="flex items-center justify-center min-h-[calc(100vh-4rem)] px-6"
+    >
+      <form
+        id="loginForm"
+        class="relative w-full max-w-md p-10 rounded-3xl bg-white/5 backdrop-blur-2xl border border-white/10 shadow-[0_0_60px_rgba(255,255,255,0.05)]"
+        novalidate
+      >
+        <div
+          class="absolute inset-0 rounded-3xl border border-white/5 pointer-events-none"
+        ></div>
+
+        <h1 class="text-4xl font-bold text-center mb-2 tracking-wide">
+          Welcome Back
+        </h1>
+
+        <p class="text-slate-400 text-center mb-8">
+          Sign in to continue to ViewIT
+        </p>
+
+        <!-- Email -->
+        <div class="mb-6">
+          <label for="email" class="block text-sm mb-2 text-slate-300">
+            Email Address
+          </label>
+
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Enter your email"
+            required
+            class="w-full px-4 py-3 rounded-xl bg-black/60 border border-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 transition"
+          />
+        </div>
+
+        <!-- Password -->
+        <div class="mb-8">
+          <label for="password" class="block text-sm mb-2 text-slate-300">
+            Password
+          </label>
+
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            required
+            class="w-full px-4 py-3 rounded-xl bg-black/60 border border-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 transition"
+          />
+        </div>
+
+        <!-- Button -->
+        <button
+          type="submit"
+          class="w-full py-3 rounded-xl font-semibold bg-gradient-to-r from-white via-slate-200 to-white text-black hover:scale-[1.02] transition-all duration-300 shadow-[0_10px_30px_rgba(255,255,255,0.15)]"
+        >
+          Sign In
+        </button>
+
+        <!-- Links -->
+        <div class="text-center text-sm text-slate-400 mt-8">
+          <a href="ForgotPassword.html" class="hover:text-white transition">
+            Forgot Password
+          </a>
+
+          <span class="mx-2">|</span>
+          <a href="register.html" class="hover:text-white transition">
+            Create Account
+          </a>
+        </div>
+      </form>
+    </section>
+
+    <!-- FOOTER -->
+    <footer
+      class="text-center text-slate-500 text-sm py-6 border-t border-white/5"
+    >
+      This product uses the TMDB API but is not endorsed or certified by TMDB.
+    </footer>
+
+    <!-- NAVBAR LOADER -->
+    <script>
+      fetch("../components/navbar.html")
+        .then((res) => res.text())
+        .then((data) => {
+          document.getElementById("navbar").innerHTML = data;
+        });
+    </script>
+
+    <script type="module">
+      import { loginUser, isLoggedIn } from "../js/auth.js";
+
+      // If already logged in → redirect
+      if (isLoggedIn()) {
+        window.location.href = "account.html";
+      }
+
+      const loginForm = document.getElementById("loginForm");
+      const emailInput = document.getElementById("email");
+      const passwordInput = document.getElementById("password");
+
+      loginForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const email = emailInput.value.trim();
+        const password = passwordInput.value.trim();
+
+        if (!email || !password) {
+          alert("Please enter both email and password.");
+          return;
+        }
+
+        loginUser(email);
+
+        window.location.href = "../index.html";
+      });
+    </script>
+  </body>
+</html>

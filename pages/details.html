@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ViewIT – Details</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+
+  <body class="bg-black text-white min-h-screen overflow-x-hidden">
+    <div id="navbar"></div>
+
+    <!-- HERO -->
+    <section class="relative h-[85vh] flex items-end px-16 pb-20">
+      <div
+        id="backdrop"
+        class="absolute inset-0 bg-cover bg-center opacity-30"
+      ></div>
+      <div
+        class="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-black/40"
+      ></div>
+
+      <div class="relative z-10 max-w-4xl">
+        <h1 id="title" class="text-6xl font-extrabold mb-6"></h1>
+        <p id="overview" class="text-slate-300 text-lg mb-6"></p>
+
+        <div class="flex gap-6 text-slate-300 text-lg mb-6">
+          <span>⭐ <span id="rating"></span></span>
+          <span>📅 <span id="date"></span></span>
+        </div>
+
+        <button
+          id="trailerBtn"
+          class="px-6 py-3 bg-white text-black font-semibold rounded-xl hover:scale-105 transition mb-6 hidden"
+        >
+          ▶ Watch Trailer
+        </button>
+
+        <div>
+          <h3 class="text-xl font-semibold mb-3">Available On</h3>
+          <div id="providers" class="flex flex-wrap items-center gap-4"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STORY -->
+    <section class="px-16 py-20 max-w-5xl">
+      <h2 class="text-4xl font-bold mb-6">Story</h2>
+      <p id="storyText" class="text-slate-300 text-lg"></p>
+    </section>
+
+    <!-- CAST -->
+    <section class="px-16 pb-10 max-w-6xl">
+      <h2 class="text-4xl font-bold mb-10">Top Cast</h2>
+      <div id="castGrid" class="grid grid-cols-2 md:grid-cols-4 gap-10"></div>
+    </section>
+
+    <!-- RUNTIME / SEASONS -->
+    <section class="px-16 pb-24 max-w-6xl">
+      <div id="runtimeSection"></div>
+
+      <div id="seasonSection" class="hidden">
+        <h2 class="text-3xl font-bold mb-6">Seasons</h2>
+
+        <select
+          id="seasonSelect"
+          class="mb-8 px-4 py-2 bg-zinc-900 border border-white/20 rounded-lg"
+        ></select>
+
+        <div id="episodesContainer" class="space-y-4"></div>
+      </div>
+    </section>
+
+    <!-- TRAILER MODAL -->
+    <div
+      id="trailerModal"
+      class="fixed inset-0 bg-black/80 flex items-center justify-center hidden z-50"
+    >
+      <div class="relative w-[90%] max-w-4xl">
+        <button
+          id="closeModal"
+          class="absolute -top-10 right-0 text-white text-3xl"
+        >
+          ✕
+        </button>
+        <iframe
+          id="trailerFrame"
+          class="w-full h-[500px] rounded-xl"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </div>
+
+    <script>
+      fetch("../components/navbar.html")
+        .then((res) => res.text())
+        .then((html) => {
+          document.getElementById("navbar").innerHTML = html;
+        });
+    </script>
+
+    <script type="module">
+      import {
+        TMDB_API_KEY,
+        BASE_URL,
+        YOUTUBE_BASE_URL,
+      } from "../js/config.js";
+
+      const IMAGE_URL = "https://image.tmdb.org/t/p/original";
+
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get("id");
+      const type = params.get("type");
+
+      const titleEl = document.getElementById("title");
+      const overviewEl = document.getElementById("overview");
+      const storyEl = document.getElementById("storyText");
+      const ratingEl = document.getElementById("rating");
+      const dateEl = document.getElementById("date");
+      const backdropEl = document.getElementById("backdrop");
+      const castGrid = document.getElementById("castGrid");
+      const providersContainer = document.getElementById("providers");
+      const runtimeSection = document.getElementById("runtimeSection");
+      const seasonSection = document.getElementById("seasonSection");
+      const seasonSelect = document.getElementById("seasonSelect");
+      const episodesContainer = document.getElementById("episodesContainer");
+      const trailerBtn = document.getElementById("trailerBtn");
+      const trailerModal = document.getElementById("trailerModal");
+      const trailerFrame = document.getElementById("trailerFrame");
+      const closeModal = document.getElementById("closeModal");
+
+      let trailerURL = null;
+
+      function formatRuntime(minutes) {
+        if (!minutes) return "N/A";
+        const h = Math.floor(minutes / 60);
+        const m = minutes % 60;
+        return `${h}h ${m}m`;
+      }
+
+      async function loadDetails() {
+        const res = await fetch(
+          `${BASE_URL}/${type}/${id}?api_key=${TMDB_API_KEY}&append_to_response=credits,videos`,
+        );
+
+        const data = await res.json();
+
+        titleEl.textContent = type === "movie" ? data.title : data.name;
+        overviewEl.textContent = data.overview || "No description available.";
+        storyEl.textContent = overviewEl.textContent;
+        ratingEl.textContent = data.vote_average?.toFixed(1) || "N/A";
+        dateEl.textContent =
+          type === "movie" ? data.release_date : data.first_air_date;
+
+        if (data.backdrop_path) {
+          backdropEl.style.backgroundImage = `url(${IMAGE_URL + data.backdrop_path})`;
+        }
+
+        // Trailer
+        const trailer = data.videos?.results?.find(
+          (v) => v.type === "Trailer" && v.site === "YouTube",
+        );
+        if (trailer) {
+          trailerURL = `${YOUTUBE_BASE_URL}${trailer.key}`;
+          trailerBtn.classList.remove("hidden");
+        }
+
+        // Cast
+        castGrid.innerHTML = "";
+        data.credits?.cast?.slice(0, 8).forEach((actor) => {
+          if (!actor.profile_path) return;
+          const div = document.createElement("div");
+          div.innerHTML = `
+      <img src="${IMAGE_URL + actor.profile_path}"
+        class="rounded-lg mb-2 w-full h-[260px] object-cover" />
+      <p class="font-semibold text-sm">${actor.name}</p>
+      <p class="text-slate-400 text-xs">${actor.character}</p>
+    `;
+          castGrid.appendChild(div);
+        });
+
+        // MOVIE RUNTIME
+        if (type === "movie") {
+          runtimeSection.innerHTML = `
+      <h2 class="text-3xl font-bold mb-4">Runtime</h2>
+      <p class="text-lg text-slate-300">
+        ${formatRuntime(data.runtime)}
+      </p>
+    `;
+        }
+
+        // TV SEASONS
+        if (type === "tv") {
+          seasonSection.classList.remove("hidden");
+          seasonSelect.innerHTML = "";
+
+          data.seasons.forEach((season) => {
+            if (season.season_number === 0) return;
+            const option = document.createElement("option");
+            option.value = season.season_number;
+            option.textContent = season.name;
+            seasonSelect.appendChild(option);
+          });
+
+          seasonSelect.addEventListener("change", () => {
+            loadSeason(seasonSelect.value);
+          });
+
+          if (seasonSelect.options.length > 0) {
+            loadSeason(seasonSelect.value);
+          }
+        }
+
+        // STREAMING PROVIDERS (FIXED, DOES NOT BREAK ANYTHING)
+        try {
+          const providerRes = await fetch(
+            `${BASE_URL}/${type}/${id}/watch/providers?api_key=${TMDB_API_KEY}`,
+          );
+          const providerData = await providerRes.json();
+          let region = providerData.results?.IE;
+
+          if (!region) {
+            const regions = Object.values(providerData.results || {});
+            region = regions.length ? regions[0] : null;
+          }
+
+          providersContainer.innerHTML = "";
+
+          if (!region?.flatrate) {
+            providersContainer.innerHTML = `<p class="text-slate-400 text-sm">Not currently available for streaming.</p>`;
+          } else {
+            region.flatrate.forEach((provider) => {
+              if (!provider.logo_path) return;
+              const img = document.createElement("img");
+              img.src = "https://image.tmdb.org/t/p/w200" + provider.logo_path;
+              img.alt = provider.provider_name;
+              img.className = "h-12 rounded-lg shadow-md bg-white p-1";
+              providersContainer.appendChild(img);
+            });
+          }
+        } catch {
+          providersContainer.innerHTML = `<p class="text-slate-400 text-sm">Streaming information unavailable.</p>`;
+        }
+      }
+
+      async function loadSeason(seasonNumber) {
+        const res = await fetch(
+          `${BASE_URL}/tv/${id}/season/${seasonNumber}?api_key=${TMDB_API_KEY}`,
+        );
+        const seasonData = await res.json();
+
+        episodesContainer.innerHTML = "";
+
+        seasonData.episodes.forEach((ep) => {
+          const div = document.createElement("div");
+          div.className = "p-4 bg-zinc-900 rounded-lg border border-white/10";
+          div.innerHTML = `
+      <h3 class="font-semibold">
+        Episode ${ep.episode_number}: ${ep.name}
+      </h3>
+      <p class="text-sm text-slate-400">
+        Runtime: ${formatRuntime(ep.runtime)}
+      </p>
+    `;
+          episodesContainer.appendChild(div);
+        });
+      }
+
+      trailerBtn.addEventListener("click", () => {
+        trailerFrame.src = trailerURL.replace("watch?v=", "embed/");
+        trailerModal.classList.remove("hidden");
+      });
+
+      closeModal.addEventListener("click", () => {
+        trailerModal.classList.add("hidden");
+        trailerFrame.src = "";
+      });
+
+      if (id && type) loadDetails();
+    </script>
+  </body>
+</html>

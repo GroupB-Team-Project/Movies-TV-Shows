@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reviews | ViewIT</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+
+  <body
+    data-page="reviews"
+    class="relative min-h-screen text-white overflow-x-hidden bg-black"
+  >
+    <!-- BACKGROUND -->
+    <div class="fixed inset-0 -z-10 overflow-hidden">
+      <div
+        class="absolute inset-0 bg-gradient-to-br from-black via-zinc-900 to-black"
+      ></div>
+      <div
+        class="absolute -top-64 -left-64 w-[900px] h-[900px] bg-[radial-gradient(circle,rgba(255,255,255,0.08),transparent_70%)] blur-3xl"
+      ></div>
+      <div
+        class="absolute -bottom-64 -right-64 w-[900px] h-[900px] bg-[radial-gradient(circle,rgba(255,255,255,0.06),transparent_70%)] blur-3xl"
+      ></div>
+      <div
+        class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.04),transparent_70%)]"
+      ></div>
+    </div>
+
+    <div id="navbar"></div>
+
+    <section class="py-28 text-center">
+      <h1 class="text-5xl font-bold mb-4">Top Rated Movies</h1>
+      <p class="text-slate-400">Browse the highest rated films</p>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-6 pb-24">
+      <div
+        id="content"
+        class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10"
+      ></div>
+
+      <!-- Load More Button -->
+      <div class="text-center mt-12">
+        <button
+          id="showMoreBtn"
+          class="px-8 py-3 bg-white text-black rounded-xl font-semibold hover:scale-105 transition"
+        >
+          Load More
+        </button>
+      </div>
+    </section>
+
+    <!-- NAVBAR LOAD -->
+    <script>
+      fetch("../components/navbar.html")
+        .then((res) => res.text())
+        .then((html) => {
+          document.getElementById("navbar").innerHTML = html;
+        });
+    </script>
+
+    <!-- FORCE CORRECT CATEGORY -->
+    <script type="module">
+      import { fetchTopRated } from "../js/api.js";
+
+      fetchTopRated();
+    </script>
+
+    <script type="module" src="../js/main.js"></script>
+  </body>
+</html>

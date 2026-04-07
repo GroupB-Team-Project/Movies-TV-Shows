@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About | ViewIT</title>
+    <link rel="stylesheet" href="/css/global.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="bg-black text-white min-h-screen overflow-x-hidden">
+    <body class="font-[Ubuntu] bg-black text-white min-h-screen"></body>
+
+    <div id="navbar"></div>
+
+    <!-- HEADER -->
+    <section class="py-24 text-center">
+      <h1 class="text-5xl font-bold mb-4">About ViewIT</h1>
+      <p class="text-slate-400 max-w-2xl mx-auto">
+        Discover the purpose behind ViewIT and the team that built it.
+      </p>
+    </section>
+
+    <!-- CONTENT GRID -->
+    <section class="max-w-7xl mx-auto px-6 pb-24">
+      <div class="grid md:grid-cols-3 gap-10">
+        <!-- WHAT IS VIEWIT -->
+        <div
+          class="p-8 rounded-3xl bg-gradient-to-br from-zinc-950 via-black to-zinc-900 border border-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.8)] transition hover:-translate-y-2 duration-500"
+        >
+          <h2 class="text-2xl font-bold mb-6">What is ViewIT?</h2>
+
+          <div class="space-y-6 text-slate-300 leading-relaxed">
+            <p>
+              ViewIT is a web-based application designed to help users discover
+              upcoming and recently released movies and TV shows in one simple
+              and accessible platform.
+            </p>
+
+            <p>
+              Instead of visiting multiple websites to find release dates,
+              ratings, and availability, ViewIT brings this information together
+              using reliable data from the TMDB API.
+            </p>
+          </div>
+        </div>
+
+        <!-- OUR AIM -->
+        <div
+          class="p-8 rounded-3xl bg-gradient-to-br from-zinc-950 via-black to-zinc-900 border border-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.8)] transition hover:-translate-y-2 duration-500"
+        >
+          <h2 class="text-2xl font-bold mb-6">Our Aim</h2>
+
+          <div class="space-y-6 text-slate-300 leading-relaxed">
+            <p>
+              The aim of ViewIT is to provide a clean, ad-free, and easy-to-use
+              experience for film and TV fans.
+            </p>
+
+            <p>
+              We focus on delivering quick access to accurate, up-to-date
+              information without unnecessary clutter or distractions.
+            </p>
+          </div>
+        </div>
+
+        <!-- PROJECT TEAM -->
+        <div
+          class="p-8 rounded-3xl bg-gradient-to-br from-zinc-950 via-black to-zinc-900 border border-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.8)] transition hover:-translate-y-2 duration-500"
+        >
+          <h2 class="text-2xl font-bold mb-6">Project Team</h2>
+
+          <ul class="space-y-4 text-slate-300">
+            <li class="flex items-center gap-3">
+              <span class="w-2 h-2 bg-white rounded-full"></span>
+              Aaron Bridger
+            </li>
+
+            <li class="flex items-center gap-3">
+              <span class="w-2 h-2 bg-white rounded-full"></span>
+              Sarah Pettigrew
+            </li>
+
+            <li class="flex items-center gap-3">
+              <span class="w-2 h-2 bg-white rounded-full"></span>
+              Paul Moriarty
+            </li>
+
+            <li class="flex items-center gap-3">
+              <span class="w-2 h-2 bg-white rounded-full"></span>
+              Finn Boyd
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer
+      class="text-center text-slate-500 text-sm py-6 border-t border-white/5"
+    >
+      This product uses the TMDB API but is not endorsed or certified by TMDB.
+    </footer>
+
+    <!-- NAVBAR LOAD -->
+    <script>
+      fetch("../components/navbar.html")
+        .then((res) => res.text())
+        .then((html) => {
+          document.getElementById("navbar").innerHTML = html;
+        });
+    </script>
+  </body>
+</html>

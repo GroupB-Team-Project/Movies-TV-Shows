@@ -1,0 +1,553 @@
+* {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+html {
+  scroll-behavior: smooth;
+
+  -webkit-overflow-scrolling: touch;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  animation: pageFade 0.6s ease;
+}
+
+/* ===== BASIC RESET ===== */
+
+* {
+  box-sizing: border-box;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+
+  /* Performance optimizations */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimizeQuality;
+}
+
+video,
+iframe {
+  max-width: 100%;
+}
+
+/* ===== PAGE FADE ===== */
+
+@keyframes pageFade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* ===== SCROLLBAR ===== */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f0f0f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a2a2a;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3a3a3a;
+}
+
+/* ===== INPUT FIX ===== */
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* ===== FOCUS ===== */
+
+:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ================= MOVIE CARDS =================== */
+
+.movie-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+
+  /* Performance optimizations */
+  will-change: transform, box-shadow;
+  backface-visibility: hidden;
+  perspective: 1000px;
+  contain: layout style paint;
+
+  transition:
+    transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+  z-index: 1;
+  cursor: pointer;
+}
+
+/* Poster */
+
+.movie-card img {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+
+  /* Performance optimizations */
+  will-change: transform, filter;
+  backface-visibility: hidden;
+  image-rendering: optimizeQuality;
+
+  transition:
+    transform 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    filter 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Movie info overlay */
+.movie-hover h3 {
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+.movie-hover p {
+  font-size: 14px;
+  color: #cccccc;
+  margin-bottom: 12px;
+}
+
+.movie-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.8),
+    rgba(0, 0, 0, 0.4),
+    transparent
+  );
+
+  opacity: 0.5;
+}
+
+.movie-card:hover::before {
+  animation: shine 1.2s ease-in-out;
+}
+
+.movie-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-20deg);
+  pointer-events: none;
+}
+
+.movie-card:hover::after {
+  animation: shine-glint 0.95s ease-in-out;
+}
+
+@keyframes shine {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes shine-glint {
+  0% {
+    left: -100%;
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 0.8;
+  }
+
+  100% {
+    left: 130%;
+    opacity: 0;
+  }
+}
+
+@keyframes hover-pulse {
+  0%,
+  100% {
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.9);
+  }
+
+  50% {
+    box-shadow: 0 35px 80px rgba(0, 0, 0, 1);
+  }
+}
+
+.movie-card:hover {
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.9);
+  z-index: 10;
+  animation: hover-pulse 3s ease-in-out infinite;
+}
+
+.movie-card:hover::before {
+  background: linear-gradient(
+    to top,
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+}
+
+.movie-card:hover img {
+  transform: scale(1.1);
+  filter: brightness(0.65);
+}
+
+.movie-card:active {
+  transform: translateY(-5px) scale(1.02);
+  transition: transform 0.1s ease;
+}
+
+/* Movie info overlay */
+
+.movie-hover {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.95),
+    rgba(0, 0, 0, 0.75),
+    transparent
+  );
+
+  padding: 18px;
+  color: white;
+
+  /* Performance optimizations */
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+
+  opacity: 0;
+  transform: translateY(20px) translateZ(0);
+
+  transition:
+    opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hover reveal */
+
+.movie-card:hover .movie-hover {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
+  background-size: 200% 100%;
+
+  /* Performance optimizations */
+  will-change: background-position;
+  backface-visibility: hidden;
+
+  animation: skeleton-shimmer 2s ease-in-out infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #1a1a1a;
+  pointer-events: none;
+}
+
+.skeleton-card .skeleton-image {
+  width: 100%;
+  height: 420px;
+  background: #2a2a2a;
+  border-radius: 14px 14px 0 0;
+}
+
+.skeleton-card .skeleton-content {
+  padding: 18px;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.95),
+    rgba(0, 0, 0, 0.75),
+    transparent
+  );
+}
+
+.skeleton-card .skeleton-title {
+  height: 18px;
+  background: #2a2a2a;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  width: 80%;
+}
+
+.skeleton-card .skeleton-text {
+  height: 14px;
+  background: #2a2a2a;
+  border-radius: 4px;
+  margin-bottom: 6px;
+  width: 60%;
+}
+
+.skeleton-card .skeleton-text:last-of-type {
+  width: 40%;
+  margin-bottom: 12px;
+}
+
+.skeleton-card .skeleton-button {
+  height: 24px;
+  background: #2a2a2a;
+  border-radius: 6px;
+  width: 70px;
+}
+
+/* ================================================= */
+/* ================= BUTTON STYLE ================== */
+/* ================================================= */
+
+.info-btn {
+  margin-top: 10px;
+  padding: 6px 14px;
+
+  background: white;
+  color: black;
+
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+
+  /* Performance optimizations */
+  will-change: transform, background;
+  backface-visibility: hidden;
+
+  transition:
+    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.info-btn:hover {
+  transform: scale(1.06);
+  background: #e6e6e6;
+}
+
+/* Global button polish */
+
+button {
+  /* Performance optimizations */
+  will-change: transform;
+  backface-visibility: hidden;
+
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+button:active {
+  transform: scale(0.96);
+}
+
+/* ================================================= */
+/* ================= HERO EFFECT =================== */
+/* ================================================= */
+
+#carouselTrack > div {
+  animation: heroZoom 16s ease-in-out infinite alternate;
+}
+
+@keyframes heroZoom {
+  0% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(1.1);
+  }
+}
+
+/* Optional hero text blur */
+
+.hero-overlay {
+  backdrop-filter: blur(6px);
+}
+
+/* Makes hovered card slightly overlap neighbours */
+
+#content .movie-card:hover {
+  transform: translateY(-12px) scale(1.07);
+}
+
+/* smooth grid behaviour */
+
+#content {
+  perspective: 1000px;
+}
+
+/* The CSS for the Search Page
+
+/* Search input glow (Netflix feel) */
+
+#searchInput {
+  transition: all 0.25s ease;
+}
+
+#searchInput:focus {
+  border-color: white;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
+}
+
+/* Smooth results fade */
+
+#results {
+  animation: fadeInResults 0.4s ease;
+}
+
+@keyframes fadeInResults {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+#results .movie-card {
+  transform-origin: center;
+}
+
+#results .movie-card:hover {
+  z-index: 20;
+}
+
+#results .movie-card {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+#results .movie-card {
+  border-radius: 10px;
+}
+
+#results .movie-card:hover {
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+#results .movie-card img {
+  height: 420px;
+  object-fit: cover;
+}
+
+#results .movie-card:hover {
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+#results .movie-card:hover {
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+#results .movie-card:hover {
+  transform: translateY(-8px) scale(1.05);
+}
+
+#results .movie-card:hover {
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+#results .movie-card {
+  transition: all 0.3s ease;
+}
+
+#searchPage {
+  background: linear-gradient(135deg, #1a1a1a, #0f0f0f);
+}
+
+#results {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+#results .movie-card {
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+#results .movie-card img {
+  width: 100%;
+  height: 270px;
+  object-fit: cover;
+}
+
+#results .movie-card:hover {
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+#results .movie-card:hover {
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+#results .movie-card:hover {
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}

@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Account | ViewIT</title>
+
+    <link rel="stylesheet" href="/css/global.css" />
+
+    <!-- Tailwind -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body
+    class="relative font-[Ubuntu] min-h-screen text-white overflow-hidden bg-black"
+  >
+    <!-- PREMIUM BACKGROUND -->
+    <div class="fixed inset-0 -z-10 overflow-hidden">
+      <!-- Base -->
+      <div
+        class="absolute inset-0 bg-gradient-to-br from-black via-zinc-900 to-black"
+      ></div>
+
+      <!-- Silver glow top -->
+      <div
+        class="absolute -top-64 -left-64 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(255,255,255,0.08),transparent_70%)] blur-3xl"
+      ></div>
+
+      <!-- Silver glow bottom -->
+      <div
+        class="absolute -bottom-64 -right-64 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(255,255,255,0.06),transparent_70%)] blur-3xl"
+      ></div>
+
+      <!-- Center spotlight -->
+      <div
+        class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05),transparent_70%)]"
+      ></div>
+    </div>
+
+    <!-- NAVBAR -->
+    <div id="navbar"></div>
+
+    <!-- ACCOUNT SECTION -->
+    <section
+      class="flex items-center justify-center min-h-[calc(100vh-4rem)] px-6"
+    >
+      <div
+        class="relative w-full max-w-md p-10 rounded-3xl bg-white/5 backdrop-blur-2xl border border-white/10 shadow-[0_0_60px_rgba(255,255,255,0.05)] text-center"
+      >
+        <!-- Subtle glow border -->
+        <div
+          class="absolute inset-0 rounded-3xl border border-white/5 pointer-events-none"
+        ></div>
+
+        <h1 class="text-4xl font-bold mb-4 tracking-wide">My Account</h1>
+
+        <p class="text-slate-400 mb-2">Logged in as</p>
+
+        <p id="userEmail" class="text-lg font-semibold mb-10 text-white"></p>
+
+        <!-- Logout Button -->
+        <button
+          id="logoutBtn"
+          class="w-full py-3 rounded-xl font-semibold bg-gradient-to-r from-slate-200 via-white to-slate-200 text-black hover:scale-[1.02] transition-all duration-300 shadow-[0_10px_30px_rgba(255,255,255,0.15)]"
+        >
+          Logout
+        </button>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer
+      class="text-center text-slate-500 text-sm py-6 border-t border-white/5"
+    >
+      This product uses the TMDB API but is not endorsed or certified by TMDB.
+    </footer>
+
+    <!-- NAVBAR LOADER -->
+    <script>
+      fetch("../components/navbar.html")
+        .then((res) => res.text())
+        .then((data) => {
+          document.getElementById("navbar").innerHTML = data;
+        });
+    </script>
+
+    <!-- AUTH LOGIC -->
+    <script type="module">
+      import { isLoggedIn, getUserEmail, logoutUser } from "../js/auth.js";
+
+      if (!isLoggedIn()) {
+        window.location.href = "login.html";
+      }
+
+      document.getElementById("userEmail").textContent = getUserEmail();
+
+      document
+        .getElementById("logoutBtn")
+        .addEventListener("click", logoutUser);
+    </script>
+  </body>
+</html>
