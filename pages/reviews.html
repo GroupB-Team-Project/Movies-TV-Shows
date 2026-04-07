@@ -4,66 +4,89 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Reviews | ViewIT</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class" };
+    </script>
   </head>
 
   <body
     data-page="reviews"
-    class="relative min-h-screen text-white overflow-x-hidden bg-black"
+    class="relative min-h-screen overflow-x-hidden transition-colors duration-300 bg-white dark:bg-black text-slate-900 dark:text-white"
   >
     <!-- BACKGROUND -->
     <div class="fixed inset-0 -z-10 overflow-hidden">
-      <div
-        class="absolute inset-0 bg-gradient-to-br from-black via-zinc-900 to-black"
-      ></div>
-      <div
-        class="absolute -top-64 -left-64 w-[900px] h-[900px] bg-[radial-gradient(circle,rgba(255,255,255,0.08),transparent_70%)] blur-3xl"
-      ></div>
-      <div
-        class="absolute -bottom-64 -right-64 w-[900px] h-[900px] bg-[radial-gradient(circle,rgba(255,255,255,0.06),transparent_70%)] blur-3xl"
-      ></div>
-      <div
-        class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.04),transparent_70%)]"
-      ></div>
+      <div class="absolute inset-0 bg-gradient-to-br from-white/10 dark:from-black via-white/5 dark:via-zinc-900 to-white/5 dark:to-black transition-colors duration-300"></div>
+      <div class="absolute -top-64 -left-64 w-[900px] h-[900px] bg-[radial-gradient(circle,rgba(0,0,0,0.03),transparent_70%)] dark:bg-[radial-gradient(circle,rgba(255,255,255,0.02),transparent_70%)] blur-3xl transition-colors duration-300"></div>
+      <div class="absolute -bottom-64 -right-64 w-[900px] h-[900px] bg-[radial-gradient(circle,rgba(0,0,0,0.02),transparent_70%)] dark:bg-[radial-gradient(circle,rgba(255,255,255,0.01),transparent_70%)] blur-3xl transition-colors duration-300"></div>
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.01),transparent_70%)] dark:bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.01),transparent_70%)] transition-colors duration-300"></div>
     </div>
 
     <div id="navbar"></div>
 
     <section class="py-28 text-center">
-      <h1 class="text-5xl font-bold mb-4">Top Rated Movies</h1>
-      <p class="text-slate-400">Browse the highest rated films</p>
+      <h1 class="text-5xl font-bold mb-4 transition-colors duration-300">Top Rated Movies</h1>
+      <p class="text-slate-700 dark:text-slate-400 transition-colors duration-300">Browse the highest rated films</p>
     </section>
 
     <section class="max-w-7xl mx-auto px-6 pb-24">
-      <div
-        id="content"
-        class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10"
-      ></div>
+      <div id="content" class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10"></div>
 
       <!-- Load More Button -->
       <div class="text-center mt-12">
         <button
           id="showMoreBtn"
-          class="px-8 py-3 bg-white text-black rounded-xl font-semibold hover:scale-105 transition"
+          class="px-8 py-3 bg-white dark:bg-zinc-800 text-black dark:text-white rounded-xl font-semibold hover:scale-105 transition"
         >
           Load More
         </button>
       </div>
     </section>
 
-    <!-- NAVBAR LOAD -->
+    <!-- NAVBAR + THEME TOGGLE -->
     <script>
-      fetch("../components/navbar.html")
-        .then((res) => res.text())
-        .then((html) => {
-          document.getElementById("navbar").innerHTML = html;
-        });
+      const htmlEl = document.documentElement;
+      const sunIcon = "/assets/images/sun-regular.png";
+      const moonIcon = "/assets/images/moon-white.png";
+
+      async function loadNavbar() {
+        try {
+          const res = await fetch("../components/navbar.html");
+          if (!res.ok) throw new Error("Navbar fetch failed");
+          document.getElementById("navbar").innerHTML = await res.text();
+
+          const toggleBtn = document.getElementById("themeToggle");
+          const themeIcon = document.getElementById("themeIcon");
+          if (!toggleBtn || !themeIcon) return;
+
+          function setIcon() {
+            themeIcon.src = htmlEl.classList.contains("dark") ? moonIcon : sunIcon;
+          }
+          setIcon();
+
+          toggleBtn.addEventListener("click", () => {
+            htmlEl.classList.toggle("dark");
+            localStorage.setItem("theme", htmlEl.classList.contains("dark") ? "dark" : "light");
+            setIcon();
+          });
+        } catch (err) {
+          console.error("Navbar load error:", err);
+        }
+      }
+
+      // Apply saved theme
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme === "dark") htmlEl.classList.add("dark");
+      else if (savedTheme === "light") htmlEl.classList.remove("dark");
+      else if (window.matchMedia("(prefers-color-scheme: dark)").matches)
+        htmlEl.classList.add("dark");
+
+      loadNavbar();
     </script>
 
-    <!-- FORCE CORRECT CATEGORY -->
+    <!-- Original Reviews JS -->
     <script type="module">
       import { fetchTopRated } from "../js/api.js";
-
       fetchTopRated();
     </script>
 
