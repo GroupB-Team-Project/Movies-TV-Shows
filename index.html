@@ -101,6 +101,31 @@
       loadNavbar();
     </script>
 
+    <script src="../js/movieActions.js"></script>
     <script type="module" src="./js/main.js"></script>
+
+    <!-- TRAILER MODAL -->
+    <div
+      id="trailerModal"
+      class="fixed inset-0 bg-black/80 flex items-center justify-center z-50 hidden"
+    >
+      <div class="relative w-[90%] max-w-4xl">
+        <button
+          id="closeTrailer"
+          class="absolute -top-10 right-0 text-white text-3xl"
+        >
+          ✕
+        </button>
+
+        <iframe
+          id="trailerFrame"
+          class="w-full aspect-video rounded-lg"
+          src=""
+          allow="autoplay; encrypted-media"
+          allowfullscreen
+        >
+        </iframe>
+      </div>
+    </div>
   </body>
 </html>
