@@ -1,9 +1,13 @@
-/* done this css code to help just improve tailwind no touchy */
-
-/* ===== SMOOTH RENDERING ===== */
+* {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
 
 html {
   scroll-behavior: smooth;
+
+  -webkit-overflow-scrolling: touch;
 }
 
 body {
@@ -21,6 +25,10 @@ body {
 img {
   display: block;
   max-width: 100%;
+
+  /* Performance optimizations */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimizeQuality;
 }
 
 video,
@@ -74,20 +82,36 @@ input::-webkit-inner-spin-button {
   outline-offset: 2px;
 }
 
-/* ================================================= */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* ================= MOVIE CARDS =================== */
-/* ================================================= */
 
 .movie-card {
   position: relative;
   overflow: hidden;
   border-radius: 14px;
 
+  /* Performance optimizations */
+  will-change: transform, box-shadow;
+  backface-visibility: hidden;
+  perspective: 1000px;
+  contain: layout style paint;
+
   transition:
-    transform 0.35s ease,
-    box-shadow 0.35s ease;
+    transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 
   z-index: 1;
+  cursor: pointer;
 }
 
 /* Poster */
@@ -97,9 +121,14 @@ input::-webkit-inner-spin-button {
   height: 420px;
   object-fit: cover;
 
+  /* Performance optimizations */
+  will-change: transform, filter;
+  backface-visibility: hidden;
+  image-rendering: optimizeQuality;
+
   transition:
-    transform 0.45s ease,
-    filter 0.45s ease;
+    transform 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    filter 0.45s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Movie info overlay */
@@ -131,7 +160,7 @@ input::-webkit-inner-spin-button {
   opacity: 0.5;
 }
 
-movie-card:hover::before {
+.movie-card:hover::before {
   animation: shine 1.2s ease-in-out;
 }
 
@@ -182,10 +211,22 @@ movie-card:hover::before {
   }
 }
 
+@keyframes hover-pulse {
+  0%,
+  100% {
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.9);
+  }
+
+  50% {
+    box-shadow: 0 35px 80px rgba(0, 0, 0, 1);
+  }
+}
+
 .movie-card:hover {
   transform: translateY(-10px) scale(1.05);
   box-shadow: 0 30px 70px rgba(0, 0, 0, 0.9);
   z-index: 10;
+  animation: hover-pulse 3s ease-in-out infinite;
 }
 
 .movie-card:hover::before {
@@ -200,6 +241,11 @@ movie-card:hover::before {
 .movie-card:hover img {
   transform: scale(1.1);
   filter: brightness(0.65);
+}
+
+.movie-card:active {
+  transform: translateY(-5px) scale(1.02);
+  transition: transform 0.1s ease;
 }
 
 /* Movie info overlay */
@@ -220,10 +266,16 @@ movie-card:hover::before {
   padding: 18px;
   color: white;
 
-  opacity: 0;
-  transform: translateY(20px);
+  /* Performance optimizations */
+  will-change: opacity, transform;
+  backface-visibility: hidden;
 
-  transition: all 0.35s ease;
+  opacity: 0;
+  transform: translateY(20px) translateZ(0);
+
+  transition:
+    opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Hover reveal */
@@ -231,6 +283,79 @@ movie-card:hover::before {
 .movie-card:hover .movie-hover {
   opacity: 1;
   transform: translateY(0);
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
+  background-size: 200% 100%;
+
+  /* Performance optimizations */
+  will-change: background-position;
+  backface-visibility: hidden;
+
+  animation: skeleton-shimmer 2s ease-in-out infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #1a1a1a;
+  pointer-events: none;
+}
+
+.skeleton-card .skeleton-image {
+  width: 100%;
+  height: 420px;
+  background: #2a2a2a;
+  border-radius: 14px 14px 0 0;
+}
+
+.skeleton-card .skeleton-content {
+  padding: 18px;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.95),
+    rgba(0, 0, 0, 0.75),
+    transparent
+  );
+}
+
+.skeleton-card .skeleton-title {
+  height: 18px;
+  background: #2a2a2a;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  width: 80%;
+}
+
+.skeleton-card .skeleton-text {
+  height: 14px;
+  background: #2a2a2a;
+  border-radius: 4px;
+  margin-bottom: 6px;
+  width: 60%;
+}
+
+.skeleton-card .skeleton-text:last-of-type {
+  width: 40%;
+  margin-bottom: 12px;
+}
+
+.skeleton-card .skeleton-button {
+  height: 24px;
+  background: #2a2a2a;
+  border-radius: 6px;
+  width: 70px;
 }
 
 /* ================================================= */
@@ -248,9 +373,13 @@ movie-card:hover::before {
   font-size: 13px;
   font-weight: 600;
 
+  /* Performance optimizations */
+  will-change: transform, background;
+  backface-visibility: hidden;
+
   transition:
-    transform 0.2s ease,
-    background 0.2s ease;
+    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .info-btn:hover {
@@ -261,7 +390,11 @@ movie-card:hover::before {
 /* Global button polish */
 
 button {
-  transition: all 0.25s ease;
+  /* Performance optimizations */
+  will-change: transform;
+  backface-visibility: hidden;
+
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 button:hover {
