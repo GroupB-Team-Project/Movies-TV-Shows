@@ -44,11 +44,11 @@
     <section class="max-w-7xl mx-auto px-6 pb-24">
       <div class="grid md:grid-cols-3 gap-10">
         <!-- WHAT IS VIEWIT -->
-        <div class="p-8 rounded-3xl 
-                    bg-gradient-to-br from-zinc-100 dark:from-zinc-950 
-                    via-white/5 dark:via-black to-zinc-200 dark:to-zinc-900 
-                    border border-black/10 dark:border-white/10 
-                    shadow-md dark:shadow-[0_30px_80px_rgba(0,0,0,0.8)] 
+        <div class="p-8 rounded-3xl
+                    bg-gradient-to-br from-zinc-100 dark:from-zinc-950
+                    via-white/5 dark:via-black to-zinc-200 dark:to-zinc-900
+                    border border-black/10 dark:border-white/10
+                    shadow-md dark:shadow-[0_30px_80px_rgba(0,0,0,0.8)]
                     transition-colors duration-300 hover:-translate-y-2 duration-500">
           <h2 class="text-2xl font-bold mb-6 transition-colors duration-300">What is ViewIT?</h2>
           <div class="space-y-6 leading-relaxed text-slate-700 dark:text-slate-300 transition-colors duration-300">
@@ -58,11 +58,11 @@
         </div>
 
         <!-- OUR AIM -->
-        <div class="p-8 rounded-3xl 
-                    bg-gradient-to-br from-zinc-100 dark:from-zinc-950 
-                    via-white/5 dark:via-black to-zinc-200 dark:to-zinc-900 
-                    border border-black/10 dark:border-white/10 
-                    shadow-md dark:shadow-[0_30px_80px_rgba(0,0,0,0.8)] 
+        <div class="p-8 rounded-3xl
+                    bg-gradient-to-br from-zinc-100 dark:from-zinc-950
+                    via-white/5 dark:via-black to-zinc-200 dark:to-zinc-900
+                    border border-black/10 dark:border-white/10
+                    shadow-md dark:shadow-[0_30px_80px_rgba(0,0,0,0.8)]
                     transition-colors duration-300 hover:-translate-y-2 duration-500">
           <h2 class="text-2xl font-bold mb-6 transition-colors duration-300">Our Aim</h2>
           <div class="space-y-6 leading-relaxed text-slate-700 dark:text-slate-300 transition-colors duration-300">
@@ -72,11 +72,11 @@
         </div>
 
         <!-- PROJECT TEAM -->
-        <div class="p-8 rounded-3xl 
-                    bg-gradient-to-br from-zinc-100 dark:from-zinc-950 
-                    via-white/5 dark:via-black to-zinc-200 dark:to-zinc-900 
-                    border border-black/10 dark:border-white/10 
-                    shadow-md dark:shadow-[0_30px_80px_rgba(0,0,0,0.8)] 
+        <div class="p-8 rounded-3xl
+                    bg-gradient-to-br from-zinc-100 dark:from-zinc-950
+                    via-white/5 dark:via-black to-zinc-200 dark:to-zinc-900
+                    border border-black/10 dark:border-white/10
+                    shadow-md dark:shadow-[0_30px_80px_rgba(0,0,0,0.8)]
                     transition-colors duration-300 hover:-translate-y-2 duration-500">
           <h2 class="text-2xl font-bold mb-6 transition-colors duration-300">Project Team</h2>
           <ul class="space-y-4 text-slate-700 dark:text-slate-300 transition-colors duration-300">
@@ -94,32 +94,71 @@
       This product uses the TMDB API but is not endorsed or certified by TMDB.
     </footer>
 
-    <!-- NAVBAR LOAD + THEME TOGGLE -->
-    <script>
+    <!-- NAVBAR + THEME + ACCOUNT -->
+    <script type="module">
       const htmlEl = document.documentElement;
-      const sunIcon = "/assets/images/sun-regular.png";
-      const moonIcon = "/assets/images/moon-white.png";
+      const sunIcon = "/assets/sun-regular.png";
+      const moonIcon = "/assets/moon-white.png";
 
       async function loadNavbar() {
         try {
-          const res = await fetch("components/navbar.html");
+          const res = await fetch("/components/navbar.html");
           if (!res.ok) throw new Error("Navbar fetch failed");
           document.getElementById("navbar").innerHTML = await res.text();
 
+          // ── Theme toggle ──────────────────────────────────────────
           const toggleBtn = document.getElementById("themeToggle");
           const themeIcon = document.getElementById("themeIcon");
-          if (!toggleBtn || !themeIcon) return;
-
-          function setIcon() {
-            themeIcon.src = htmlEl.classList.contains("dark") ? moonIcon : sunIcon;
-          }
-          setIcon();
-
-          toggleBtn.addEventListener("click", () => {
-            htmlEl.classList.toggle("dark");
-            localStorage.setItem("theme", htmlEl.classList.contains("dark") ? "dark" : "light");
+          if (toggleBtn && themeIcon) {
+            function setIcon() {
+              themeIcon.src = htmlEl.classList.contains("dark") ? moonIcon : sunIcon;
+            }
             setIcon();
+            toggleBtn.addEventListener("click", () => {
+              htmlEl.classList.toggle("dark");
+              localStorage.setItem("theme", htmlEl.classList.contains("dark") ? "dark" : "light");
+              setIcon();
+            });
+          }
+
+          // ── Account dropdown ──────────────────────────────────────
+          const { isLoggedIn, getUserEmail, logoutUser } = await import("/js/auth.js");
+
+          const button       = document.getElementById("accountButton");
+          const dropdown     = document.getElementById("accountDropdown");
+          const emailDisplay = document.getElementById("userEmailDisplay");
+          const logoutBtn    = document.getElementById("logoutBtn");
+
+          if (!button || !dropdown || !emailDisplay || !logoutBtn) return;
+
+          function updateUI() {
+            const loggedIn = isLoggedIn();
+            button.textContent = loggedIn ? "Account" : "Login";
+            emailDisplay.textContent = loggedIn ? (getUserEmail() || "User") : "Not logged in";
+          }
+
+          button.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (!isLoggedIn()) {
+              window.location.href = "/login.html";
+              return;
+            }
+            dropdown.classList.toggle("hidden");
           });
+
+          document.addEventListener("click", (e) => {
+            if (!button.contains(e.target) && !dropdown.contains(e.target)) {
+              dropdown.classList.add("hidden");
+            }
+          });
+
+          logoutBtn.addEventListener("click", () => {
+            logoutUser();
+            updateUI();
+            dropdown.classList.add("hidden");
+          });
+
+          updateUI();
         } catch (err) {
           console.error("Navbar load error:", err);
         }

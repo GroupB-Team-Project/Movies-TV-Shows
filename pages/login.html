@@ -25,16 +25,17 @@
 
     <!-- Apply saved theme immediately -->
     <script>
-      const html = document.documentElement;
       const savedTheme = localStorage.getItem("theme");
-      if (savedTheme === "dark") html.classList.add("dark");
-      else if (savedTheme === "light") html.classList.remove("dark");
+      
+      if (savedTheme === "dark") htmlEl.classList.add("dark");
+      else if (savedTheme === "light") htmlEl.classList.remove("dark");
       else if (window.matchMedia("(prefers-color-scheme: dark)").matches)
-        html.classList.add("dark");
+        htmlEl.classList.add("dark");
     </script>
   </head>
 
   <body class="relative min-h-screen overflow-hidden transition-colors duration-300 bg-white dark:bg-black text-slate-900 dark:text-white">
+
     <!-- Background -->
     <div class="fixed inset-0 -z-10 overflow-hidden">
       <div class="absolute inset-0 bg-gradient-to-br from-white/5 via-zinc-100 to-white/10 dark:from-black dark:via-zinc-900 dark:to-black"></div>
@@ -53,83 +54,65 @@
         bg-white/70 dark:bg-black/70 backdrop-blur-2xl border border-black/10 dark:border-white/10
         shadow-[0_5px_20px_rgba(0,0,0,0.1)] dark:shadow-[0_10px_30px_rgba(255,255,255,0.05)]">
 
-        <div class="absolute inset-0 rounded-3xl border border-black/5 dark:border-white/5 pointer-events-none"></div>
-
-        <h1 class="text-4xl font-bold text-center mb-2 transition-colors duration-300">Welcome Back</h1>
-        <p class="text-slate-600 dark:text-slate-400 text-center mb-8 transition-colors duration-300">
+        <h1 class="text-4xl font-bold text-center mb-2">Welcome Back</h1>
+        <p class="text-slate-600 dark:text-slate-400 text-center mb-8">
           Sign in to continue to ViewIT
         </p>
 
         <!-- Email -->
         <div class="mb-6">
-          <label for="email" class="block text-sm mb-2 text-slate-700 dark:text-slate-300 transition-colors duration-300">
-            Email Address
-          </label>
-          <input type="email" id="email" name="email" placeholder="Enter your email" required
-            class="w-full px-4 py-3 rounded-xl border border-black/20 dark:border-white/10
-            bg-white/80 dark:bg-black/60 focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/30 transition-colors duration-300"/>
+          <label class="block text-sm mb-2">Email Address</label>
+          <input type="email" id="email" required
+            class="w-full px-4 py-3 rounded-xl border bg-white/80 dark:bg-black/60"/>
         </div>
 
         <!-- Password -->
         <div class="mb-8 relative">
-          <label for="password" class="block text-sm mb-2 text-slate-700 dark:text-slate-300 transition-colors duration-300">
-            Password
-          </label>
-          <input type="password" id="password" name="password" placeholder="Enter your password" required
-            class="w-full px-4 py-3 pr-12 rounded-xl border border-black/20 dark:border-white/10
-            bg-white/80 dark:bg-black/60 focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/30 transition-colors duration-300"/>
-          <button type="button" id="togglePassword" class="absolute right-4 top-[42px] text-slate-500 dark:text-slate-400 hover:text-black dark:hover:text-white text-sm transition">Show</button>
+          <label class="block text-sm mb-2">Password</label>
+          <input type="password" id="password" required
+            class="w-full px-4 py-3 pr-12 rounded-xl border bg-white/80 dark:bg-black/60"/>
+
+          <button type="button" id="togglePassword"
+            class="absolute right-4 top-[42px] text-sm">
+            Show
+          </button>
         </div>
 
-        <!-- Sign In Button -->
+        <!-- Submit -->
         <button type="submit"
-          class="w-full py-3 rounded-xl font-semibold
-          bg-gradient-to-r from-white via-slate-200 to-white dark:from-black dark:via-zinc-800 dark:to-black
-          text-black dark:text-white hover:scale-[1.02] transition-all duration-300
-          shadow-[0_10px_30px_rgba(0,0,0,0.1)] dark:shadow-[0_10px_30px_rgba(255,255,255,0.05)]">
+          class="w-full py-3 rounded-xl font-semibold bg-black text-white dark:bg-white dark:text-black">
           Sign In
         </button>
 
-        <!-- Links -->
-        <div class="text-center text-sm text-slate-600 dark:text-slate-400 mt-8 transition-colors duration-300">
-          <a href="forgotpassword.html" class="hover:text-black dark:hover:text-white transition">Forgot Password?</a>
-          <span class="mx-2">|</span>
-          <a href="register.html" class="hover:text-black dark:hover:text-white transition">Create Account</a>
-        </div>
       </form>
     </section>
 
-    <!-- Footer -->
-    <footer class="text-center text-slate-500 dark:text-slate-400 text-sm py-6 border-t border-black/10 dark:border-white/10 transition-colors duration-300">
-      This product uses the TMDB API but is not endorsed or certified by TMDB.
-    </footer>
-
-    <!-- Navbar + Theme Toggle -->
-    <script>
+    <!-- Navbar loader -->
+    <script type="module">
       const htmlEl = document.documentElement;
-      const sunIcon = "/assets/images/sun-regular.png";
-      const moonIcon = "/assets/images/moon-white.png";
+      const sunIcon = "/assets/sun-regular.png";
+      const moonIcon = "/assets/moon-white.png";
 
       async function loadNavbar() {
         try {
-          const res = await fetch("components/navbar.html");
+          const res = await fetch("/components/navbar.html");
           if (!res.ok) throw new Error("Navbar fetch failed");
           document.getElementById("navbar").innerHTML = await res.text();
 
           const toggleBtn = document.getElementById("themeToggle");
           const themeIcon = document.getElementById("themeIcon");
-          if (!toggleBtn || !themeIcon) return;
 
-          function setIcon() {
-            themeIcon.src = htmlEl.classList.contains("dark") ? moonIcon : sunIcon;
-          }
-          setIcon();
-
-          toggleBtn.addEventListener("click", () => {
-            htmlEl.classList.toggle("dark");
-            localStorage.setItem("theme", htmlEl.classList.contains("dark") ? "dark" : "light");
+          if (toggleBtn && themeIcon) {
+            function setIcon() {
+              themeIcon.src = htmlEl.classList.contains("dark") ? moonIcon : sunIcon;
+            }
             setIcon();
-          });
+            toggleBtn.addEventListener("click", () => {
+              htmlEl.classList.toggle("dark");
+              localStorage.setItem("theme", htmlEl.classList.contains("dark") ? "dark" : "light");
+              setIcon();
+            });
+          }
         } catch (err) {
           console.error("Navbar load error:", err);
         }
@@ -138,28 +121,34 @@
       loadNavbar();
     </script>
 
-    <!-- Login Handler -->
+    <!-- Password toggle -->
+    <script>
+      const togglePasswordBtn = document.getElementById("togglePassword");
+      const passwordInput = document.getElementById("password");
+
+      togglePasswordBtn.addEventListener("click", () => {
+        passwordInput.type =
+          passwordInput.type === "password" ? "text" : "password";
+        togglePasswordBtn.textContent =
+          passwordInput.type === "password" ? "Show" : "Hide";
+      });
+    </script>
+
+    <!-- Login handler -->
     <script>
       const loginForm = document.getElementById("loginForm");
       const emailInput = document.getElementById("email");
-      const passwordInput = document.getElementById("password");
-      const togglePasswordBtn = document.getElementById("togglePassword");
-
-      togglePasswordBtn.addEventListener("click", () => {
-        if (passwordInput.type === "password") {
-          passwordInput.type = "text";
-          togglePasswordBtn.textContent = "Hide";
-        } else {
-          passwordInput.type = "password";
-          togglePasswordBtn.textContent = "Show";
-        }
-      });
 
       loginForm.addEventListener("submit", async (e) => {
         e.preventDefault();
+
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
-        if (!email || !password) return alert("Please enter both email and password.");
+
+        if (!email || !password) {
+          alert("Please enter both email and password.");
+          return;
+        }
 
         try {
           const res = await fetch("http://localhost:5000/api/login", {
@@ -169,16 +158,22 @@
           });
 
           const data = await res.json();
+
           if (!res.ok) throw new Error(data.message || "Login failed");
 
-          // Store user info in localStorage (demo)
-          localStorage.setItem("user", JSON.stringify({ email }));
+          // ✅ Store using the keys auth.js expects
+          localStorage.setItem("userEmail", email);
+          localStorage.setItem("loggedIn", "true");
+
           alert(data.message);
-          window.location.href = "account.html";
+
+          window.location.href = "/index.html";
+
         } catch (err) {
           alert(err.message);
         }
       });
     </script>
+
   </body>
 </html>

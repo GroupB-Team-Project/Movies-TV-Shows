@@ -23,14 +23,77 @@
       body { font-family: 'Ubuntu', sans-serif; }
     </style>
 
-    <!-- Apply saved theme immediately -->
-    <script>
-      const html = document.documentElement;
-      const savedTheme = localStorage.getItem("theme");
-      if (savedTheme === "dark") html.classList.add("dark");
-      else if (savedTheme === "light") html.classList.remove("dark");
-      else if (window.matchMedia("(prefers-color-scheme: dark)").matches)
-        html.classList.add("dark");
+   <!-- NAVBAR + THEME + ACCOUNT -->
+    <script type="module">
+      const htmlEl = document.documentElement;
+      const sunIcon = "/assets/sun-regular.png";
+      const moonIcon = "/assets/moon-white.png";
+
+      async function loadNavbar() {
+        try {
+          const res = await fetch("/components/navbar.html");
+          if (!res.ok) throw new Error("Navbar fetch failed");
+          document.getElementById("navbar").innerHTML = await res.text();
+
+          // ── Theme toggle ──────────────────────────────────────────
+          const toggleBtn = document.getElementById("themeToggle");
+          const themeIcon = document.getElementById("themeIcon");
+          if (toggleBtn && themeIcon) {
+            function setIcon() {
+              themeIcon.src = htmlEl.classList.contains("dark") ? moonIcon : sunIcon;
+            }
+            setIcon();
+            toggleBtn.addEventListener("click", () => {
+              htmlEl.classList.toggle("dark");
+              localStorage.setItem("theme", htmlEl.classList.contains("dark") ? "dark" : "light");
+              setIcon();
+            });
+          }
+
+          // ── Account dropdown ──────────────────────────────────────
+          const { isLoggedIn, getUserEmail, logoutUser } = await import("/js/auth.js");
+
+          const button       = document.getElementById("accountButton");
+          const dropdown     = document.getElementById("accountDropdown");
+          const emailDisplay = document.getElementById("userEmailDisplay");
+          const logoutBtn    = document.getElementById("logoutBtn");
+
+          if (!button || !dropdown || !emailDisplay || !logoutBtn) return;
+
+          function updateUI() {
+            const loggedIn = isLoggedIn();
+            button.textContent = loggedIn ? "Account" : "Login";
+            emailDisplay.textContent = loggedIn ? (getUserEmail() || "User") : "Not logged in";
+          }
+
+          button.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (!isLoggedIn()) {
+              window.location.href = "/login.html";
+              return;
+            }
+            dropdown.classList.toggle("hidden");
+          });
+
+          document.addEventListener("click", (e) => {
+            if (!button.contains(e.target) && !dropdown.contains(e.target)) {
+              dropdown.classList.add("hidden");
+            }
+          });
+
+          logoutBtn.addEventListener("click", () => {
+            logoutUser();
+            updateUI();
+            dropdown.classList.add("hidden");
+          });
+
+          updateUI();
+        } catch (err) {
+          console.error("Navbar load error:", err);
+        }
+      }
+
+      loadNavbar();
     </script>
   </head>
 
@@ -109,39 +172,7 @@
       This product uses the TMDB API but is not endorsed or certified by TMDB.
     </footer>
 
-    <!-- Navbar + Theme Toggle -->
-    <script>
-      const htmlEl = document.documentElement;
-      const sunIcon = "/assets/images/sun-regular.png";
-      const moonIcon = "/assets/images/moon-white.png";
-
-      async function loadNavbar() {
-        try {
-          const res = await fetch("components/navbar.html");
-          if (!res.ok) throw new Error("Navbar fetch failed");
-          document.getElementById("navbar").innerHTML = await res.text();
-
-          const toggleBtn = document.getElementById("themeToggle");
-          const themeIcon = document.getElementById("themeIcon");
-          if (!toggleBtn || !themeIcon) return;
-
-          function setIcon() {
-            themeIcon.src = htmlEl.classList.contains("dark") ? moonIcon : sunIcon;
-          }
-          setIcon();
-
-          toggleBtn.addEventListener("click", () => {
-            htmlEl.classList.toggle("dark");
-            localStorage.setItem("theme", htmlEl.classList.contains("dark") ? "dark" : "light");
-            setIcon();
-          });
-        } catch (err) {
-          console.error("Navbar load error:", err);
-        }
-      }
-
-      loadNavbar();
-    </script>
+    
 
     <!-- Feedback Form Handler -->
     <script>

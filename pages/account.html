@@ -8,7 +8,10 @@
     <link rel="stylesheet" href="/css/global.css" />
 
     <!-- Tailwind -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class" };
+    </script>
 
     <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -17,94 +20,313 @@
       href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap"
       rel="stylesheet"
     />
+
+    <style>
+      body { font-family: "Ubuntu", sans-serif; }
+    </style>
+
+    <!-- Apply saved theme immediately -->
+    <script>
+      const html = document.documentElement;
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme === "dark") html.classList.add("dark");
+      else if (savedTheme === "light") html.classList.remove("dark");
+    </script>
   </head>
 
-  <body
-    class="relative font-[Ubuntu] min-h-screen text-white overflow-hidden bg-black"
-  >
-    <!-- PREMIUM BACKGROUND -->
+  <body class="relative min-h-screen overflow-hidden transition-colors duration-300 bg-white dark:bg-black text-slate-900 dark:text-white">
+
+    <!-- BACKGROUND -->
     <div class="fixed inset-0 -z-10 overflow-hidden">
-      <!-- Base -->
-      <div
-        class="absolute inset-0 bg-gradient-to-br from-black via-zinc-900 to-black"
-      ></div>
-
-      <!-- Silver glow top -->
-      <div
-        class="absolute -top-64 -left-64 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(255,255,255,0.08),transparent_70%)] blur-3xl"
-      ></div>
-
-      <!-- Silver glow bottom -->
-      <div
-        class="absolute -bottom-64 -right-64 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(255,255,255,0.06),transparent_70%)] blur-3xl"
-      ></div>
-
-      <!-- Center spotlight -->
-      <div
-        class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05),transparent_70%)]"
-      ></div>
+      <div class="absolute inset-0 bg-gradient-to-br from-white/5 via-zinc-100 to-white/10 dark:from-black dark:via-zinc-900 dark:to-black"></div>
     </div>
 
     <!-- NAVBAR -->
     <div id="navbar"></div>
 
     <!-- ACCOUNT SECTION -->
-    <section
-      class="flex items-center justify-center min-h-[calc(100vh-4rem)] px-6"
-    >
-      <div
-        class="relative w-full max-w-md p-10 rounded-3xl bg-white/5 backdrop-blur-2xl border border-white/10 shadow-[0_0_60px_rgba(255,255,255,0.05)] text-center"
-      >
-        <!-- Subtle glow border -->
-        <div
-          class="absolute inset-0 rounded-3xl border border-white/5 pointer-events-none"
-        ></div>
+    <section class="flex items-center justify-center min-h-[calc(100vh-4rem)] px-6">
+      <div class="relative w-full max-w-md p-10 rounded-3xl bg-white/70 dark:bg-black/70 backdrop-blur-2xl border border-black/10 dark:border-white/10">
 
-        <h1 class="text-4xl font-bold mb-4 tracking-wide">My Account</h1>
+        <h1 class="text-4xl font-bold mb-4 text-center">My Account</h1>
 
-        <p class="text-slate-400 mb-2">Logged in as</p>
+        <p class="text-slate-500 dark:text-slate-400 text-center">Logged in as</p>
+        <p id="userEmail" class="text-lg font-semibold text-center mt-2 mb-8"></p>
 
-        <p id="userEmail" class="text-lg font-semibold mb-10 text-white"></p>
+        <!-- Status message -->
+        <p id="statusMsg" class="text-center text-sm mb-4 hidden"></p>
 
-        <!-- Logout Button -->
-        <button
-          id="logoutBtn"
-          class="w-full py-3 rounded-xl font-semibold bg-gradient-to-r from-slate-200 via-white to-slate-200 text-black hover:scale-[1.02] transition-all duration-300 shadow-[0_10px_30px_rgba(255,255,255,0.15)]"
-        >
-          Logout
-        </button>
+        <!-- Buttons -->
+        <div class="space-y-3">
+          <button id="changeEmailBtn"
+            class="w-full py-3 rounded-xl bg-black text-white dark:bg-white dark:text-black font-semibold hover:scale-[1.02] transition">
+            Change Email
+          </button>
+
+          <button id="changePasswordBtn"
+            class="w-full py-3 rounded-xl bg-black text-white dark:bg-white dark:text-black font-semibold hover:scale-[1.02] transition">
+            Change Password
+          </button>
+
+          <button id="logoutBtn"
+            class="w-full py-3 rounded-xl bg-red-600 text-white font-semibold hover:scale-[1.02] transition">
+            Logout
+          </button>
+        </div>
       </div>
     </section>
 
+    <!-- ===== CHANGE EMAIL MODAL ===== -->
+    <div id="emailModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center px-6">
+      <div class="w-full max-w-sm bg-white dark:bg-zinc-900 rounded-2xl p-8 border border-black/10 dark:border-white/10 shadow-xl">
+        <h2 class="text-2xl font-bold mb-6">Change Email</h2>
+
+        <div class="mb-4">
+          <label class="block text-sm mb-1">New Email</label>
+          <input type="email" id="newEmail"
+            class="w-full px-4 py-3 rounded-xl border border-black/10 dark:border-white/10 bg-white/80 dark:bg-black/60 outline-none focus:ring-2 focus:ring-black dark:focus:ring-white"/>
+        </div>
+
+        <div class="mb-6">
+          <label class="block text-sm mb-1">Confirm Password</label>
+          <input type="password" id="emailConfirmPassword"
+            class="w-full px-4 py-3 rounded-xl border border-black/10 dark:border-white/10 bg-white/80 dark:bg-black/60 outline-none focus:ring-2 focus:ring-black dark:focus:ring-white"/>
+        </div>
+
+        <p id="emailModalError" class="text-red-500 text-sm mb-4 hidden"></p>
+
+        <div class="flex gap-3">
+          <button id="cancelEmailBtn"
+            class="flex-1 py-3 rounded-xl border border-black/20 dark:border-white/20 font-semibold hover:bg-black/5 dark:hover:bg-white/10 transition">
+            Cancel
+          </button>
+          <button id="submitEmailBtn"
+            class="flex-1 py-3 rounded-xl bg-black text-white dark:bg-white dark:text-black font-semibold hover:scale-[1.02] transition">
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CHANGE PASSWORD MODAL ===== -->
+    <div id="passwordModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center px-6">
+      <div class="w-full max-w-sm bg-white dark:bg-zinc-900 rounded-2xl p-8 border border-black/10 dark:border-white/10 shadow-xl">
+        <h2 class="text-2xl font-bold mb-6">Change Password</h2>
+
+        <div class="mb-4">
+          <label class="block text-sm mb-1">New Password</label>
+          <input type="password" id="newPassword"
+            class="w-full px-4 py-3 rounded-xl border border-black/10 dark:border-white/10 bg-white/80 dark:bg-black/60 outline-none focus:ring-2 focus:ring-black dark:focus:ring-white"/>
+        </div>
+
+        <div class="mb-6">
+          <label class="block text-sm mb-1">Confirm New Password</label>
+          <input type="password" id="confirmNewPassword"
+            class="w-full px-4 py-3 rounded-xl border border-black/10 dark:border-white/10 bg-white/80 dark:bg-black/60 outline-none focus:ring-2 focus:ring-black dark:focus:ring-white"/>
+        </div>
+
+        <p id="passwordModalError" class="text-red-500 text-sm mb-4 hidden"></p>
+
+        <div class="flex gap-3">
+          <button id="cancelPasswordBtn"
+            class="flex-1 py-3 rounded-xl border border-black/20 dark:border-white/20 font-semibold hover:bg-black/5 dark:hover:bg-white/10 transition">
+            Cancel
+          </button>
+          <button id="submitPasswordBtn"
+            class="flex-1 py-3 rounded-xl bg-black text-white dark:bg-white dark:text-black font-semibold hover:scale-[1.02] transition">
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- FOOTER -->
-    <footer
-      class="text-center text-slate-500 text-sm py-6 border-t border-white/5"
-    >
+    <footer class="text-center text-slate-500 text-sm py-6 border-t border-black/10 dark:border-white/10">
       This product uses the TMDB API but is not endorsed or certified by TMDB.
     </footer>
 
     <!-- NAVBAR LOADER -->
-    <script>
-      const res = await fetch("components/navbar.html");
-        .then((res) => res.text())
-        .then((data) => {
-          document.getElementById("navbar").innerHTML = data;
-        });
-    </script>
-
-    <!-- AUTH LOGIC -->
     <script type="module">
-      import { isLoggedIn, getUserEmail, logoutUser } from "../js/auth.js";
+      const htmlEl = document.documentElement;
+      const sunIcon = "/assets/sun-regular.png";
+      const moonIcon = "/assets/moon-white.png";
 
-      if (!isLoggedIn()) {
-        window.location.href = "login.html";
+      async function loadNavbar() {
+        try {
+          const res = await fetch("/components/navbar.html");
+          if (!res.ok) throw new Error("Navbar fetch failed");
+          document.getElementById("navbar").innerHTML = await res.text();
+
+          const toggleBtn = document.getElementById("themeToggle");
+          const themeIcon = document.getElementById("themeIcon");
+
+          if (toggleBtn && themeIcon) {
+            function setIcon() {
+              themeIcon.src = htmlEl.classList.contains("dark") ? moonIcon : sunIcon;
+            }
+            setIcon();
+            toggleBtn.addEventListener("click", () => {
+              htmlEl.classList.toggle("dark");
+              localStorage.setItem("theme", htmlEl.classList.contains("dark") ? "dark" : "light");
+              setIcon();
+            });
+          }
+        } catch (err) {
+          console.error("Navbar load error:", err);
+        }
       }
 
+      loadNavbar();
+    </script>
+
+    <!-- AUTH + ACCOUNT LOGIC -->
+    <script type="module">
+      import { isLoggedIn, getUserEmail, logoutUser } from "/js/auth.js";
+
+      const API = "http://localhost:5000/api";
+
+      // ── Guard ──────────────────────────────────────────────────
+      if (!isLoggedIn()) {
+        window.location.href = "/index.html";
+      }
+
+      // ── Display email ──────────────────────────────────────────
       document.getElementById("userEmail").textContent = getUserEmail();
 
-      document
-        .getElementById("logoutBtn")
-        .addEventListener("click", logoutUser);
+      // ── Status message helper ──────────────────────────────────
+      function showStatus(msg, isError = false) {
+        const el = document.getElementById("statusMsg");
+        el.textContent = msg;
+        el.className = `text-center text-sm mb-4 ${isError ? "text-red-500" : "text-green-500"}`;
+        el.classList.remove("hidden");
+        setTimeout(() => el.classList.add("hidden"), 4000);
+      }
+
+      // ── Modal helpers ──────────────────────────────────────────
+      function openModal(id) {
+        document.getElementById(id).classList.remove("hidden");
+      }
+      function closeModal(id) {
+        document.getElementById(id).classList.add("hidden");
+      }
+      function showModalError(id, msg) {
+        const el = document.getElementById(id);
+        el.textContent = msg;
+        el.classList.remove("hidden");
+      }
+      function clearModalError(id) {
+        const el = document.getElementById(id);
+        el.textContent = "";
+        el.classList.add("hidden");
+      }
+
+      // ── Logout ─────────────────────────────────────────────────
+      document.getElementById("logoutBtn").addEventListener("click", () => {
+        logoutUser();
+      });
+
+      // ── Change Email ───────────────────────────────────────────
+      document.getElementById("changeEmailBtn").addEventListener("click", () => {
+        clearModalError("emailModalError");
+        document.getElementById("newEmail").value = "";
+        document.getElementById("emailConfirmPassword").value = "";
+        openModal("emailModal");
+      });
+
+      document.getElementById("cancelEmailBtn").addEventListener("click", () => {
+        closeModal("emailModal");
+      });
+
+      document.getElementById("submitEmailBtn").addEventListener("click", async () => {
+        const newEmail = document.getElementById("newEmail").value.trim();
+        const password = document.getElementById("emailConfirmPassword").value.trim();
+
+        if (!newEmail || !password) {
+          return showModalError("emailModalError", "Please fill in all fields.");
+        }
+
+        try {
+          const res = await fetch(`${API}/change-email`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${localStorage.getItem("token")}`
+            },
+            body: JSON.stringify({ newEmail, password })
+          });
+
+          const data = await res.json();
+
+          if (!res.ok) return showModalError("emailModalError", data.message);
+
+          // Update stored email
+          localStorage.setItem("userEmail", newEmail);
+          document.getElementById("userEmail").textContent = newEmail;
+
+          closeModal("emailModal");
+          showStatus("Email updated successfully.");
+        } catch (err) {
+          showModalError("emailModalError", "Something went wrong. Try again.");
+        }
+      });
+
+      // ── Change Password ────────────────────────────────────────
+      document.getElementById("changePasswordBtn").addEventListener("click", () => {
+        clearModalError("passwordModalError");
+        document.getElementById("newPassword").value = "";
+        document.getElementById("confirmNewPassword").value = "";
+        openModal("passwordModal");
+      });
+
+      document.getElementById("cancelPasswordBtn").addEventListener("click", () => {
+        closeModal("passwordModal");
+      });
+
+      document.getElementById("submitPasswordBtn").addEventListener("click", async () => {
+        const newPassword = document.getElementById("newPassword").value.trim();
+        const confirmNewPassword = document.getElementById("confirmNewPassword").value.trim();
+
+        if (!newPassword || !confirmNewPassword) {
+          return showModalError("passwordModalError", "Please fill in all fields.");
+        }
+
+        if (newPassword !== confirmNewPassword) {
+          return showModalError("passwordModalError", "Passwords do not match.");
+        }
+
+        if (newPassword.length < 6) {
+          return showModalError("passwordModalError", "Password must be at least 6 characters.");
+        }
+
+        try {
+          const res = await fetch(`${API}/change-password`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${localStorage.getItem("token")}`
+            },
+            body: JSON.stringify({ newPassword })
+          });
+
+          const data = await res.json();
+
+          if (!res.ok) return showModalError("passwordModalError", data.message);
+
+          closeModal("passwordModal");
+          showStatus("Password updated successfully.");
+        } catch (err) {
+          showModalError("passwordModalError", "Something went wrong. Try again.");
+        }
+      });
+
+      // ── Close modals on backdrop click ─────────────────────────
+      document.getElementById("emailModal").addEventListener("click", (e) => {
+        if (e.target === e.currentTarget) closeModal("emailModal");
+      });
+      document.getElementById("passwordModal").addEventListener("click", (e) => {
+        if (e.target === e.currentTarget) closeModal("passwordModal");
+      });
     </script>
+
   </body>
 </html>

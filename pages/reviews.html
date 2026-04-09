@@ -8,6 +8,16 @@
     <script>
       tailwind.config = { darkMode: "class" };
     </script>
+
+    <!-- Prevent flash + apply saved theme -->
+    <script>
+      const html = document.documentElement;
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme === "dark") html.classList.add("dark");
+      else if (savedTheme === "light") html.classList.remove("dark");
+      else if (window.matchMedia("(prefers-color-scheme: dark)").matches)
+        html.classList.add("dark");
+    </script>
   </head>
 
   <body
@@ -31,60 +41,86 @@
 
     <section class="max-w-7xl mx-auto px-6 pb-24">
       <div id="content" class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10"></div>
-
-      <!-- Load More Button -->
       <div class="text-center mt-12">
-        <button
-          id="showMoreBtn"
-          class="px-8 py-3 bg-white dark:bg-zinc-800 text-black dark:text-white rounded-xl font-semibold hover:scale-105 transition"
-        >
+        <button id="showMoreBtn" class="px-8 py-3 bg-white dark:bg-zinc-800 text-black dark:text-white rounded-xl font-semibold hover:scale-105 transition">
           Load More
         </button>
       </div>
     </section>
 
-    <!-- NAVBAR + THEME TOGGLE -->
-    <script>
+    <!-- NAVBAR + THEME + ACCOUNT -->
+    <script type="module">
       const htmlEl = document.documentElement;
-      const sunIcon = "/assets/images/sun-regular.png";
-      const moonIcon = "/assets/images/moon-white.png";
+      const sunIcon = "/assets/sun-regular.png";
+      const moonIcon = "/assets/moon-white.png";
 
       async function loadNavbar() {
         try {
-          const res = await fetch("components/navbar.html");
+          const res = await fetch("/components/navbar.html");
           if (!res.ok) throw new Error("Navbar fetch failed");
           document.getElementById("navbar").innerHTML = await res.text();
 
+          // ── Theme toggle ──────────────────────────────────────────
           const toggleBtn = document.getElementById("themeToggle");
           const themeIcon = document.getElementById("themeIcon");
-          if (!toggleBtn || !themeIcon) return;
-
-          function setIcon() {
-            themeIcon.src = htmlEl.classList.contains("dark") ? moonIcon : sunIcon;
-          }
-          setIcon();
-
-          toggleBtn.addEventListener("click", () => {
-            htmlEl.classList.toggle("dark");
-            localStorage.setItem("theme", htmlEl.classList.contains("dark") ? "dark" : "light");
+          if (toggleBtn && themeIcon) {
+            function setIcon() {
+              themeIcon.src = htmlEl.classList.contains("dark") ? moonIcon : sunIcon;
+            }
             setIcon();
+            toggleBtn.addEventListener("click", () => {
+              htmlEl.classList.toggle("dark");
+              localStorage.setItem("theme", htmlEl.classList.contains("dark") ? "dark" : "light");
+              setIcon();
+            });
+          }
+
+          // ── Account dropdown ──────────────────────────────────────
+          const { isLoggedIn, getUserEmail, logoutUser } = await import("/js/auth.js");
+
+          const button       = document.getElementById("accountButton");
+          const dropdown     = document.getElementById("accountDropdown");
+          const emailDisplay = document.getElementById("userEmailDisplay");
+          const logoutBtn    = document.getElementById("logoutBtn");
+
+          if (!button || !dropdown || !emailDisplay || !logoutBtn) return;
+
+          function updateUI() {
+            const loggedIn = isLoggedIn();
+            button.textContent = loggedIn ? "Account" : "Login";
+            emailDisplay.textContent = loggedIn ? (getUserEmail() || "User") : "Not logged in";
+          }
+
+          button.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (!isLoggedIn()) {
+              window.location.href = "/login.html";
+              return;
+            }
+            dropdown.classList.toggle("hidden");
           });
+
+          document.addEventListener("click", (e) => {
+            if (!button.contains(e.target) && !dropdown.contains(e.target)) {
+              dropdown.classList.add("hidden");
+            }
+          });
+
+          logoutBtn.addEventListener("click", () => {
+            logoutUser();
+            updateUI();
+            dropdown.classList.add("hidden");
+          });
+
+          updateUI();
         } catch (err) {
           console.error("Navbar load error:", err);
         }
       }
 
-      // Apply saved theme
-      const savedTheme = localStorage.getItem("theme");
-      if (savedTheme === "dark") htmlEl.classList.add("dark");
-      else if (savedTheme === "light") htmlEl.classList.remove("dark");
-      else if (window.matchMedia("(prefers-color-scheme: dark)").matches)
-        htmlEl.classList.add("dark");
-
       loadNavbar();
     </script>
 
-    <!-- Original Reviews JS -->
     <script type="module">
       import { fetchTopRated } from "../js/api.js";
       fetchTopRated();
