@@ -85,7 +85,7 @@
 
     <!-- NAVBAR LOADER -->
     <script>
-      fetch("../components/navbar.html")
+      const res = await fetch("components/navbar.html");
         .then((res) => res.text())
         .then((data) => {
           document.getElementById("navbar").innerHTML = data;

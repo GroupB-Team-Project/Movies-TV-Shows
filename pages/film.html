@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Films | ViewIT</title>
-    <link rel="stylesheet" href="/css/global.css" />
+    <!-- Relative path to CSS -->
+    <link rel="stylesheet" href="../css/global.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = { darkMode: "class" };
@@ -14,10 +15,7 @@
   <body class="relative min-h-screen overflow-x-hidden transition-colors duration-300 bg-white dark:bg-black text-slate-900 dark:text-white">
     <!-- PREMIUM BACKGROUND -->
     <div class="fixed inset-0 -z-10 overflow-hidden">
-      <!-- Dark/Light gradient overlay -->
       <div class="absolute inset-0 bg-gradient-to-br from-white/10 dark:from-black via-white/5 dark:via-zinc-900 to-white/5 dark:to-black transition-colors duration-300"></div>
-
-      <!-- Radial highlights -->
       <div class="absolute -top-64 -left-64 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(0,0,0,0.05),transparent_70%)] dark:bg-[radial-gradient(circle,rgba(255,255,255,0.03),transparent_70%)] blur-3xl transition-colors duration-300"></div>
       <div class="absolute -bottom-64 -right-64 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(0,0,0,0.04),transparent_70%)] dark:bg-[radial-gradient(circle,rgba(255,255,255,0.02),transparent_70%)] blur-3xl transition-colors duration-300"></div>
     </div>
@@ -35,8 +33,6 @@
     <!-- MOVIE GRID -->
     <section class="max-w-7xl mx-auto px-6 pb-24">
       <div id="content" class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10"></div>
-
-      <!-- LOAD MORE BUTTON -->
       <div class="text-center mt-12">
         <button class="px-8 py-3 rounded-xl font-semibold bg-white text-black dark:bg-zinc-800 dark:text-white hover:scale-105 transition" id="showMoreBtn">
           Load More
@@ -44,14 +40,15 @@
       </div>
     </section>
 
-    <!-- NAVBAR + THEME TOGGLE + ORIGINAL JS -->
+    <!-- NAVBAR + THEME TOGGLE -->
     <script>
       const htmlEl = document.documentElement;
-      const sunIcon = "/assets/images/sun-regular.png";
-      const moonIcon = "/assets/images/moon-white.png";
+      const sunIcon = "../assets/images/sun-regular.png";
+      const moonIcon = "../assets/images/moon-white.png";
 
       async function loadNavbar() {
         try {
+          // Corrected relative path
           const res = await fetch("../components/navbar.html");
           if (!res.ok) throw new Error("Navbar fetch failed");
           document.getElementById("navbar").innerHTML = await res.text();
@@ -75,7 +72,6 @@
         }
       }
 
-      // Apply saved theme
       const savedTheme = localStorage.getItem("theme");
       if (savedTheme === "dark") htmlEl.classList.add("dark");
       else if (savedTheme === "light") htmlEl.classList.remove("dark");
@@ -84,9 +80,9 @@
 
       loadNavbar();
     </script>
-    <script src="../js/movieActions.js"></script>
 
-    <!-- Original main.js -->
+    <!-- JS -->
+    <script src="../js/movieActions.js"></script>
     <script type="module" src="../js/main.js"></script>
   </body>
 </html>
