@@ -95,15 +95,20 @@
 
         <!-- Submit -->
         <button type="submit" id="submitBtn" disabled
-          class="w-full py-3 rounded-xl font-semibold
-          bg-gradient-to-r from-white via-slate-200 to-white dark:from-black dark:via-zinc-800 dark:to-black
-          text-black dark:text-white opacity-40 cursor-not-allowed transition-all duration-300">
+          class="w-full py-3 rounded-xl font-semibold bg-black text-white dark:bg-white dark:text-black
+          opacity-40 cursor-not-allowed transition-all duration-300">
           Sign Up
         </button>
 
-        <div class="text-center text-sm text-slate-600 dark:text-slate-400 mt-8 transition-colors duration-300">
-          Already have an account? <a href="login.html" class="hover:text-black dark:hover:text-white underline transition">Login</a>
+        <!-- Already have an account -->
+        <div class="text-center mt-4">
+          <span class="text-sm text-slate-500 dark:text-slate-400">Already have an account? </span>
+          <a href="/login.html"
+            class="text-sm font-semibold text-black dark:text-white hover:underline transition-colors duration-200">
+            Sign In
+          </a>
         </div>
+
       </form>
     </section>
 
@@ -120,7 +125,7 @@
 
       async function loadNavbar() {
         try {
-          const res = await fetch("components/navbar.html");
+          const res = await fetch("/components/navbar.html");
           if (!res.ok) throw new Error("Navbar fetch failed");
           document.getElementById("navbar").innerHTML = await res.text();
 
@@ -148,6 +153,9 @@
 
     <!-- Password & Form JS -->
     <script>
+      // ✅ Dynamically use current origin so it works both locally and on Railway
+      const API_BASE = window.location.origin;
+
       const passwordInput = document.getElementById("password");
       const confirmInput = document.getElementById("confirm_password");
       const strengthBar = document.getElementById("strengthBar");
@@ -179,7 +187,7 @@
           strengthText.textContent = "";
           passwordStrong = false;
         } else {
-          const level = levels[Math.max(strength-1,0)];
+          const level = levels[Math.max(strength - 1, 0)];
           strengthBar.className = `h-full transition-all duration-300 ${level.color}`;
           strengthBar.style.width = level.width;
           strengthText.textContent = level.text;
@@ -221,15 +229,14 @@
         const btn = document.getElementById(btnId);
         const input = document.getElementById(inputId);
         btn.addEventListener("click", () => {
-          if (input.type === "password") { input.type="text"; btn.textContent="Hide"; }
-          else { input.type="password"; btn.textContent="Show"; }
+          if (input.type === "password") { input.type = "text"; btn.textContent = "Hide"; }
+          else { input.type = "password"; btn.textContent = "Show"; }
         });
       }
-      setupToggle("togglePassword","password");
-      setupToggle("toggleConfirm","confirm_password");
+      setupToggle("togglePassword", "password");
+      setupToggle("toggleConfirm", "confirm_password");
 
-      // --- NEW: Send registration data to server ---
-      document.getElementById("registerForm").addEventListener("submit", async function(e){
+      document.getElementById("registerForm").addEventListener("submit", async function (e) {
         e.preventDefault();
         if (!passwordStrong || !passwordsMatch) return;
 
@@ -237,7 +244,7 @@
         const password = passwordInput.value.trim();
 
         try {
-          const res = await fetch("http://localhost:5000/api/register", {
+          const res = await fetch(`${API_BASE}/api/register`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password })
@@ -247,7 +254,7 @@
           if (!res.ok) throw new Error(data.message || "Registration failed");
 
           alert(data.message);
-          window.location.href = "login.html";
+          window.location.href = "/login.html";
         } catch (err) {
           alert(err.message);
         }

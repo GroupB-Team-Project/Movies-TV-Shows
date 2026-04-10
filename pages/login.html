@@ -25,8 +25,9 @@
 
     <!-- Apply saved theme immediately -->
     <script>
+      const htmlEl = document.documentElement;
+
       const savedTheme = localStorage.getItem("theme");
-      
       if (savedTheme === "dark") htmlEl.classList.add("dark");
       else if (savedTheme === "light") htmlEl.classList.remove("dark");
       else if (window.matchMedia("(prefers-color-scheme: dark)").matches)
@@ -84,6 +85,23 @@
           Sign In
         </button>
 
+        <!-- Forgot Password -->
+        <div class="text-center mt-4">
+          <a href="/forgotPassword.html"
+            class="text-sm text-slate-500 dark:text-slate-400 hover:text-black dark:hover:text-white transition-colors duration-200">
+            Forgot Password?
+          </a>
+        </div>
+
+        <!-- Create Account -->
+        <div class="text-center mt-3">
+          <span class="text-sm text-slate-500 dark:text-slate-400">Don't have an account? </span>
+          <a href="/register.html"
+            class="text-sm font-semibold text-black dark:text-white hover:underline transition-colors duration-200">
+            Create an Account
+          </a>
+        </div>
+
       </form>
     </section>
 
@@ -136,6 +154,9 @@
 
     <!-- Login handler -->
     <script>
+      // ✅ Dynamically use current origin so it works both locally and on Railway
+      const API_BASE = window.location.origin;
+
       const loginForm = document.getElementById("loginForm");
       const emailInput = document.getElementById("email");
 
@@ -151,7 +172,7 @@
         }
 
         try {
-          const res = await fetch("http://localhost:5000/api/login", {
+          const res = await fetch(`${API_BASE}/api/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password })
