@@ -4,25 +4,38 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>About | ViewIT</title>
-    <link rel="stylesheet" href="/css/global.css" />
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class" };
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap"
       rel="stylesheet"
     />
+    <style>
+      body { font-family: 'Ubuntu', sans-serif; }
+    </style>
+
+    <!-- Prevent flash + apply saved theme -->
+    <script>
+      const html = document.documentElement;
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme === "dark") html.classList.add("dark");
+      else if (savedTheme === "light") html.classList.remove("dark");
+      else if (window.matchMedia("(prefers-color-scheme: dark)").matches)
+        html.classList.add("dark");
+    </script>
   </head>
 
-  <body class="bg-black text-white min-h-screen overflow-x-hidden">
-    <body class="font-[Ubuntu] bg-black text-white min-h-screen"></body>
-
+  <body class="bg-white dark:bg-black text-slate-900 dark:text-white min-h-screen transition-colors duration-300">
     <div id="navbar"></div>
 
     <!-- HEADER -->
     <section class="py-24 text-center">
-      <h1 class="text-5xl font-bold mb-4">About ViewIT</h1>
-      <p class="text-slate-400 max-w-2xl mx-auto">
+      <h1 class="text-5xl font-bold mb-4 transition-colors duration-300">About ViewIT</h1>
+      <p class="max-w-2xl mx-auto text-slate-700 dark:text-slate-400 transition-colors duration-300">
         Discover the purpose behind ViewIT and the team that built it.
       </p>
     </section>
@@ -31,90 +44,127 @@
     <section class="max-w-7xl mx-auto px-6 pb-24">
       <div class="grid md:grid-cols-3 gap-10">
         <!-- WHAT IS VIEWIT -->
-        <div
-          class="p-8 rounded-3xl bg-gradient-to-br from-zinc-950 via-black to-zinc-900 border border-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.8)] transition hover:-translate-y-2 duration-500"
-        >
-          <h2 class="text-2xl font-bold mb-6">What is ViewIT?</h2>
-
-          <div class="space-y-6 text-slate-300 leading-relaxed">
-            <p>
-              ViewIT is a web-based application designed to help users discover
-              upcoming and recently released movies and TV shows in one simple
-              and accessible platform.
-            </p>
-
-            <p>
-              Instead of visiting multiple websites to find release dates,
-              ratings, and availability, ViewIT brings this information together
-              using reliable data from the TMDB API.
-            </p>
+        <div class="p-8 rounded-3xl
+                    bg-gradient-to-br from-zinc-100 dark:from-zinc-950
+                    via-white/5 dark:via-black to-zinc-200 dark:to-zinc-900
+                    border border-black/10 dark:border-white/10
+                    shadow-md dark:shadow-[0_30px_80px_rgba(0,0,0,0.8)]
+                    transition-colors duration-300 hover:-translate-y-2 duration-500">
+          <h2 class="text-2xl font-bold mb-6 transition-colors duration-300">What is ViewIT?</h2>
+          <div class="space-y-6 leading-relaxed text-slate-700 dark:text-slate-300 transition-colors duration-300">
+            <p>ViewIT is a web-based application designed to help users discover upcoming and recently released movies and TV shows in one simple and accessible platform.</p>
+            <p>Instead of visiting multiple websites to find release dates, ratings, and availability, ViewIT brings this information together using reliable data from the TMDB API.</p>
           </div>
         </div>
 
         <!-- OUR AIM -->
-        <div
-          class="p-8 rounded-3xl bg-gradient-to-br from-zinc-950 via-black to-zinc-900 border border-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.8)] transition hover:-translate-y-2 duration-500"
-        >
-          <h2 class="text-2xl font-bold mb-6">Our Aim</h2>
-
-          <div class="space-y-6 text-slate-300 leading-relaxed">
-            <p>
-              The aim of ViewIT is to provide a clean, ad-free, and easy-to-use
-              experience for film and TV fans.
-            </p>
-
-            <p>
-              We focus on delivering quick access to accurate, up-to-date
-              information without unnecessary clutter or distractions.
-            </p>
+        <div class="p-8 rounded-3xl
+                    bg-gradient-to-br from-zinc-100 dark:from-zinc-950
+                    via-white/5 dark:via-black to-zinc-200 dark:to-zinc-900
+                    border border-black/10 dark:border-white/10
+                    shadow-md dark:shadow-[0_30px_80px_rgba(0,0,0,0.8)]
+                    transition-colors duration-300 hover:-translate-y-2 duration-500">
+          <h2 class="text-2xl font-bold mb-6 transition-colors duration-300">Our Aim</h2>
+          <div class="space-y-6 leading-relaxed text-slate-700 dark:text-slate-300 transition-colors duration-300">
+            <p>The aim of ViewIT is to provide a clean, ad-free, and easy-to-use experience for film and TV fans.</p>
+            <p>We focus on delivering quick access to accurate, up-to-date information without unnecessary clutter or distractions.</p>
           </div>
         </div>
 
         <!-- PROJECT TEAM -->
-        <div
-          class="p-8 rounded-3xl bg-gradient-to-br from-zinc-950 via-black to-zinc-900 border border-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.8)] transition hover:-translate-y-2 duration-500"
-        >
-          <h2 class="text-2xl font-bold mb-6">Project Team</h2>
-
-          <ul class="space-y-4 text-slate-300">
-            <li class="flex items-center gap-3">
-              <span class="w-2 h-2 bg-white rounded-full"></span>
-              Aaron Bridger
-            </li>
-
-            <li class="flex items-center gap-3">
-              <span class="w-2 h-2 bg-white rounded-full"></span>
-              Sarah Pettigrew
-            </li>
-
-            <li class="flex items-center gap-3">
-              <span class="w-2 h-2 bg-white rounded-full"></span>
-              Paul Moriarty
-            </li>
-
-            <li class="flex items-center gap-3">
-              <span class="w-2 h-2 bg-white rounded-full"></span>
-              Finn Boyd
-            </li>
+        <div class="p-8 rounded-3xl
+                    bg-gradient-to-br from-zinc-100 dark:from-zinc-950
+                    via-white/5 dark:via-black to-zinc-200 dark:to-zinc-900
+                    border border-black/10 dark:border-white/10
+                    shadow-md dark:shadow-[0_30px_80px_rgba(0,0,0,0.8)]
+                    transition-colors duration-300 hover:-translate-y-2 duration-500">
+          <h2 class="text-2xl font-bold mb-6 transition-colors duration-300">Project Team</h2>
+          <ul class="space-y-4 text-slate-700 dark:text-slate-300 transition-colors duration-300">
+            <li class="flex items-center gap-3"><span class="w-2 h-2 bg-black dark:bg-white rounded-full"></span>Aaron Bridger</li>
+            <li class="flex items-center gap-3"><span class="w-2 h-2 bg-black dark:bg-white rounded-full"></span>Sarah Pettigrew</li>
+            <li class="flex items-center gap-3"><span class="w-2 h-2 bg-black dark:bg-white rounded-full"></span>Paul Moriarty</li>
+            <li class="flex items-center gap-3"><span class="w-2 h-2 bg-black dark:bg-white rounded-full"></span>Finn Boyd</li>
           </ul>
         </div>
       </div>
     </section>
 
     <!-- FOOTER -->
-    <footer
-      class="text-center text-slate-500 text-sm py-6 border-t border-white/5"
-    >
+    <footer class="text-center text-slate-500 dark:text-slate-400 text-sm py-6 border-t border-black/10 dark:border-white/10 transition-colors duration-300">
       This product uses the TMDB API but is not endorsed or certified by TMDB.
     </footer>
 
-    <!-- NAVBAR LOAD -->
-    <script>
-      fetch("../components/navbar.html")
-        .then((res) => res.text())
-        .then((html) => {
-          document.getElementById("navbar").innerHTML = html;
-        });
+    <!-- NAVBAR + THEME + ACCOUNT -->
+    <script type="module">
+      const htmlEl = document.documentElement;
+      const sunIcon = "/assets/sun-regular.png";
+      const moonIcon = "/assets/moon-white.png";
+
+      async function loadNavbar() {
+        try {
+          const res = await fetch("/components/navbar.html");
+          if (!res.ok) throw new Error("Navbar fetch failed");
+          document.getElementById("navbar").innerHTML = await res.text();
+
+          // ── Theme toggle ──────────────────────────────────────────
+          const toggleBtn = document.getElementById("themeToggle");
+          const themeIcon = document.getElementById("themeIcon");
+          if (toggleBtn && themeIcon) {
+            function setIcon() {
+              themeIcon.src = htmlEl.classList.contains("dark") ? moonIcon : sunIcon;
+            }
+            setIcon();
+            toggleBtn.addEventListener("click", () => {
+              htmlEl.classList.toggle("dark");
+              localStorage.setItem("theme", htmlEl.classList.contains("dark") ? "dark" : "light");
+              setIcon();
+            });
+          }
+
+          // ── Account dropdown ──────────────────────────────────────
+          const { isLoggedIn, getUserEmail, logoutUser } = await import("/js/auth.js");
+
+          const button       = document.getElementById("accountButton");
+          const dropdown     = document.getElementById("accountDropdown");
+          const emailDisplay = document.getElementById("userEmailDisplay");
+          const logoutBtn    = document.getElementById("logoutBtn");
+
+          if (!button || !dropdown || !emailDisplay || !logoutBtn) return;
+
+          function updateUI() {
+            const loggedIn = isLoggedIn();
+            button.textContent = loggedIn ? "Account" : "Login";
+            emailDisplay.textContent = loggedIn ? (getUserEmail() || "User") : "Not logged in";
+          }
+
+          button.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (!isLoggedIn()) {
+              window.location.href = "/login.html";
+              return;
+            }
+            dropdown.classList.toggle("hidden");
+          });
+
+          document.addEventListener("click", (e) => {
+            if (!button.contains(e.target) && !dropdown.contains(e.target)) {
+              dropdown.classList.add("hidden");
+            }
+          });
+
+          logoutBtn.addEventListener("click", () => {
+            logoutUser();
+            updateUI();
+            dropdown.classList.add("hidden");
+          });
+
+          updateUI();
+        } catch (err) {
+          console.error("Navbar load error:", err);
+        }
+      }
+
+      loadNavbar();
     </script>
   </body>
 </html>

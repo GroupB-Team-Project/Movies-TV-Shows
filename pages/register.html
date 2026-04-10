@@ -5,147 +5,148 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Register | ViewIT</title>
 
-    <link rel="stylesheet" href="/css/global.css" />
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class" };
+    </script>
 
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap"
       rel="stylesheet"
     />
+
+    <style>
+      body { font-family: 'Ubuntu', sans-serif; }
+    </style>
+
+    <!-- Apply saved theme immediately -->
+    <script>
+      const html = document.documentElement;
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme === "dark") html.classList.add("dark");
+      else if (savedTheme === "light") html.classList.remove("dark");
+      else if (window.matchMedia("(prefers-color-scheme: dark)").matches)
+        html.classList.add("dark");
+    </script>
   </head>
 
-  <body class="relative font-[Ubuntu] min-h-screen text-white bg-black">
-    <!-- PREMIUM BACKGROUND -->
-    <div class="fixed inset-0 -z-10">
-      <div
-        class="absolute inset-0 bg-gradient-to-br from-black via-zinc-900 to-black"
-      ></div>
-      <div
-        class="absolute -top-64 -left-64 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(255,255,255,0.08),transparent_70%)] blur-3xl"
-      ></div>
-      <div
-        class="absolute -bottom-64 -right-64 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(255,255,255,0.06),transparent_70%)] blur-3xl"
-      ></div>
+  <body class="relative min-h-screen overflow-hidden transition-colors duration-300 bg-white dark:bg-black text-slate-900 dark:text-white">
+
+    <!-- Background -->
+    <div class="fixed inset-0 -z-10 overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-white/5 via-zinc-100 to-white/10 dark:from-black dark:via-zinc-900 dark:to-black"></div>
+      <div class="absolute -top-64 -left-64 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(0,0,0,0.02),transparent_70%)] dark:bg-[radial-gradient(circle,rgba(255,255,255,0.08),transparent_70%)] blur-3xl"></div>
+      <div class="absolute -bottom-64 -right-64 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(0,0,0,0.02),transparent_70%)] dark:bg-[radial-gradient(circle,rgba(255,255,255,0.06),transparent_70%)] blur-3xl"></div>
     </div>
 
+    <!-- Navbar -->
     <div id="navbar"></div>
 
+    <!-- Register Form -->
     <section class="flex items-center justify-center py-20 px-6">
-      <form
-        id="registerForm"
-        class="relative w-full max-w-md p-10 rounded-3xl bg-white/5 backdrop-blur-2xl border border-white/10 shadow-[0_0_60px_rgba(255,255,255,0.05)]"
+      <form id="registerForm"
+        class="relative w-full max-w-md p-10 rounded-3xl transition-colors duration-300
+        bg-white/70 dark:bg-black/70 backdrop-blur-2xl border border-black/10 dark:border-white/10
+        shadow-[0_5px_20px_rgba(0,0,0,0.1)] dark:shadow-[0_10px_30px_rgba(255,255,255,0.05)]"
         novalidate
       >
-        <h1 class="text-4xl font-bold text-center mb-2">Create Account</h1>
-        <p class="text-slate-400 text-center mb-8">Join ViewIT</p>
+        <h1 class="text-4xl font-bold text-center mb-2 transition-colors duration-300">Create Account</h1>
+        <p class="text-slate-600 dark:text-slate-400 text-center mb-8 transition-colors duration-300">Join ViewIT</p>
 
         <!-- Email -->
         <div class="mb-6">
-          <label class="block text-sm mb-2 text-slate-300">Email</label>
-          <input
-            type="email"
-            id="email"
-            required
-            class="w-full px-4 py-3 rounded-xl bg-black/60 border border-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 transition"
-          />
+          <label class="block text-sm mb-2 text-slate-700 dark:text-slate-300 transition-colors duration-300">Email</label>
+          <input type="email" id="email" required
+            class="w-full px-4 py-3 rounded-xl border border-black/20 dark:border-white/10
+            bg-white/80 dark:bg-black/60 focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/30 transition-colors duration-300"/>
         </div>
 
         <!-- Password -->
         <div class="mb-4 relative">
-          <label class="block text-sm mb-2 text-slate-300">Password</label>
-
-          <input
-            type="password"
-            id="password"
-            required
-            class="w-full px-4 py-3 pr-12 rounded-xl bg-black/60 border border-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 transition"
-          />
-
-          <button
-            type="button"
-            id="togglePassword"
-            class="absolute right-4 top-[42px] text-slate-400 hover:text-white text-sm"
-          >
-            Show
-          </button>
+          <label class="block text-sm mb-2 text-slate-700 dark:text-slate-300 transition-colors duration-300">Password</label>
+          <input type="password" id="password" required
+            class="w-full px-4 py-3 pr-12 rounded-xl border border-black/20 dark:border-white/10
+            bg-white/80 dark:bg-black/60 focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/30 transition-colors duration-300"/>
+          <button type="button" id="togglePassword" class="absolute right-4 top-[42px] text-slate-500 dark:text-slate-400 hover:text-black dark:hover:text-white text-sm transition">Show</button>
         </div>
 
         <!-- Strength Bar -->
         <div class="mb-4">
-          <div class="h-2 w-full bg-white/10 rounded-full overflow-hidden">
-            <div
-              id="strengthBar"
-              class="h-full w-0 transition-all duration-300 rounded-full"
-            ></div>
+          <div class="h-2 w-full bg-black/10 dark:bg-white/10 rounded-full overflow-hidden">
+            <div id="strengthBar" class="h-full w-0 transition-all duration-300 rounded-full"></div>
           </div>
-          <p id="strengthText" class="text-xs mt-2 text-slate-400"></p>
+          <p id="strengthText" class="text-xs mt-2 text-slate-600 dark:text-slate-400 transition-colors duration-300"></p>
         </div>
 
         <!-- Confirm Password -->
         <div class="mb-4 relative">
-          <label class="block text-sm mb-2 text-slate-300">
-            Confirm Password
-          </label>
-
-          <input
-            type="password"
-            id="confirm_password"
-            required
-            class="w-full px-4 py-3 pr-12 rounded-xl bg-black/60 border border-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 transition"
-          />
-
-          <button
-            type="button"
-            id="toggleConfirm"
-            class="absolute right-4 top-[42px] text-slate-400 hover:text-white text-sm"
-          >
-            Show
-          </button>
+          <label class="block text-sm mb-2 text-slate-700 dark:text-slate-300 transition-colors duration-300">Confirm Password</label>
+          <input type="password" id="confirm_password" required
+            class="w-full px-4 py-3 pr-12 rounded-xl border border-black/20 dark:border-white/10
+            bg-white/80 dark:bg-black/60 focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/30 transition-colors duration-300"/>
+          <button type="button" id="toggleConfirm" class="absolute right-4 top-[42px] text-slate-500 dark:text-slate-400 hover:text-black dark:hover:text-white text-sm transition">Show</button>
         </div>
 
-        <p id="matchText" class="text-xs mb-6"></p>
+        <p id="matchText" class="text-xs mb-6 transition-colors duration-300"></p>
 
         <!-- Submit -->
-        <button
-          type="submit"
-          id="submitBtn"
-          disabled
-          class="w-full py-3 rounded-xl font-semibold bg-gradient-to-r from-white via-slate-200 to-white text-black opacity-40 cursor-not-allowed transition-all duration-300"
-        >
+        <button type="submit" id="submitBtn" disabled
+          class="w-full py-3 rounded-xl font-semibold
+          bg-gradient-to-r from-white via-slate-200 to-white dark:from-black dark:via-zinc-800 dark:to-black
+          text-black dark:text-white opacity-40 cursor-not-allowed transition-all duration-300">
           Sign Up
         </button>
 
-        <p class="text-center text-slate-400 text-sm mt-6">
-          By creating a account you agree to our
-          <a href="TermsandPrivacy.html" class="hover:text-white underline"
-            >Terms of Service</a
-          >
-          Terms and Privacy
-        </p>
-
-        <div class="text-center text-sm text-slate-400 mt-8">
-          Already have an account?
-          <a href="login.html" class="hover:text-white underline">Login</a>
+        <div class="text-center text-sm text-slate-600 dark:text-slate-400 mt-8 transition-colors duration-300">
+          Already have an account? <a href="login.html" class="hover:text-black dark:hover:text-white underline transition">Login</a>
         </div>
       </form>
     </section>
 
-    <footer
-      class="text-center text-slate-500 text-sm py-6 border-t border-white/5"
-    >
+    <!-- Footer -->
+    <footer class="text-center text-slate-500 dark:text-slate-400 text-sm py-6 border-t border-black/10 dark:border-white/10 transition-colors duration-300">
       This product uses the TMDB API but is not endorsed or certified by TMDB.
     </footer>
 
+    <!-- Navbar + Theme Toggle -->
     <script>
-      fetch("../components/navbar.html")
-        .then((res) => res.text())
-        .then((data) => {
-          document.getElementById("navbar").innerHTML = data;
-        });
+      const htmlEl = document.documentElement;
+      const sunIcon = "/assets/sun-regular.png";
+      const moonIcon = "/assets/moon-white.png";
+
+      async function loadNavbar() {
+        try {
+          const res = await fetch("components/navbar.html");
+          if (!res.ok) throw new Error("Navbar fetch failed");
+          document.getElementById("navbar").innerHTML = await res.text();
+
+          const toggleBtn = document.getElementById("themeToggle");
+          const themeIcon = document.getElementById("themeIcon");
+          if (!toggleBtn || !themeIcon) return;
+
+          function setIcon() {
+            themeIcon.src = htmlEl.classList.contains("dark") ? moonIcon : sunIcon;
+          }
+          setIcon();
+
+          toggleBtn.addEventListener("click", () => {
+            htmlEl.classList.toggle("dark");
+            localStorage.setItem("theme", htmlEl.classList.contains("dark") ? "dark" : "light");
+            setIcon();
+          });
+        } catch (err) {
+          console.error("Navbar load error:", err);
+        }
+      }
+
+      loadNavbar();
     </script>
 
+    <!-- Password & Form JS -->
     <script>
       const passwordInput = document.getElementById("password");
       const confirmInput = document.getElementById("confirm_password");
@@ -158,11 +159,9 @@
       let passwordStrong = false;
       let passwordsMatch = false;
 
-      // Password Strength
       passwordInput.addEventListener("input", () => {
         const value = passwordInput.value.trim();
         let strength = 0;
-
         if (value.length >= 8) strength++;
         if (/[A-Z]/.test(value)) strength++;
         if (/[0-9]/.test(value)) strength++;
@@ -175,12 +174,12 @@
           { width: "100%", color: "bg-green-500", text: "Strong" },
         ];
 
-        if (value.length === 0) {
+        if (!value) {
           strengthBar.style.width = "0";
           strengthText.textContent = "";
           passwordStrong = false;
         } else {
-          const level = levels[Math.max(strength - 1, 0)];
+          const level = levels[Math.max(strength-1,0)];
           strengthBar.className = `h-full transition-all duration-300 ${level.color}`;
           strengthBar.style.width = level.width;
           strengthText.textContent = level.text;
@@ -194,25 +193,19 @@
       function checkMatch() {
         const password = passwordInput.value.trim();
         const confirm = confirmInput.value.trim();
-
-        if (!confirm) {
-          matchText.textContent = "";
-          passwordsMatch = false;
-        } else if (password === confirm) {
+        if (!confirm) { matchText.textContent = ""; passwordsMatch = false; }
+        else if (password === confirm) {
           matchText.textContent = "✔ Passwords match";
-          matchText.className = "text-xs text-green-400 mb-6";
+          matchText.className = "text-xs text-green-400 mb-6 transition-colors duration-300";
           passwordsMatch = true;
         } else {
           matchText.textContent = "✖ Passwords do not match";
-          matchText.className = "text-xs text-red-400 mb-6";
+          matchText.className = "text-xs text-red-400 mb-6 transition-colors duration-300";
           passwordsMatch = false;
         }
       }
 
-      confirmInput.addEventListener("input", () => {
-        checkMatch();
-        checkForm();
-      });
+      confirmInput.addEventListener("input", () => { checkMatch(); checkForm(); });
 
       function checkForm() {
         if (passwordStrong && passwordsMatch && emailInput.value.trim()) {
@@ -227,31 +220,39 @@
       function setupToggle(btnId, inputId) {
         const btn = document.getElementById(btnId);
         const input = document.getElementById(inputId);
-
         btn.addEventListener("click", () => {
-          if (input.type === "password") {
-            input.type = "text";
-            btn.textContent = "Hide";
-          } else {
-            input.type = "password";
-            btn.textContent = "Show";
-          }
+          if (input.type === "password") { input.type="text"; btn.textContent="Hide"; }
+          else { input.type="password"; btn.textContent="Show"; }
         });
       }
+      setupToggle("togglePassword","password");
+      setupToggle("toggleConfirm","confirm_password");
 
-      setupToggle("togglePassword", "password");
-      setupToggle("toggleConfirm", "confirm_password");
+      // --- NEW: Send registration data to server ---
+      document.getElementById("registerForm").addEventListener("submit", async function(e){
+        e.preventDefault();
+        if (!passwordStrong || !passwordsMatch) return;
 
-      document
-        .getElementById("registerForm")
-        .addEventListener("submit", function (e) {
-          e.preventDefault();
+        const email = emailInput.value.trim();
+        const password = passwordInput.value.trim();
 
-          if (!passwordStrong || !passwordsMatch) return;
+        try {
+          const res = await fetch("http://localhost:5000/api/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password })
+          });
 
-          alert("Account created successfully (demo)");
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.message || "Registration failed");
+
+          alert(data.message);
           window.location.href = "login.html";
-        });
+        } catch (err) {
+          alert(err.message);
+        }
+      });
     </script>
+
   </body>
 </html>

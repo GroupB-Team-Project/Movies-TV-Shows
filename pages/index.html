@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ViewIT</title>
+
+    <!-- Prevent flash + apply saved theme -->
+    <script>
+      const savedTheme = localStorage.getItem("theme");
+      const html = document.documentElement;
+
+      if (savedTheme === "dark") html.classList.add("dark");
+      else if (savedTheme === "light") html.classList.remove("dark");
+      else if (window.matchMedia("(prefers-color-scheme: dark)").matches)
+        html.classList.add("dark");
+    </script>
+
+    <!-- Tailwind CDN with class-based dark mode -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class" };
+    </script>
+  </head>
+
+  <body class="relative min-h-screen text-slate-900 dark:text-white bg-white dark:bg-black overflow-x-hidden transition-colors duration-300">
+
+    <!-- Navbar placeholder -->
+    <div id="navbar"></div>
+
+    <section id="hero-bg" class="relative h-[65vh] overflow-hidden">
+      <div id="carouselTrack" class="flex h-full transition-transform duration-1000 ease-in-out"></div>
+      <div class="absolute inset-0 pointer-events-none z-10 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.6)_0%,rgba(0,0,0,0.3)_45%,rgba(0,0,0,0.8)_90%,#000_100%)] dark:bg-[linear-gradient(to_bottom,rgba(0,0,0,0.85)_0%,rgba(0,0,0,0.5)_45%,rgba(0,0,0,0.95)_90%,#000_100%)]"></div>
+      <div class="absolute bottom-20 left-16 z-20 max-w-xl pointer-events-none">
+        <h2 id="slideTitle" class="text-5xl font-bold mb-4 opacity-0 transition-all duration-700 translate-y-6 text-white drop-shadow-[0_4px_20px_rgba(0,0,0,0.8)]"></h2>
+        <p id="slideOverview" class="text-lg opacity-0 transition-all duration-700 translate-y-6 text-white/90 drop-shadow-[0_2px_15px_rgba(0,0,0,0.8)]"></p>
+      </div>
+      <button id="prevBtn" class="absolute left-6 top-1/2 -translate-y-1/2 z-30 bg-white/40 dark:bg-black/40 backdrop-blur-md p-3 rounded-full hover:bg-white/70 dark:hover:bg-black/70 transition text-black dark:text-white">‹</button>
+      <button id="nextBtn" class="absolute right-6 top-1/2 -translate-y-1/2 z-30 bg-white/40 dark:bg-black/40 backdrop-blur-md p-3 rounded-full hover:bg-white/70 dark:hover:bg-black/70 transition text-black dark:text-white">›</button>
+      <div id="carouselDots" class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-30"></div>
+    </section>
+
+    <!-- TOGGLE SECTION -->
+    <section class="py-14 text-center relative z-40">
+      <div class="inline-flex p-1 rounded-2xl bg-black/5 dark:bg-white/5 backdrop-blur-xl border border-black/10 dark:border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.2)] dark:shadow-[0_10px_40px_rgba(0,0,0,0.6)]">
+        <button id="moviesTab" class="px-8 py-3 rounded-xl font-medium transition-all duration-300 hover:bg-black/10 dark:hover:bg-white/10">Movies</button>
+        <button id="tvTab" class="px-8 py-3 rounded-xl font-medium transition-all duration-300 hover:bg-black/10 dark:hover:bg-white/10">TV Shows</button>
+      </div>
+    </section>
+
+    <!-- GRID SECTION -->
+    <section class="max-w-7xl mx-auto px-6 pb-24 relative z-40">
+      <div id="content" class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10"></div>
+      <div class="text-center mt-12">
+        <button id="showMoreBtn" class="px-8 py-3 bg-black text-white dark:bg-white dark:text-black rounded-xl font-semibold hover:scale-105 transition">Load More</button>
+      </div>
+    </section>
+
+    <!-- Load Navbar + Initialize All Navbar JS Here -->
+    <script type="module">
+      const htmlEl = document.documentElement;
+      const sunIcon = "/assets/sun-regular.png";
+      const moonIcon = "/assets/moon-white.png";
+
+      async function loadNavbar() {
+        try {
+          const res = await fetch("/components/navbar.html");
+          if (!res.ok) throw new Error("Navbar fetch failed");
+          document.getElementById("navbar").innerHTML = await res.text();
+
+          // ── Theme toggle ──────────────────────────────────────────
+          const toggleBtn = document.getElementById("themeToggle");
+          const themeIcon = document.getElementById("themeIcon");
+
+          if (toggleBtn && themeIcon) {
+            function setIcon() {
+              themeIcon.src = htmlEl.classList.contains("dark") ? moonIcon : sunIcon;
+            }
+            setIcon();
+            toggleBtn.addEventListener("click", () => {
+              htmlEl.classList.toggle("dark");
+              localStorage.setItem("theme", htmlEl.classList.contains("dark") ? "dark" : "light");
+              setIcon();
+            });
+          }
+
+          // ── Account dropdown ──────────────────────────────────────
+          const { isLoggedIn, getUserEmail, logoutUser } = await import("/js/auth.js");
+
+          const button       = document.getElementById("accountButton");
+          const dropdown     = document.getElementById("accountDropdown");
+          const emailDisplay = document.getElementById("userEmailDisplay");
+          const logoutBtn    = document.getElementById("logoutBtn");
+
+          if (!button || !dropdown || !emailDisplay || !logoutBtn) {
+            console.error("Navbar elements missing");
+            return;
+          }
+
+          function updateUI() {
+            const loggedIn = isLoggedIn();
+            button.textContent = loggedIn ? "Account" : "Login";
+            emailDisplay.textContent = loggedIn ? (getUserEmail() || "User") : "Not logged in";
+          }
+
+          // ── Redirect to login if not logged in, else toggle dropdown
+          button.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (!isLoggedIn()) {
+              window.location.href = "/login.html";
+              return;
+            }
+            dropdown.classList.toggle("hidden");
+          });
+
+          document.addEventListener("click", (e) => {
+            if (!button.contains(e.target) && !dropdown.contains(e.target)) {
+              dropdown.classList.add("hidden");
+            }
+          });
+
+          logoutBtn.addEventListener("click", () => {
+            logoutUser();
+            updateUI();
+            dropdown.classList.add("hidden");
+          });
+
+          updateUI();
+
+        } catch (err) {
+          console.error("Navbar load error:", err);
+        }
+      }
+
+      loadNavbar();
+    </script>
+
+    <script src="../js/movieActions.js"></script>
+    <script type="module" src="./js/main.js"></script>
+
+    <!-- TRAILER MODAL -->
+    <div
+      id="trailerModal"
+      class="fixed inset-0 bg-black/80 flex items-center justify-center z-50 hidden"
+    >
+      <div class="relative w-[90%] max-w-4xl">
+        <button
+          id="closeTrailer"
+          class="absolute -top-10 right-0 text-white text-3xl"
+        >
+          ✕
+        </button>
+        <iframe
+          id="trailerFrame"
+          class="w-full aspect-video rounded-lg"
+          src=""
+          allow="autoplay; encrypted-media"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </div>
+  </body>
+</html>

@@ -36,6 +36,9 @@ export function loginUser(email) {
 
   safeSet("loggedIn", "true");
   safeSet("userEmail", email.trim());
+
+  // 🔥 notify other tabs/pages instantly
+  window.dispatchEvent(new Event("storage"));
 }
 
 // =======================
@@ -45,11 +48,16 @@ export function logoutUser() {
   safeRemove("loggedIn");
   safeRemove("userEmail");
 
-  // Always redirect safely to login page
-  if (window.location.pathname.includes("/pages/")) {
-    window.location.href = "login.html";
+  // 🔥 notify UI instantly
+  window.dispatchEvent(new Event("storage"));
+
+  // Redirect safely to login page
+  const isInPagesFolder = window.location.pathname.includes("/pages/");
+
+  if (isInPagesFolder) {
+    window.location.href = "/login.html";
   } else {
-    window.location.href = "pages/login.html";
+    window.location.href = "/login.html";
   }
 }
 
@@ -61,8 +69,10 @@ export function isLoggedIn() {
 }
 
 // =======================
-// Get's used Email, for paul
+// GET USER EMAIL
 // =======================
 export function getUserEmail() {
-  return safeGet("userEmail") || "";
+  const email = safeGet("userEmail");
+  console.log("userEmail from storage:", email);
+  return email || "";
 }
